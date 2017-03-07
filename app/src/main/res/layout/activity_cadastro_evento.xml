@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:background="@color/colorPrimary"
+    tools:context=".Activitys.CadastroEventoActivity">
+
+
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/view">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorAccent"
+
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+
+
+            />
+
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/view">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="350dp"
+            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_centerHorizontal="true">
+
+            <ToggleButton
+                android:textOff=""
+                android:textOn=""
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="0dp"
+
+                android:id="@+id/buttonInfo"
+                android:background="@drawable/infor_verde_preto"
+                android:checked="false" />
+
+            <ToggleButton
+                android:textOff=""
+                android:textOn=""
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:id="@+id/buttonCalendario"
+                android:background="@drawable/calendario_verde_preto"
+                android:clickable="true"
+                android:enabled="true" />
+
+            <ToggleButton
+                android:textOff=""
+                android:textOn=""
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:id="@+id/buttonRelogio"
+                android:background="@drawable/relogio_verde_preto"
+                android:clickable="true"
+                android:enabled="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/buttonMaps"
+                android:layout_toEndOf="@+id/buttonMaps"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp" />
+
+            <ToggleButton
+                android:textOff=""
+                android:textOn=""
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:id="@+id/buttonMaps"
+                android:background="@drawable/localizacao_verde_preto"
+                android:clickable="true"
+                android:enabled="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:checked="false" />
+
+            <ToggleButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textOff=""
+                android:textOn=""
+                android:id="@+id/ButtonGrupo"
+                android:checked="false"
+                android:background="@drawable/grupo_preto" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayoutFragmentos"
+        android:layout_below="@+id/horizontalScrollView2">
+
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorAccent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/view">
+
+    </FrameLayout>
+
+
+</RelativeLayout>

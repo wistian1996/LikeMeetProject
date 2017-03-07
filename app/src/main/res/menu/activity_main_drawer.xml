@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_meet"
+            android:icon="@drawable/localizacao_verde_preto"
+            android:title="Meet" />
+        <item
+            android:id="@+id/nav_meus_eventos"
+            android:icon="@drawable/coco_cinza"
+            android:title="Meus eventos" />
+        <item
+            android:id="@+id/nav_agenda"
+            android:icon="@drawable/calendar_icon"
+            android:title="Agenda" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/chat_icon"
+            android:title="Chat" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+        </menu>
+    </item>
+
+</menu>
