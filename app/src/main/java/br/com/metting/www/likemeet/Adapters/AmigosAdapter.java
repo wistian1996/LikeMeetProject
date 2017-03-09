@@ -1,10 +1,7 @@
 package br.com.metting.www.likemeet.Adapters;
 
 import android.content.Context;
-import android.media.Image;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +9,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import br.com.metting.www.likemeet.Class.Amigo;
-import br.com.metting.www.likemeet.Class.Evento;
-import br.com.metting.www.likemeet.Fragments.AddAmigosEventoFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddAmigosEventoFragment;
 import br.com.metting.www.likemeet.R;
 
 /**

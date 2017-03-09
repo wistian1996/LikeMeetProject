@@ -14,19 +14,17 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import br.com.metting.www.likemeet.Class.Categoria;
 import br.com.metting.www.likemeet.Class.Meet;
-import br.com.metting.www.likemeet.Fragments.CalendarioEventoFragment;
-import br.com.metting.www.likemeet.Fragments.AddAmigosEventoFragment;
-import br.com.metting.www.likemeet.Fragments.AddLocalEventoFragment;
-import br.com.metting.www.likemeet.Fragments.InfoEventoFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddAmigosEventoFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddLocalEventoFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.InfoEventoFragment;
 import br.com.metting.www.likemeet.R;
-import br.com.metting.www.likemeet.Fragments.RelogioEventoFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.RelogioEventoFragment;
 
 public class CadastroEventoActivity extends AppCompatActivity {
     private ToggleButton toggleButtonCalendario;

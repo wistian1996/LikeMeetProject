@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
 
 
-    tools:context=".Fragments.AddAmigosEventoFragment"
+    tools:context=".Fragments.CadastroEventos.AddAmigosEventoFragment"
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView

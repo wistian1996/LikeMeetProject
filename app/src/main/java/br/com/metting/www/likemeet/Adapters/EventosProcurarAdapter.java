@@ -16,6 +16,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
@@ -59,16 +60,23 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
     public void onBindViewHolder(EventosProcurarAdapter.MyViewHolder holder, final int position) {
         // acoes para os botoes
         holder.id = list.get(position).getId();
-        holder.textViewDescricao.setText(list.get(position).getDescricao());
+        holder.data = list.get(position).getDataEvento();
         holder.textViewNome.setText(list.get(position).getNome());
+        holder.textViewDescricao.setText(list.get(position).getDescricao());
+         //acao ao clicar no card view
+
+        Date data = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat dateFormatHora = new SimpleDateFormat("HH:mm:ss");
-        String data = dateFormat.format(list.get(position).getDataEvento());
-        String hora = dateFormatHora.format(list.get(position).getDataEvento());
+        String data1 = dateFormat.format(data);
+        String data2 = dateFormat.format(list.get(position).getDataEvento());
+        if (data1.equals(data2)) {
+            // quer diser que o evento e hoje
+            holder.imageView.setImageResource(R.drawable.ic_vector_marcador_verde);
+        }else{
+            // o evento e outro dia
+            holder.imageView.setImageResource(R.drawable.ic_vector_marcador_azul);
+        }
 
-
-
-        //acao ao clicar no card view
         holder.cardView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -109,9 +117,11 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public int id;
+        public Date data;
         public TextView textViewNome;
         public TextView textViewDescricao;
         public CardView cardView;
+        public ImageView imageView;
 
         public MyViewHolder(final View itemView) {
 
@@ -119,6 +129,7 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
             cardView = (CardView) itemView.findViewById(R.id.card_view_evento);
             textViewNome = (TextView) itemView.findViewById(R.id.textViewNome);
             textViewDescricao = (TextView) itemView.findViewById(R.id.textViewDescricao);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView7);
 
 
 

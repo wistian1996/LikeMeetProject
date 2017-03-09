@@ -13,7 +13,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.metting.www.likemeet.Class.Amigo;
-import br.com.metting.www.likemeet.Fragments.AddAmigosEventoFragment;
 import br.com.metting.www.likemeet.R;
 
 /**

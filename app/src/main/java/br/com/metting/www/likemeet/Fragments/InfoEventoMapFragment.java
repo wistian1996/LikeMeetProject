@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,25 +91,11 @@ public class InfoEventoMapFragment extends Fragment {
 
             }
         });
-/*
-        // fim do page
-        buttonVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Fragment fragment = new ListaEventoFragment();
-                android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                        getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-                fragmentTrasaction.commit();
-                MapsFragmentProcurarEventos.descarmarMarker();
-                ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
 
-            }
-        });
 
-        */
+        Log.d("InfoEventoMap" , "SLIDDE COLLAPSED");
+        ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         return view;
     }
 

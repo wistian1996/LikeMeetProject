@@ -1,7 +1,6 @@
 package br.com.metting.www.likemeet.Activitys;
 
 import android.Manifest;
-import android.animation.LayoutTransition;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -30,14 +28,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import br.com.metting.www.likemeet.Class.Meet;
-import br.com.metting.www.likemeet.Fragments.CalendarioEventoFragment;
-import br.com.metting.www.likemeet.Fragments.InfoEventoMapFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
 import br.com.metting.www.likemeet.Fragments.ListaEventoFragment;
 import br.com.metting.www.likemeet.Fragments.MeusEventosFragment;
 import br.com.metting.www.likemeet.Fragments.ProcurarEventosMeetFragment;
@@ -50,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment fragment;
     private FloatingActionButton fab;
     private ProcurarEventosMeetFragment fragmentoListaEventos;
-    private  SearchView searchView;
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
 
-
-
-        FragmentTransaction  tx = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.layoutPrincipal, fragmentoListaEventos);
         tx.commit();
 
@@ -158,13 +153,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
 
             //caso slider esteja aberto
-            if (!ProcurarEventosMeetFragment
-
-                    .slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+            if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
                 ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 return;
             }
             //caso search esteja aberto
+            if (!searchView.isIconified()) {
+                searchView.setIconified(true);
+                return;
+            }
 
             //   Se vier null ou length == 0
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -199,21 +196,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-
-
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             // AÇAO AO APERTAR O BOTAO PESQUISAR
             public void onClick(View view) {
 
-                Fragment fragment = new ListaEventoFragment();
+                Fragment fragment = new ListaEventoFragment(Meet.getListaEventos());
                 android.support.v4.app.FragmentTransaction fragmentTrasaction =
                         getSupportFragmentManager().beginTransaction();
                 fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
                 fragmentTrasaction.commit();
                 MapsFragmentProcurarEventos.descarmarMarker();
 
-
+                if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                    Log.d("Main", "SLIDDER EXPANDED");
+                }
 
             }
         });
@@ -221,10 +219,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-/*
+                Log.d("Main", "SLIDDER COLLAPSED");
                 if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
                     ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }*/
+                }
                 return false;
             }
         });
@@ -238,7 +236,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextChange(String newText) {
                 // utlizar autocomplete
-                if (! ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                    Log.d("Main", "SLIDDER EXPANDED");
                     ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
                 return false;
@@ -247,11 +246,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
-   @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_ok:
-                Toast.makeText(this,"sei la " , Toast.LENGTH_LONG);
+                Toast.makeText(this, "sei la ", Toast.LENGTH_LONG);
                 break;
         }
         return super.onOptionsItemSelected(item);

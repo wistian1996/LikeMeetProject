@@ -1,4 +1,4 @@
-package br.com.metting.www.likemeet.Fragments;
+package br.com.metting.www.likemeet.Fragments.CadastroEventos;
 
 import android.content.Intent;
 import android.os.Bundle;

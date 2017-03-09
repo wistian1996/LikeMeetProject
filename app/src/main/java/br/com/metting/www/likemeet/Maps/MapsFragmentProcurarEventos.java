@@ -85,7 +85,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                         fragmentTrasaction.commit();
                     }
 
-                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
             });
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -100,7 +100,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    // se a lista for null entao ele retorna todos eventos
+                    // se a lista for null entao ele nao retornara nenhum evento
                     chamarFragmentListaEventos(null);
                 }
             });
@@ -116,13 +116,8 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
         // se a lista nao for nula , retornara todos eventos
         if (lista == null) {
-            Fragment fragment = new ListaEventoFragment();
-            android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                    getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-            fragmentTrasaction.commit();
             // configurando o sliderUp
-
+            Log.d("MapsFragment" , "SLIDER COLLAPSED");
             ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             ProcurarEventosMeetFragment.slider.refreshDrawableState();
             return;
@@ -131,17 +126,12 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             // ser for size 1 quer diser que so ha 1 evento naquela localidade , entao abrimos a tela de ir para o evento diretamente
             if (lista.size() == 1) {
                 Evento control = new Evento();
-
                 Fragment fragment = new InfoEventoMapFragment(control.getEvento(lista.get(0).getId()));
                 android.support.v4.app.FragmentTransaction fragmentTrasaction =
                         getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
                 fragmentTrasaction.commit();
 
-
-                //Configurando o sliderUp
-                ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                ProcurarEventosMeetFragment.slider.refreshDrawableState();
                 return;
 
             }
@@ -153,6 +143,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             fragmentTrasaction.commit();
 
             //Configurado o slider Up
+            Log.d("MapsFragment" , "SLIDER EXPANDED");
             ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             ProcurarEventosMeetFragment.slider.refreshDrawableState();
         }
