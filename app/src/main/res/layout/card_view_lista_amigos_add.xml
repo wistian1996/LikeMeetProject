@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
+
         >
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -64,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
+                    android:textColor="@color/caldroid_black"
                     android:id="@+id/textViewNome"
                     android:layout_alignTop="@id/imageViewFoto"
                     android:layout_toEndOf="@id/imageViewFoto" />

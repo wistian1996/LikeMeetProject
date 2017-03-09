@@ -1,27 +1,146 @@
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="br.com.metting.www.likemeet.Fragments.ListaEventoFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="bottom"
+        android:id="@+id/relativeLayout7"
+
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout7">
+        android:layout_alignParentBottom="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerlistaEventos"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true" />
+            android:layout_below="@+id/relativeLayout9" />
 
-          </RelativeLayout>
+        <RelativeLayout
+            android:padding="6dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/relativeLayout9">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gridLayout"
+                android:padding="0dp"
+                android:foregroundGravity="center"
+                android:layout_alignParentTop="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/view77"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/jogos"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_livro"
+                    android:id="@+id/view878"
+                    android:layout_above="@+id/textView123"
+                    android:layout_toEndOf="@+id/view44"
+                    android:layout_marginStart="10dp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/amigos"
+                    android:id="@+id/view88"
+                    android:layout_marginStart="10dp"
+                    android:layout_above="@+id/textView64"
+                    android:layout_toEndOf="@+id/view878" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/bar"
+                    android:id="@+id/view54"
+                    android:layout_above="@+id/textView123"
+                    android:layout_toEndOf="@+id/view77"
+                    android:layout_marginStart="10dp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/festa"
+                    android:id="@+id/view44"
+                    android:layout_above="@+id/textView123"
+                    android:layout_toEndOf="@+id/view54"
+                    android:layout_marginStart="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jogos"
+                    android:gravity="center"
+                    android:id="@+id/textView6"
+                    android:layout_below="@+id/view77"
+                    android:layout_alignEnd="@+id/view77"
+                    android:layout_alignStart="@+id/view77" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bares"
+                    android:gravity="center"
+                    android:id="@+id/textView123"
+                    android:layout_alignTop="@+id/textView6"
+                    android:layout_alignStart="@+id/view54"
+                    android:layout_alignEnd="@+id/view54" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Festas"
+                    android:id="@+id/textView64"
+                    android:layout_alignTop="@+id/textView123"
+                    android:layout_alignStart="@+id/view44"
+                    android:layout_alignEnd="@+id/view44" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amigos"
+                    android:id="@+id/textView8"
+                    android:gravity="center"
+                    android:layout_below="@+id/view88"
+                    android:layout_alignStart="@+id/view88"
+                    android:layout_alignEnd="@+id/view88" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Formal"
+                    android:gravity="center"
+                    android:id="@+id/textView12"
+                    android:layout_alignTop="@+id/textView8"
+                    android:layout_alignEnd="@+id/view878"
+                    android:layout_alignStart="@+id/view878" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 
       </RelativeLayout>

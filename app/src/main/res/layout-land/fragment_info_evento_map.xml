@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="20:00"
                 android:layout_marginLeft="4dp"
-                android:id="@+id/textViewInfoHorario" />
+                android:id="@+id/textView80" />
         </LinearLayout>
 
         <LinearLayout

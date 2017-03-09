@@ -19,12 +19,13 @@ public class Categoria {
 
     public static ArrayList<Categoria> getLista() {
         Categoria c1 = new Categoria(1, "Festas");
-        Categoria c2 = new Categoria(2, "Bares e boates");
+        Categoria c2 = new Categoria(2, "Bares");
         Categoria c3 = new Categoria(3, "Jogos");
         Categoria c4 = new Categoria(4, "Esportes");
         Categoria c5 = new Categoria(5, "Casuais");
         Categoria c6 = new Categoria(6, "Amigos");
-        Categoria c7 = new Categoria(7, "Trabalho , Escola");
+        Categoria c7 = new Categoria(7, "Profissional");
+        Categoria c8 = new Categoria(8, "Teatro");
 
         list = new ArrayList<>();
         list.add(c1);
@@ -34,6 +35,7 @@ public class Categoria {
         list.add(c5);
         list.add(c6);
         list.add(c7);
+        list.add(c8);
         return list;
     }
 

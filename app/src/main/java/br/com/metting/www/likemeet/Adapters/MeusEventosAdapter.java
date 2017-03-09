@@ -5,8 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,9 +56,10 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
         String hora = dateFormatHora.format(lEvento.get(position).getDataEvento());
         holder.textViewData.setText(data);
         holder.textViewHorario.setText(hora);
-
-
         String taxaEntrada;
+
+
+
         if (lEvento.get(position).getValorEntrada() != 0.0) {
             taxaEntrada = String.valueOf(lEvento.get(position).getValorEntrada()) + " R$";
 
@@ -88,7 +92,6 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
         public TextView textViewCategoria;
 
 
-
         public MyViewHolder(final View itemView) {
 
             super(itemView);
@@ -105,5 +108,8 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
 
         }
 
+
     }
+
 }
+

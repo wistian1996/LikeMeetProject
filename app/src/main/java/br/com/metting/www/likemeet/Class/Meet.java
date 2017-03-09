@@ -29,7 +29,7 @@ public class Meet {
         Evento evento = new Evento(1, 2, "Quadra do melhores", "-10.937351,-37.082956", "Sem referencia", data3, 0.0, 50, "Bora galera, bater um baba!!!!", 0, 4, 10);
         Evento evento3 = new Evento(3, 2, "Festeja fest", "-10.942671,-37.097429", "Sem referencia", data, 120.00, 50, "Festa particular!", 0, 1, 18);
         Evento evento4 = new Evento(4, 2, "Show ao vivo, Ludos pub", "-10.970726,-37.054052", "Sem referencia", data, 0.0, 50, "Bar com show ao vivo!", 0, 2, 18);
-        Evento evento2 = new Evento(2, 1, "Truco dos paulista", "-10.970726,-37.054052", "Sem referencia", data, 0.0, 50, "Partida amistosa de truco com os meus brodinho Paulista , Marco , Geraldo , Paco e o piorzinho , leite", 0, 3, 12);
+        Evento evento2 = new Evento(2, 1, "Truco dos paulista", "-10.970726,-37.054052", "Avenida São João Batista, 651 - 1º andar - Ponto Novo, Aracaju - SE, 49097-000", data, 0.0, 50, "Partida amistosa de truco com os meus brodinho Paulista , Marco , Geraldo , Paco e o piorzinho , leite porque o bicho é ruim mermo!!!!!!!", 0, 3, 12);
 
         Evento evento5 = new Evento(5, 2, "Feijão com tranqueira", "-10.991158,-37.051060", "Sem referencia", data, 0.0, 50, "Bar com show ao vivo!", 0, 2, 18);
 

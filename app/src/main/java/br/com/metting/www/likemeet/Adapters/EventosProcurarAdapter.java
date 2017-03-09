@@ -61,47 +61,11 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
         holder.id = list.get(position).getId();
         holder.textViewDescricao.setText(list.get(position).getDescricao());
         holder.textViewNome.setText(list.get(position).getNome());
-        holder.textViewRestricaoIdade.setText(String.valueOf(list.get(position).getIdadeMin()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat dateFormatHora = new SimpleDateFormat("HH:mm:ss");
         String data = dateFormat.format(list.get(position).getDataEvento());
         String hora = dateFormatHora.format(list.get(position).getDataEvento());
-        holder.textViewData.setText(data);
-        holder.textViewHorario.setText(hora);
 
-
-        String taxaEntrada;
-        if (list.get(position).getValorEntrada() != 0.0) {
-            taxaEntrada = String.valueOf(list.get(position).getValorEntrada()) + " R$";
-
-        } else {
-            taxaEntrada = "Gratuita";
-        }
-        holder.textViewtaxa.setText(taxaEntrada);
-
-        // alterando a foto
-        if (list.get(position).getIdCategoria() == 1) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.festa);
-        }
-        if (list.get(position).getIdCategoria() == 2) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.bar);
-
-        }
-        if (list.get(position).getIdCategoria() == 3) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.jogos);
-        }
-        if (list.get(position).getIdCategoria() == 4) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.esporte);
-        }
-        if (list.get(position).getIdCategoria() == 5) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.casual);
-        }
-        if (list.get(position).getIdCategoria() == 6) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.amigos);
-        }
-        if (list.get(position).getIdCategoria() == 7) {
-            holder.ImageViewCategoria.setImageResource(R.drawable.icon_livro);
-        }
 
 
         //acao ao clicar no card view
@@ -147,34 +111,20 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
         public int id;
         public TextView textViewNome;
         public TextView textViewDescricao;
-        public TextView textViewData;
-        public CardView cardViewEvento;
-        public TextView textViewRestricaoIdade;
-        public TextView textViewtaxa;
-        public TextView textViewHorario;
-        public ImageView ImageViewCategoria;
         public CardView cardView;
-        private Marker marker;
 
         public MyViewHolder(final View itemView) {
 
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view_evento);
-            textViewHorario = (TextView) itemView.findViewById(R.id.textViewInfoHorario);
             textViewNome = (TextView) itemView.findViewById(R.id.textViewNome);
             textViewDescricao = (TextView) itemView.findViewById(R.id.textViewDescricao);
-            textViewData = (TextView) itemView.findViewById(R.id.textViewInfoData);
-            cardViewEvento = (CardView) itemView.findViewById(R.id.card_view_evento);
-            textViewRestricaoIdade = (TextView) itemView.findViewById(R.id.textViewIdade);
-            textViewtaxa = (TextView) itemView.findViewById(R.id.textViewTaxa);
-            ImageViewCategoria = (ImageView) itemView.findViewById(R.id.imageViewCategoria);
+
+
 
 
         }
 
-        public Marker getMarker() {
-            return marker;
-        }
     }
 
 }
