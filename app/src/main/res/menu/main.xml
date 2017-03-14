@@ -9,5 +9,11 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_atualizar"
+        android:icon="@drawable/ic_vector_atualizar"
+        app:showAsAction="always"
+        android:title="action_ok" />
+
 
 </menu>

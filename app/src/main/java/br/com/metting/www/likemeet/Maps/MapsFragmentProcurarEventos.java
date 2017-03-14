@@ -30,16 +30,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
-import br.com.metting.www.likemeet.Fragments.InfoEventoMapFragment;
-import br.com.metting.www.likemeet.Fragments.ListaEventoFragment;
-import br.com.metting.www.likemeet.Fragments.ProcurarEventosMeetFragment;
+import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
+import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
+import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
+import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.R;
 
 public class MapsFragmentProcurarEventos extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
-    private GoogleMap mMap;
+    private static GoogleMap mMap;
     private LocationManager locationManager;
     private static final String TAG = "MapsFragmentProcurarEventos";
     private static final int MY_PERMISSION_LOCATION = 128;
@@ -65,7 +67,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.setMyLocationEnabled(true);
-            marcarPontos();
+            marcarPontos(Meet.getListaEventos());
 
 
             if (local != null) {
@@ -85,7 +87,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                         fragmentTrasaction.commit();
                     }
 
-                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                    ProcurarEventosMeetFragment.abrirSlider();
                 }
             });
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -100,6 +102,12 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
+
+                    //verificando de a lupa esta aberta
+                    if (!MainActivity.getSearchView().isIconified()) {
+                        MainActivity.getSearchView().setIconified(true);
+                        return;
+                    }
                     // se a lista for null entao ele nao retornara nenhum evento
                     chamarFragmentListaEventos(null);
                 }
@@ -117,9 +125,14 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
         // se a lista nao for nula , retornara todos eventos
         if (lista == null) {
             // configurando o sliderUp
-            Log.d("MapsFragment" , "SLIDER COLLAPSED");
-            ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            ProcurarEventosMeetFragment.slider.refreshDrawableState();
+            Log.d("MapsFragment", "SLIDER COLLAPSED");
+            ProcurarEventosMeetFragment.fecharSlider();
+
+            Fragment fragment = new PrePesquisaFragment();
+            android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                    getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+            fragmentTrasaction.commit();
             return;
 
         } else {
@@ -143,20 +156,21 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             fragmentTrasaction.commit();
 
             //Configurado o slider Up
-            Log.d("MapsFragment" , "SLIDER EXPANDED");
-            ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            ProcurarEventosMeetFragment.slider.refreshDrawableState();
+            Log.d("MapsFragment", "SLIDER EXPANDED");
+            ProcurarEventosMeetFragment.abrirSlider();
         }
 
     }
 
-    private void marcarPontos() {
+    public static void marcarPontos(ArrayList<Evento> listaEventos) {
 
         MarkerOptions marker = new MarkerOptions();
         Marker m = null;
+        listaMarker.clear();
+        mMap.clear();
         //    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marcar_map));
 
-        for (Evento listaEvento : Meet.getListaEventos()) {
+        for (Evento listaEvento : listaEventos) {
             String[] latlong = listaEvento.getLocal().split(",");
             double latitude = Double.parseDouble(latlong[0]);
             double longitude = Double.parseDouble(latlong[1]);
@@ -244,7 +258,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
         return null;
     }
 
-
+/*
     private void criarRaio() {
 
         int raio = 15000;
@@ -257,7 +271,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getMinhaLocalizacao(), 10));
     }
-
+*/
 
     @Override
     public void onMapClick(LatLng latLng) {
@@ -273,5 +287,31 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                 break;
             }
         }
+    }
+
+    public static void marcarMarker(LatLng latLng) {
+        for (Marker lista : listaMarker
+                ) {
+            if (latLng.toString().equals(lista.getPosition().toString())) {
+                Log.d("local", "local1: " + latLng.toString());
+                Log.d("local", "local2: " + lista.getPosition().toString());
+                lista.showInfoWindow();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                return;
+            }
+        }
+    }
+
+    public static void Remarcar() {
+        mMap.clear();
+    }
+
+
+    public static GoogleMap getmMap() {
+        return mMap;
+    }
+
+    public static ArrayList<Marker> getListaMarker() {
+        return listaMarker;
     }
 }

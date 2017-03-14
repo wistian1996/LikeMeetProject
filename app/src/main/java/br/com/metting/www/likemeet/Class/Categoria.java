@@ -18,14 +18,14 @@ public class Categoria {
     }
 
     public static ArrayList<Categoria> getLista() {
-        Categoria c1 = new Categoria(1, "Festas");
-        Categoria c2 = new Categoria(2, "Bares");
-        Categoria c3 = new Categoria(3, "Jogos");
-        Categoria c4 = new Categoria(4, "Esportes");
-        Categoria c5 = new Categoria(5, "Casuais");
-        Categoria c6 = new Categoria(6, "Amigos");
-        Categoria c7 = new Categoria(7, "Profissional");
-        Categoria c8 = new Categoria(8, "Teatro");
+        Categoria c1 = new Categoria(1, "Festa");
+        Categoria c2 = new Categoria(2, "Profissional");
+        Categoria c3 = new Categoria(3, "Cultural");
+        Categoria c4 = new Categoria(4, "Esporte");
+        Categoria c5 = new Categoria(5, "Jogo");
+        Categoria c6 = new Categoria(6, "Outro");
+        Categoria c7 = new Categoria(7, "Feira");
+        Categoria c8 = new Categoria(8, "Bar");
 
         list = new ArrayList<>();
         list.add(c1);
@@ -33,7 +33,7 @@ public class Categoria {
         list.add(c3);
         list.add(c4);
         list.add(c5);
-        list.add(c6);
+        //list.add(c6);
         list.add(c7);
         list.add(c8);
         return list;
@@ -41,11 +41,21 @@ public class Categoria {
 
     public static int getCateriaPorNome(String nome) {
         int id = 0;
-        for (Categoria lista : list
+        for (Categoria lista : getLista()
                 ) {
-            if (nome.equals(lista.getNome())) id= lista.getId();
+            if (nome.equals(lista.getNome())) id = lista.getId();
         }
         return id;
+    }
+
+    public static Categoria getCategoria(int id) {
+        for (Categoria lista : getLista()
+                ) {
+            if (lista.getId() == id) {
+                return lista;
+            }
+        }
+        return null;
     }
 
     public int getId() {

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout_principal_maps"
-    tools:context="br.com.metting.www.likemeet.Fragments.ProcurarEventosMeetFragment">
+    tools:context=".Fragments.Main.ProcurarEventosMeetFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

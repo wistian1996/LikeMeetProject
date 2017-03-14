@@ -1,23 +1,22 @@
-package br.com.metting.www.likemeet.Fragments;
+package br.com.metting.www.likemeet.Fragments.Main;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import br.com.metting.www.likemeet.Activitys.CadastroEventoActivity;
+import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
@@ -28,6 +27,7 @@ public class InfoEventoMapFragment extends Fragment {
     private ViewPager mViewPager;
     private TextView nome;
     private View view;
+    private RelativeLayout relativeLayoutInfo;
     private listaParticipantesEventoInfoFragment listaParticipantesEventoInfoFragment;
     private infoEventoMap2Fragment infoEventoMap2Fragment;
 
@@ -39,12 +39,27 @@ public class InfoEventoMapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.view = inflater.inflate(R.layout.fragment_info_evento_map, container, false);
+
         // Inflate the layout for this fragment
         listaParticipantesEventoInfoFragment = new listaParticipantesEventoInfoFragment();
         infoEventoMap2Fragment = new infoEventoMap2Fragment(evento);
-        this.view = inflater.inflate(R.layout.fragment_info_evento_map, container, false);
+
+
         nome = (TextView) view.findViewById(R.id.textViewNome);
         nome.setText(evento.getNome());
+        relativeLayoutInfo = (RelativeLayout) view.findViewById(R.id.relativeLayoutFundoVerde);
+
+        relativeLayoutInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
+                ProcurarEventosMeetFragment.fecharSlider();}else{
+                    ProcurarEventosMeetFragment.abrirSlider();
+                }
+
+            }
+        });
 
 
         // definindo uma tab para o page
@@ -92,10 +107,7 @@ public class InfoEventoMapFragment extends Fragment {
             }
         });
 
-
-
-        Log.d("InfoEventoMap" , "SLIDDE COLLAPSED");
-        ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        ProcurarEventosMeetFragment.fecharSlider();
         return view;
     }
 

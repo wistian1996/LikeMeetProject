@@ -1,6 +1,7 @@
 package br.com.metting.www.likemeet.Activitys;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,11 +10,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -28,25 +31,36 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
-import br.com.metting.www.likemeet.Fragments.ListaEventoFragment;
-import br.com.metting.www.likemeet.Fragments.MeusEventosFragment;
-import br.com.metting.www.likemeet.Fragments.ProcurarEventosMeetFragment;
+import br.com.metting.www.likemeet.Fragments.CadastroEventos.InfoEventoFragment;
+import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
+import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
+import br.com.metting.www.likemeet.Fragments.Main.MeusEventosFragment;
+import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
+import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
 import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Toolbar toolbar;
-    private Fragment fragment;
+    public static Toolbar toolbar;
     private FloatingActionButton fab;
     private ProcurarEventosMeetFragment fragmentoListaEventos;
-    private SearchView searchView;
+    private static SearchView searchView;
+    private MenuItem botaoAtualizar;
+    private ProcurarEventosMeetFragment procurarEventosMeetFragment;
+    private MeusEventosFragment meusEventosFragment;
+    private CalendarioEventoFragment calendarioEventoFragment;
+
+    public static SearchView getSearchView() {
+        return searchView;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
+        meusEventosFragment = new MeusEventosFragment();
+        calendarioEventoFragment = new CalendarioEventoFragment();
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.layoutPrincipal, fragmentoListaEventos);
@@ -144,48 +161,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     DrawerLayout drawerLayout;
 
+    private void abrirFragmentoCategorias() {
+        Fragment fragment = new PrePesquisaFragment();
+        android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                getSupportFragmentManager().beginTransaction();
+        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+        fragmentTrasaction.commit();
+        ProcurarEventosMeetFragment.fecharSlider();
+        MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+        toolbar.setSubtitle("Encontrar novos eventos");
+
+
+    }
+
     @Override
     public void onBackPressed() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-
-        } else {
-
-            //caso slider esteja aberto
-            if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-                ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                return;
-            }
-            //caso search esteja aberto
-            if (!searchView.isIconified()) {
-                searchView.setIconified(true);
-                return;
-            }
-
-            //   Se vier null ou length == 0
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            finish();
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            Dialog mNoGpsDialog = builder.setMessage("Deseja finalizar a aplicação?")
-                    .setPositiveButton("Sim", dialogClickListener).setNegativeButton("Não", dialogClickListener)
-                    .create();
-
-            mNoGpsDialog.show();
-
-
+            return;
         }
+        //caso search esteja aberto
+        if (!searchView.isIconified()) {
+            searchView.onActionViewCollapsed();
+            //caso slider esteja aberto
+            abrirFragmentoCategorias();
+            return;
+        }
+
+        //caso slider esteja aberto
+        if (!ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+            ProcurarEventosMeetFragment.fecharSlider();
+            return;
+        }
+        // verifica qual fragment esta aberto no layout de baixo
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
+        if (f instanceof ListaEventoFragment || f instanceof InfoEventoMapFragment) {
+            abrirFragmentoCategorias();
+            return;
+        }
+
+
+        //   Se vier null ou length == 0
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        finish();
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Dialog mNoGpsDialog = builder.setMessage("Deseja finalizar a aplicação?")
+                .setPositiveButton("Sim", dialogClickListener).setNegativeButton("Não", dialogClickListener)
+                .create();
+
+        mNoGpsDialog.show();
+
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,22 +235,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
+        botaoAtualizar = menu.findItem(R.id.action_atualizar);
+
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             // AÇAO AO APERTAR O BOTAO PESQUISAR
             public void onClick(View view) {
+                botaoAtualizar.setVisible(false);
 
-                Fragment fragment = new ListaEventoFragment(Meet.getListaEventos());
+                //aguardando0.3 segundos para abrir o slider "aguardando o teclado abrir primeiro"
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        procurarEventosMeetFragment.abrirSlider();
+                        MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+                    }
+                }, 300);
+
+
+                Fragment fragment = new ListaEventoFragment(Evento.getEvento(""));
                 android.support.v4.app.FragmentTransaction fragmentTrasaction =
                         getSupportFragmentManager().beginTransaction();
                 fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
                 fragmentTrasaction.commit();
                 MapsFragmentProcurarEventos.descarmarMarker();
 
-                if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
-                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                    Log.d("Main", "SLIDDER EXPANDED");
-                }
 
             }
         });
@@ -219,10 +267,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                Log.d("Main", "SLIDDER COLLAPSED");
-                if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                if (!ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                    ProcurarEventosMeetFragment.fecharSlider();
                 }
+                toolbar.setSubtitle("Encontrar novos eventos");
+                botaoAtualizar.setVisible(true);
                 return false;
             }
         });
@@ -235,11 +284,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // utlizar autocomplete
-                if (!ProcurarEventosMeetFragment.slider.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
-                    Log.d("Main", "SLIDDER EXPANDED");
-                    ProcurarEventosMeetFragment.slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                }
+                procurarEventosMeetFragment.abrirSlider();
+
+                Fragment fragment = new ListaEventoFragment(Evento.getEvento(newText));
+                android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+                fragmentTrasaction.commit();
+                MapsFragmentProcurarEventos.descarmarMarker();
+
                 return false;
             }
         });
@@ -249,8 +302,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_ok:
-                Toast.makeText(this, "sei la ", Toast.LENGTH_LONG);
+            case R.id.action_atualizar:
+                //acao do botao atualizar
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -290,6 +343,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNoGpsDialog.setCancelable(false);
     }
 
+
+    //metodos para esconder o teclado
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    // fim teclado
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -299,29 +372,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             toolbar.setSubtitle("Encontrar novos eventos");
             fab.setVisibility(View.INVISIBLE);
-            fragment = new ProcurarEventosMeetFragment();
-            android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTrasaction.replace(R.id.layoutPrincipal, fragment);
-            fragmentTrasaction.commit();
+            trocarFragmento(procurarEventosMeetFragment);
 
         } else if (id == R.id.nav_meus_eventos) {
             fab.setVisibility(View.VISIBLE);
             toolbar.setSubtitle("Meus eventos");
-            fragment = new MeusEventosFragment();
-            android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTrasaction.replace(R.id.layoutPrincipal, fragment);
-            fragmentTrasaction.commit();
+            trocarFragmento(meusEventosFragment);
 
         } else if (id == R.id.nav_agenda) {
             toolbar.setSubtitle("Minha agenda");
             fab.setVisibility(View.VISIBLE);
-            fragment = new CalendarioEventoFragment();
-            android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTrasaction.replace(R.id.layoutPrincipal, fragment);
-            fragmentTrasaction.commit();
+            trocarFragmento(calendarioEventoFragment);
 
         } else if (id == R.id.nav_chat) {
             fab.setVisibility(View.INVISIBLE);
@@ -335,4 +396,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void trocarFragmento(final Fragment fragment) {
+        // para evitar travamentos , aguarda alguns milisegundos ate que o draw do menu volte
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTrasaction.replace(R.id.layoutPrincipal, fragment);
+                fragmentTrasaction.commit();
+            }
+        }, 200);
+
+    }
+
 }

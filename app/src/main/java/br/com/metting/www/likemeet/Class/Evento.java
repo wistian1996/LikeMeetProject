@@ -62,6 +62,26 @@ public class Evento {
 
     }
 
+    public static ArrayList<Evento> getEventoCategoria(int idCategoria){
+        ArrayList<Evento> listaEventos = new ArrayList<>();
+        for (Evento lista : Meet.getListaEventos()
+             ) {
+            if (lista.getIdCategoria() == idCategoria){
+                listaEventos.add(lista);
+            }
+        }
+        return listaEventos;
+    }
+    public static ArrayList<Evento> getEvento(String nome){
+        ArrayList<Evento> listaEventos = new ArrayList<>();
+        for (Evento lista: Meet.getListaEventos()
+             ) {
+            if (lista.getNome().toLowerCase().contains(nome.toLowerCase()) || lista.getDescricao().toLowerCase().contains(nome.toLowerCase())){
+                listaEventos.add(lista);
+            }
+        }
+        return listaEventos;
+    }
     public static ArrayList<Evento> getListaEventosLatLong(LatLng latLong) {
         ArrayList<Evento> list = new ArrayList<>();
 

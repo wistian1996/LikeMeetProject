@@ -1,0 +1,216 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Fragments.Main.PrePesquisaFragment">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4"
+        android:padding="10dp"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/relativeLayout16"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/relativeLayout5"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/feira"
+                android:id="@+id/imageViewFeira"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feiras"
+                android:gravity="center"
+                android:id="@+id/textViewFeira"
+                android:layout_below="@+id/imageViewFeira"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/relativeLayout17"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/relativeLayout4"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Festas"
+                android:gravity="center"
+                android:id="@+id/textViewFesta"
+                android:layout_below="@+id/imageViewFesta"
+                android:layout_centerHorizontal="true" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/festa"
+                android:id="@+id/imageViewFesta"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/relativeLayout5"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/cultural"
+                android:id="@+id/imageCultural"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cultural"
+                android:gravity="center"
+                android:id="@+id/textViewCultural"
+                android:layout_below="@+id/imageCultural"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout5">
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/relativeLayout13"
+            android:layout_below="@+id/relativeLayout4"
+            android:layout_alignStart="@+id/relativeLayout4"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon_livro"
+                android:id="@+id/imageViewProfissional"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profissional"
+                android:gravity="center"
+                android:id="@+id/textViewProfissional"
+                android:layout_below="@+id/imageViewProfissional"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/relativeLayout9"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/relativeLayout19"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/jogos"
+                android:id="@+id/imageViewJogo"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jogos"
+                android:gravity="center"
+                android:id="@+id/textViewJogo"
+                android:layout_below="@+id/imageViewJogo"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_below="@+id/relativeLayout16"
+            android:layout_toStartOf="@+id/relativeLayout18"
+            android:id="@+id/relativeLayout19"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/esporte"
+                android:id="@+id/imageViewEsportes"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esportes"
+                android:gravity="center"
+                android:id="@+id/textViewEsporte"
+                android:layout_below="@+id/imageViewEsportes"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/relativeLayout18"
+            android:layout_below="@+id/relativeLayout5"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/bar"
+                android:id="@+id/imageViewBar"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bares"
+                android:gravity="center"
+                android:id="@+id/textViewBar"
+                android:layout_below="@+id/imageViewBar"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

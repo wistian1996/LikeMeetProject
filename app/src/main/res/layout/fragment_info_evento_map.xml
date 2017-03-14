@@ -6,7 +6,7 @@
     android:gravity="bottom"
 
 
-    tools:context="br.com.metting.www.likemeet.Fragments.InfoEventoMapFragment">
+    tools:context=".Fragments.Main.InfoEventoMapFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/fundo"
             android:padding="15dp"
-            android:id="@+id/relativeLayout11"
+            android:id="@+id/relativeLayoutFundoVerde"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true">
 
@@ -73,7 +73,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/relativeLayout11" />
+            android:layout_below="@+id/relativeLayoutFundoVerde" />
         <android.support.v4.view.ViewPager
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pager_info_evento"

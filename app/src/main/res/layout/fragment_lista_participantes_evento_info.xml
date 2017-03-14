@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.metting.www.likemeet.Fragments.listaParticipantesEventoInfoFragment">
+    tools:context=".Fragments.Main.listaParticipantesEventoInfoFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
