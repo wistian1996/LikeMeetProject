@@ -24,6 +24,7 @@ public class Evento {
     String local;
     String endereco;
     Date dataEvento;//(data em que o evento vai ocorrer)
+    int[] duracaoEvento; // duracao do evento
     Double valorEntrada;//(caso haja valor de entrada a ser cobrado)
     int qtdMax;//(quantidade maxima de pessoas)
     String descricao;
@@ -32,7 +33,7 @@ public class Evento {
     int idadeMin;// (idade minina restringida ao usuario)
 
 
-    public Evento(int id, int idUsuarioCadastrou, String nome, String local, String endereco, Date dataEvento, Double valorEntrada, int qtdMax, String descricao, int privado, int idCategoria, int idadeMin) {
+    public Evento(int id, int idUsuarioCadastrou, String nome, String local, String endereco, Date dataEvento,   int[] duracaoEvento, Double valorEntrada, int qtdMax, String descricao, int privado, int idCategoria, int idadeMin) {
         this.id = id;
         this.idUsuarioCadastrou = idUsuarioCadastrou;
         Nome = nome;
@@ -45,6 +46,7 @@ public class Evento {
         this.privado = privado;
         this.idCategoria = idCategoria;
         this.idadeMin = idadeMin;
+        this.duracaoEvento = duracaoEvento;
     }
 
     public Evento() {
@@ -183,5 +185,9 @@ public class Evento {
 
     public int getIdadeMin() {
         return idadeMin;
+    }
+
+    public int[] getDuracaoEvento() {
+        return duracaoEvento;
     }
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +22,11 @@ import br.com.metting.www.likemeet.R;
 public class MeusEventosFragment extends Fragment {
     private View view;
     RecyclerView recyclerView;
+    FragmentManager fm;
+
+    public MeusEventosFragment(FragmentManager fm){
+        this.fm = fm;
+    }
 
     @Nullable
     @Override
@@ -32,14 +38,14 @@ public class MeusEventosFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getEventosUsuario(1));
+        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getEventosUsuario(1),fm);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
     @Override
     public void onResume() {
-        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getEventosUsuario(1));
+        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getEventosUsuario(1),fm);
         recyclerView.setAdapter(adapter);
         recyclerView.refreshDrawableState();
 

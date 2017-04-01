@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:clickable="true"
 
 
     tools:context=".Fragments.Main.InfoEventoMapFragment">
@@ -11,55 +12,61 @@
     <!-- TODO: Update blank fragment layout -->
 
     <RelativeLayout
+        android:id="@+id/relativeLayout10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relativeLayout10"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutFundoVerde"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/fundo"
-            android:padding="15dp"
-            android:id="@+id/relativeLayoutFundoVerde"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true">
-
-            <TextView
-                android:id="@+id/textViewNome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="Large Text"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorPrimary" />
+            android:background="@color/colorAccent"
+            android:padding="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_height="55dp"
                 android:id="@+id/relativeLayout14"
-                android:layout_alignTop="@+id/textViewNome"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
                 android:layout_alignParentEnd="true">
 
                 <Button
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/icon_participar"
                     android:id="@+id/button2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textAllCaps="false"
                     android:layout_above="@+id/textView24"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/icon_participar" />
 
                 <TextView
+                    android:id="@+id/textView24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PARTICIPAR"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimary"
-                    android:id="@+id/textView24"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:gravity="center"
+                    android:text="Eu vou!"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/relativeLayout14">
+
+                <TextView
+                    android:id="@+id/textViewNome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Large Text"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorPrimary" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -68,22 +75,21 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/relativeLayoutFundoVerde"
             android:background="?attr/colorPrimary"
             android:elevation="6dp"
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/relativeLayoutFundoVerde" />
-        <android.support.v4.view.ViewPager
-            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pager_info_evento"
-           android:paddingRight="6dp"
-            android:paddingLeft="6dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/tab_layout" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tab_layout"
+            android:background="@color/colorPrimary" />
 
     </RelativeLayout>
 

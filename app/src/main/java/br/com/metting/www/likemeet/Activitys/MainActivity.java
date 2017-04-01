@@ -9,6 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -16,12 +19,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +34,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.view.inputmethod.InputMethodManager;
 
+
+import com.google.android.gms.maps.model.LatLng;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import br.com.metting.www.likemeet.Class.Evento;
@@ -53,13 +59,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FloatingActionButton fab;
     private ProcurarEventosMeetFragment fragmentoListaEventos;
     private static SearchView searchView;
-    private MenuItem botaoAtualizar;
     private ProcurarEventosMeetFragment procurarEventosMeetFragment;
     private MeusEventosFragment meusEventosFragment;
     private CalendarioEventoFragment calendarioEventoFragment;
+    private Dialog mNoGpsDialog;
+    private static LatLng local;
+
 
     public static SearchView getSearchView() {
         return searchView;
+    }
+
+    public static LatLng getLocal() {
+        return local;
+    }
+
+    public static void setLocal(LatLng local) {
+        MainActivity.local = local;
     }
 
     @Override
@@ -72,10 +88,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setSubtitle("Encontrar novos eventos");
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
-        meusEventosFragment = new MeusEventosFragment();
+        LocationManager locationManager = (LocationManager) this.getSystemService(getApplicationContext().LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.d(getClass().getSimpleName(), "GPS ativado");
+            procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
+            trocarFragmento(procurarEventosMeetFragment);
+        } else {
+            Log.d(getClass().getSimpleName(), "GPS Não ativado");
+        }
+
+        meusEventosFragment = new MeusEventosFragment(getSupportFragmentManager());
         calendarioEventoFragment = new CalendarioEventoFragment();
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -83,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tx.commit();
 
         fab.setVisibility(View.INVISIBLE);
-
 
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
@@ -98,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                }
 
         );
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -130,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-
     }
+
 
     // verifica a resposta da requisicao de acesso a localizacao
     @Override
@@ -162,14 +185,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
 
     private void abrirFragmentoCategorias() {
-        Fragment fragment = new PrePesquisaFragment();
-        android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                getSupportFragmentManager().beginTransaction();
-        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-        fragmentTrasaction.commit();
         ProcurarEventosMeetFragment.fecharSlider();
-        MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
-        toolbar.setSubtitle("Encontrar novos eventos");
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Fragment fragment = new PrePesquisaFragment();
+                android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+                fragmentTrasaction.commit();
+                MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+                toolbar.setSubtitle("Encontrar novos eventos");
+            }
+        }, 100);
 
 
     }
@@ -181,6 +210,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawerLayout.closeDrawer(GravityCompat.START);
             return;
         }
+
+        // caso haja algum framento iniciado com addtobackstack antes do replace , ele é inserido na pilha
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            Log.d(getClass().getName(), "pilha:" + getSupportFragmentManager().getBackStackEntryCount());
+            return;
+        }
+
+
         //caso search esteja aberto
         if (!searchView.isIconified()) {
             searchView.onActionViewCollapsed();
@@ -203,7 +241,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //   Se vier null ou length == 0
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+        DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -211,13 +250,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         finish();
 
                     case DialogInterface.BUTTON_NEGATIVE:
+
                 }
             }
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        Dialog mNoGpsDialog = builder.setMessage("Deseja finalizar a aplicação?")
-                .setPositiveButton("Sim", dialogClickListener).setNegativeButton("Não", dialogClickListener)
+        mNoGpsDialog = builder.setMessage("Deseja finalizar a aplicação?")
+                .setPositiveButton("Sim", dialogClickListener2).setNegativeButton("Não", dialogClickListener2)
                 .create();
 
         mNoGpsDialog.show();
@@ -235,15 +275,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        botaoAtualizar = menu.findItem(R.id.action_atualizar);
-
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             // AÇAO AO APERTAR O BOTAO PESQUISAR
             public void onClick(View view) {
-                botaoAtualizar.setVisible(false);
 
-                //aguardando0.3 segundos para abrir o slider "aguardando o teclado abrir primeiro"
+
+                //"aguardando o teclado abrir primeiro"
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
@@ -259,6 +297,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
                 fragmentTrasaction.commit();
                 MapsFragmentProcurarEventos.descarmarMarker();
+                toolbar.setSubtitle("Encontrar novos eventos");
+                searchView.requestFocus();
 
 
             }
@@ -267,11 +307,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
+                if (f instanceof ListaEventoFragment) {
+                    abrirFragmentoCategorias();
+                }
+
                 if (!ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
                     ProcurarEventosMeetFragment.fecharSlider();
                 }
                 toolbar.setSubtitle("Encontrar novos eventos");
-                botaoAtualizar.setVisible(true);
+
                 return false;
             }
         });
@@ -301,11 +346,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+     /*
         switch (item.getItemId()) {
             case R.id.action_atualizar:
                 //acao do botao atualizar
                 break;
         }
+        */
         return super.onOptionsItemSelected(item);
     }
 
@@ -327,20 +374,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case DialogInterface.BUTTON_POSITIVE:
                         Intent callGPSSettingIntent = new Intent(
                                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(callGPSSettingIntent);
-                        finish();
+                        startActivityForResult(callGPSSettingIntent, 100);
                         break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        finish();
                 }
             }
         };
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        Dialog mNoGpsDialog = builder.setMessage("Para encontrar eventos é preciso que sua localização esteja ativada.")
-                .setPositiveButton("Configurações", dialogClickListener)
+        mNoGpsDialog = builder.setMessage("Para encontrar eventos é preciso que sua localização esteja ativada.")
+                .setPositiveButton("Configurações", dialogClickListener).setNegativeButton("Sair", dialogClickListener)
                 .create();
 
         mNoGpsDialog.show();
         mNoGpsDialog.setCancelable(false);
+
+
     }
 
 
@@ -373,20 +425,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toolbar.setSubtitle("Encontrar novos eventos");
             fab.setVisibility(View.INVISIBLE);
             trocarFragmento(procurarEventosMeetFragment);
+            searchView.setVisibility(View.VISIBLE);
 
         } else if (id == R.id.nav_meus_eventos) {
             fab.setVisibility(View.VISIBLE);
             toolbar.setSubtitle("Meus eventos");
+            searchView.setVisibility(View.INVISIBLE);
+
             trocarFragmento(meusEventosFragment);
 
         } else if (id == R.id.nav_agenda) {
             toolbar.setSubtitle("Minha agenda");
             fab.setVisibility(View.VISIBLE);
             trocarFragmento(calendarioEventoFragment);
+            searchView.setVisibility(View.INVISIBLE);
 
         } else if (id == R.id.nav_chat) {
             fab.setVisibility(View.INVISIBLE);
             toolbar.setSubtitle("Chat");
+            searchView.setVisibility(View.INVISIBLE);
 
         } else if (id == R.id.nav_share) {
 
@@ -398,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void trocarFragmento(final Fragment fragment) {
-        // para evitar travamentos , aguarda alguns milisegundos ate que o draw do menu volte
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -410,5 +467,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, 200);
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (requestCode == 100) {
+                LocationManager locationManager = (LocationManager) this.getSystemService(getApplicationContext().LOCATION_SERVICE);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    mNoGpsDialog.cancel();
+                    procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
+                    trocarFragmento(procurarEventosMeetFragment);
+                } else {
+                    mNoGpsDialog.show();
+                }
+            }
+        } catch (Exception e) {
+            Log.d(getClass().getName(), e.getMessage());
+        }
+
+    }
+
 
 }

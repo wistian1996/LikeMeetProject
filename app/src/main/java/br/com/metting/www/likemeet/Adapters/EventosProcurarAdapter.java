@@ -86,7 +86,6 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
                 Log.d("adapter", "action");
                 MainActivity.getSearchView().onActionViewCollapsed();
 
-                //handler da uma pausa no sistema por 0.3 segundos para que de tempo de o teclado sumir antes que desca o slider .
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {

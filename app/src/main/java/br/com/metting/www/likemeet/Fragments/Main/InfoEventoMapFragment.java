@@ -30,10 +30,19 @@ public class InfoEventoMapFragment extends Fragment {
     private RelativeLayout relativeLayoutInfo;
     private listaParticipantesEventoInfoFragment listaParticipantesEventoInfoFragment;
     private infoEventoMap2Fragment infoEventoMap2Fragment;
-
+    private int fragmento; // se == 1 , esta abrindo pelo MeusEventosAdapter
 
     public InfoEventoMapFragment(Evento evento) {
         this.evento = evento;
+        fragmento = 0;
+    }
+
+
+
+
+    public InfoEventoMapFragment(Evento evento, int fragmento) {
+        this.evento = evento;
+        this.fragmento = fragmento;
     }
 
     @Override
@@ -50,16 +59,20 @@ public class InfoEventoMapFragment extends Fragment {
         nome.setText(evento.getNome());
         relativeLayoutInfo = (RelativeLayout) view.findViewById(R.id.relativeLayoutFundoVerde);
 
-        relativeLayoutInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
-                ProcurarEventosMeetFragment.fecharSlider();}else{
-                    ProcurarEventosMeetFragment.abrirSlider();
-                }
 
-            }
-        });
+        if (fragmento == 0) {
+            relativeLayoutInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                        ProcurarEventosMeetFragment.fecharSlider();
+                    } else {
+                        ProcurarEventosMeetFragment.abrirSlider();
+                    }
+
+                }
+            });
+        }
 
 
         // definindo uma tab para o page
@@ -106,8 +119,7 @@ public class InfoEventoMapFragment extends Fragment {
 
             }
         });
-
-        ProcurarEventosMeetFragment.fecharSlider();
+        if (fragmento == 0)ProcurarEventosMeetFragment.fecharSlider();
         return view;
     }
 

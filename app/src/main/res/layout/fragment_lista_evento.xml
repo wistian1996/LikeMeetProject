@@ -23,9 +23,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true" />
+            android:layout_below="@+id/relativeLayoutMiniToolbar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/relativeLayoutMiniToolbar"
+            android:background="@drawable/fundo">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:text="35 Resultados"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/textViewResultados"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewSeta"
+                android:src="@drawable/ic_seta_cima"
+                android:layout_marginRight="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:text="Toque para abrir"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/textViewExpandir"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/imageViewSeta" />
+        </RelativeLayout>
 
 
     </RelativeLayout>
 
-      </RelativeLayout>
+</RelativeLayout>

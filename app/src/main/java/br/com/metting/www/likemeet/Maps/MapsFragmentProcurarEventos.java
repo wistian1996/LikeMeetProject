@@ -1,35 +1,21 @@
 package br.com.metting.www.likemeet.Maps;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
+
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
@@ -39,7 +25,8 @@ import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
 import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.R;
 
-public class MapsFragmentProcurarEventos extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class MapsFragmentProcurarEventos extends SupportMapFragment implements OnMapReadyCallback,
+        GoogleMap.OnMapClickListener, GoogleMap.OnMapLoadedCallback {
 
     private static GoogleMap mMap;
     private LocationManager locationManager;
@@ -48,12 +35,18 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     private LatLng local;
     private static ArrayList<Marker> listaMarker = new ArrayList<>();
 
+    public MapsFragmentProcurarEventos(LatLng local) {
+        this.local = local;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        getMapAsync(this);
+
         super.onCreate(savedInstanceState);
+        MainActivity.toolbar.setSubtitle("Preparando mapa...");
+        getMapAsync(this);
 
 
     }
@@ -62,17 +55,13 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     //sera executado quando o mapa estiver pronto
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        local = getMinhaLocalizacao();
+        MainActivity.toolbar.setSubtitle("Procurar novos eventos");
         try {
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.setMyLocationEnabled(true);
             marcarPontos(Meet.getListaEventos());
-
-
-            if (local != null) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(local, 11));
-            }
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 10f));
 
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
@@ -99,25 +88,27 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                 }
             });
 
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
+            mMap.setOnMapLoadedCallback(this);
 
-                    //verificando de a lupa esta aberta
-                    if (!MainActivity.getSearchView().isIconified()) {
-                        MainActivity.getSearchView().setIconified(true);
-                        return;
-                    }
-                    // se a lista for null entao ele nao retornara nenhum evento
-                    chamarFragmentListaEventos(null);
-                }
-            });
         } catch (SecurityException e) {
             Log.d(getClass().getName(), e.getMessage());
             e.printStackTrace();
         }
 
+
         // criarRaio();
+    }
+
+    private void abrirFragmentoCategorias() {
+                Fragment fragment = new PrePesquisaFragment();
+                android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                        getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+                fragmentTrasaction.commit();
+                MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+                MainActivity.toolbar.setSubtitle("Encontrar novos eventos");
+        ProcurarEventosMeetFragment.fecharSlider();
+
     }
 
     private void chamarFragmentListaEventos(ArrayList<Evento> lista) {
@@ -125,14 +116,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
         // se a lista nao for nula , retornara todos eventos
         if (lista == null) {
             // configurando o sliderUp
-            Log.d("MapsFragment", "SLIDER COLLAPSED");
-            ProcurarEventosMeetFragment.fecharSlider();
-
-            Fragment fragment = new PrePesquisaFragment();
-            android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                    getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-            fragmentTrasaction.commit();
+            abrirFragmentoCategorias();
             return;
 
         } else {
@@ -156,7 +140,6 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             fragmentTrasaction.commit();
 
             //Configurado o slider Up
-            Log.d("MapsFragment", "SLIDER EXPANDED");
             ProcurarEventosMeetFragment.abrirSlider();
         }
 
@@ -228,35 +211,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     }
 
 
-    private LatLng getMinhaLocalizacao() {
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-
-        if (!(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            String provider = locationManager.getBestProvider(criteria, false);
-            Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            // Location location = locationManager.getLastKnownLocation(provider);
-
-            LatLng local = null;
-            if (location != null) {
-                local = new LatLng(location.getLatitude(), location.getLongitude());
-            } else {
-                Toast.makeText(getActivity(), "Falha ao tentar acessar sua localização", Toast.LENGTH_LONG);
-            }
-            return local;
-        }
-        //fim da tag
-        return null;
-    }
 
 /*
     private void criarRaio() {
@@ -313,5 +268,11 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
     public static ArrayList<Marker> getListaMarker() {
         return listaMarker;
+    }
+
+
+    @Override
+    public void onMapLoaded() {
+
     }
 }

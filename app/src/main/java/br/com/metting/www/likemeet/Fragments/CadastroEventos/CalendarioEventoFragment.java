@@ -82,14 +82,14 @@ public class CalendarioEventoFragment extends Fragment {
         //ColorDrawable c2 = new ColorDrawable(getResources().getColor(R.color.colorPrimary)) ;
         Calendar dataAtual = Calendar.getInstance();
         dataAtual.add(Calendar.DAY_OF_MONTH, -1);
-        if (dataAtual.getTime().compareTo(date) > 0){
+        if (dataAtual != null  && date != null  && dataAtual.getTime().compareTo(date) > 0){
             Log.d("Entrou", "data atual maior que date");
             return;
         }
 
         if (dataAnterior != null)caldroidFragment.clearBackgroundDrawableForDate(dataAnterior);
 
-        caldroidFragment.setBackgroundDrawableForDate(c, date);
+        if(date != null) caldroidFragment.setBackgroundDrawableForDate(c, date);
         dataAnterior = date;
         dataMarcada = date;
         caldroidFragment.refreshView();
@@ -103,6 +103,12 @@ public class CalendarioEventoFragment extends Fragment {
         config.locale = locale;
         getContext().getResources().updateConfiguration(config,
                 getContext().getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        marcarCalendario(dataMarcada);
     }
 
     public Date getDataMarcada() {

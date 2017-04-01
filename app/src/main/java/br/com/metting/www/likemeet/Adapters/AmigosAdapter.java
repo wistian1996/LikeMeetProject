@@ -49,7 +49,6 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
     public void onBindViewHolder(final AmigosAdapter.MyViewHolder holder, int position) {
         // acoes para os botoes
         holder.textViewNome.setText(list.get(position).getNome());
-        holder.textViewTel.setText(list.get(position).getTel());
         holder.setId(list.get(position).getId());
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +81,6 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public int id;
         public TextView textViewNome;
-        public TextView textViewTel;
         private ImageView imageViewPerfil;
         private CardView cardView;
         private CheckBox checkBox;
@@ -92,7 +90,6 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
             super(itemView);
 
             textViewNome = (TextView) itemView.findViewById(R.id.textViewNome);
-            textViewTel = (TextView) itemView.findViewById(R.id.textViewTel);
             imageViewPerfil = (ImageView) itemView.findViewById(R.id.imageViewFoto);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);

@@ -223,6 +223,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
                 int restricaoIdade = 0;
                 int fluxoPessoas = 0;
                 int privado = 0;
+                int[] duracaoEvento;
 
                 if (verificarCamposInfoEventoFragment()) {
                     nome = infoEventoFragment.getTextNome();
@@ -248,7 +249,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
 
                 Date dataSemHoras;
-                Calendar dataCalendar = null;
+                Calendar dataCalendar;
                 java.sql.Date data;
                 if (verificarCamposCalendarioEventoFragment()) {
                     dataSemHoras = calendarioEventoFragment.getDataMarcada();
@@ -257,6 +258,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
                     dataCalendar.set(Calendar.HOUR_OF_DAY, relogioEventoFragment.getHora());
                     dataCalendar.set(Calendar.MINUTE, relogioEventoFragment.getMinutos());
                     data = new java.sql.Date(dataCalendar.getTime().getTime());
+                    duracaoEvento = relogioEventoFragment.getDuracaoEvento();
                 } else {
                     break;
                 }
@@ -271,7 +273,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
                     break;
                 }
 
-                Meet.cadastrarEvento(1, nome, local, endereco, data, taxaEntrada, fluxoPessoas, descricao, privado, Categoria.getCateriaPorNome(categoria), restricaoIdade);
+                Meet.cadastrarEvento(1, nome, local, endereco, data, duracaoEvento, taxaEntrada, fluxoPessoas, descricao, privado, Categoria.getCateriaPorNome(categoria), restricaoIdade);
                 finish();
         }
         return true;
@@ -323,9 +325,19 @@ public class CadastroEventoActivity extends AppCompatActivity {
             Toast.makeText(this, "Selecione uma data para seu evento!", Toast.LENGTH_SHORT).show();
             mViewPager.setCurrentItem(1);
             return false;
-        } else {
-            return true;
         }
+        try {
+            int duracao[] = relogioEventoFragment.getDuracaoEvento();
+            if (duracao[0] == -1) {
+                mViewPager.setCurrentItem(2);
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     //  a partir daqui sao opçoes do menu swep

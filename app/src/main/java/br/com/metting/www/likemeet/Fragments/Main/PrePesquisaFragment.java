@@ -1,7 +1,6 @@
 package br.com.metting.www.likemeet.Fragments.Main;
 
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,14 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Categoria;
 import br.com.metting.www.likemeet.Class.Evento;
-import br.com.metting.www.likemeet.Class.Meet;
-import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
-import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
 
@@ -45,7 +39,7 @@ public class PrePesquisaFragment extends Fragment {
         profissional = (ImageView) view.findViewById(R.id.imageViewProfissional);
         jogos = (ImageView) view.findViewById(R.id.imageViewJogo);
         festas = (ImageView) view.findViewById(R.id.imageViewFesta);
-        cultural = (ImageView) view.findViewById(R.id.imageCultural);
+        cultural = (ImageView) view.findViewById(R.id.imageEncontrarAmigos);
         feiras = (ImageView) view.findViewById(R.id.imageViewFeira);
 
         esportes.setOnClickListener(new View.OnClickListener() {
@@ -103,9 +97,9 @@ public class PrePesquisaFragment extends Fragment {
     }
 
     private void abrirLista() {
+        ProcurarEventosMeetFragment.fecharSlider();
         Fragment fragment = new ListaEventoFragment(Evento.getEventoCategoria(categoria));
         MapsFragmentProcurarEventos.marcarPontos(Evento.getEventoCategoria(categoria));
-
         Categoria c = Categoria.getCategoria(categoria);
         MainActivity.toolbar.setSubtitle("Categoria: " + c.getNome());
 
@@ -114,6 +108,6 @@ public class PrePesquisaFragment extends Fragment {
         fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
         fragmentTrasaction.commit();
 
-        ProcurarEventosMeetFragment.fecharSlider();
+
     }
 }

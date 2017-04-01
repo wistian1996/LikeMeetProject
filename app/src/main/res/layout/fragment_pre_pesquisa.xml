@@ -15,6 +15,32 @@
         android:layout_alignParentStart="true">
 
         <RelativeLayout
+            android:id="@+id/relativeLayout5"
+            android:layout_width="87dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageEncontrarAmigos"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/cultural" />
+
+            <TextView
+                android:id="@+id/textViewCultural"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageEncontrarAmigos"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="Cultural" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:id="@+id/relativeLayout16"
@@ -71,7 +97,7 @@
         <RelativeLayout
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:id="@+id/relativeLayout5"
+            android:id="@+id/relativeLayoutt6"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_weight="1">
@@ -79,19 +105,21 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/cultural"
-                android:id="@+id/imageCultural"
+                android:src="@drawable/icon_encontrar_amigos"
+                android:id="@+id/imageEncontrarAmigoss"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+
+                />
 
             <TextView
+                android:id="@+id/textViewEncontrarAmigos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cultural"
+                android:layout_below="@+id/imageEncontrarAmigoss"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:id="@+id/textViewCultural"
-                android:layout_below="@+id/imageCultural"
-                android:layout_centerHorizontal="true" />
+                android:text="Amigos" />
 
         </RelativeLayout>
     </LinearLayout>

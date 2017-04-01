@@ -1,15 +1,15 @@
 package br.com.metting.www.likemeet.Fragments.Main;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
@@ -44,8 +44,20 @@ public class infoEventoMap2Fragment extends Fragment {
         descricao = (TextView) view.findViewById(R.id.textViewDescricao);
         descricao.setText(evento.getDescricao());
 
-        data.setText(evento.getDataString());
+
+        Calendar dataCalendar = Calendar.getInstance();
+        dataCalendar.setTime(evento.getDataEvento());
+        dataCalendar.add(Calendar.HOUR, evento.getDuracaoEvento()[0]);
+        dataCalendar.add(Calendar.MINUTE, evento.getDuracaoEvento()[1]);
+
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM");
+        SimpleDateFormat d2 = new SimpleDateFormat("HH:mm");
+        String dataString = d.format(dataCalendar.getTime());
+        String horaString = d2.format(dataCalendar.getTime());
+        data.setText(evento.getDataString() + " Até: " + dataString + " às " + horaString);
         horario.setText(evento.getHoraString());
+
+
         if (evento.getValorEntrada() == 0) {
             entrada.setText("Entrada gratuita");
         } else {

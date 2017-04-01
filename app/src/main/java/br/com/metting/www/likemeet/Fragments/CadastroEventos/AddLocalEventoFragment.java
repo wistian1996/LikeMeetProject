@@ -72,25 +72,26 @@ public class AddLocalEventoFragment extends Fragment {
                 Place place = PlacePicker.getPlace(getActivity(), data);
                 //  String adress = String.format("Place: %s", place.getAddress());
                 infoLocal = place;
-
-                if (infoLocal != null) {
-                    if (infoLocal.getAddress() != null) {
-                        editTextEndereco.setText(String.format("%s", infoLocal.getAddress()));
-                        editTextEndereco.setVisibility(View.VISIBLE);
-                    } else {
-                        editTextEndereco.setVisibility(View.INVISIBLE);
-                    }
-                    if (infoLocal.getName() != null) {
-                        editTextnome.setText(String.format("%s", infoLocal.getName()));
-                        editTextnome.setVisibility(View.VISIBLE);
-                    } else {
-                        editTextnome.setVisibility(View.INVISIBLE);
-                    }
-                }
+                preencherInfo();
             }
         }
     }
-
+    private void preencherInfo(){
+        if (infoLocal != null) {
+            if (infoLocal.getAddress() != null) {
+                editTextEndereco.setText(String.format("%s", infoLocal.getAddress()));
+                editTextEndereco.setVisibility(View.VISIBLE);
+            } else {
+                editTextEndereco.setVisibility(View.INVISIBLE);
+            }
+            if (infoLocal.getName() != null) {
+                editTextnome.setText(String.format("%s", infoLocal.getName()));
+                editTextnome.setVisibility(View.VISIBLE);
+            } else {
+                editTextnome.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
     public String getNome(){
         return editTextnome.getText().toString();
     }
@@ -110,4 +111,9 @@ public class AddLocalEventoFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        preencherInfo();
+    }
 }
