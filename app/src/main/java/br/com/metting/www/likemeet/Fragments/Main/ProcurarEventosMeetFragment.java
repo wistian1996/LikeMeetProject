@@ -151,30 +151,34 @@ public class ProcurarEventosMeetFragment extends Fragment {
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState,
                                             SlidingUpPanelLayout.PanelState newState) {
+                try {
+                    if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                        slider.setTouchEnabled(false);
 
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    slider.setTouchEnabled(false);
-
-                    // verifica qual fragment esta aberto no layout de baixo
-                    Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
-                    if (f instanceof ListaEventoFragment) {
-                        ListaEventoFragment.imageViewSeta.setImageResource(R.drawable.ic_seta_baixo);
-                        ListaEventoFragment.textViewExpandir.setText("Toque para fechar");
+                        // verifica qual fragment esta aberto no layout de baixo
+                        Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
+                        if (f instanceof ListaEventoFragment) {
+                            ListaEventoFragment.imageViewSeta.setImageResource(R.drawable.ic_seta_baixo);
+                            ListaEventoFragment.textViewExpandir.setText("Toque para fechar");
+                            return;
+                        }
                         return;
                     }
-                    return;
-                }
-                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    slider.setTouchEnabled(true);
+                    if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                        slider.setTouchEnabled(true);
 
-                    // verifica qual fragment esta aberto no layout de baixo
-                    Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
-                    if (f instanceof ListaEventoFragment) {
-                        ListaEventoFragment.imageViewSeta.setImageResource(R.drawable.ic_seta_cima);
-                        ListaEventoFragment.textViewExpandir.setText("Toque para abrir");
-                        return;
+                        // verifica qual fragment esta aberto no layout de baixo
+                        Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
+                        if (f instanceof ListaEventoFragment) {
+                            ListaEventoFragment.imageViewSeta.setImageResource(R.drawable.ic_seta_cima);
+                            ListaEventoFragment.textViewExpandir.setText("Toque para abrir");
+                            return;
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
 
             }
         });

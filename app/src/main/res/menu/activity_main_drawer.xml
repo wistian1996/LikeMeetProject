@@ -10,22 +10,27 @@
             android:id="@+id/nav_meus_eventos"
             android:icon="@drawable/coco_cinza"
             android:title="Meus eventos" />
-        <item
-            android:id="@+id/nav_agenda"
-            android:icon="@drawable/calendar_icon"
-            android:title="Agenda" />
+
         <item
             android:id="@+id/nav_chat"
             android:icon="@drawable/chat_icon"
             android:title="Chat" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Outros">
         <menu>
+
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Compartilhar" />
+
+
+            <item
+                android:id="@+id/nav_config"
+                android:icon="@drawable/ic_build_black_24dp"
+                android:title="Configurações" />
+
         </menu>
     </item>
 

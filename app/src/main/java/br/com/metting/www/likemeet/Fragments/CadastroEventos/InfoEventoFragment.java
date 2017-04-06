@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import br.com.metting.www.likemeet.Class.Categoria;
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
 
@@ -30,10 +31,45 @@ public class InfoEventoFragment extends Fragment {
     private int privado;
     private Spinner spinner;
     private ArrayAdapter<String> opcoesSpinner;
+    private Evento evento;
 
     //variavel do menu swep
     View view;
 
+    public InfoEventoFragment(){
+
+    }
+
+    public InfoEventoFragment(Evento evento){
+        this.evento = evento;
+    }
+
+
+    private void preecherCampos(){
+        if (evento.getValorEntrada() > 0){
+            checkBoxtaxaEntrada.setChecked(true);
+            editTextTaxaEntrada.setVisibility(View.VISIBLE);
+            editTextTaxaEntrada.setText(evento.getValorEntrada().toString());
+        }
+        if (evento.getIdadeMin() > 0){
+            checkBoxRestricaoIdade.setChecked(true);
+            editTextRestricaoIdade.setVisibility(View.VISIBLE);
+            editTextRestricaoIdade.setText(String.valueOf(evento.getIdadeMin()));
+        }
+        if (evento.getQtdMax() > 0){
+            checkBoxFluxoPessoas.setChecked(true);
+            editTextFluxoPessoas.setVisibility(View.VISIBLE);
+            editTextFluxoPessoas.setText(String.valueOf(evento.getQtdMax()));
+        }
+
+        spinner.setSelection(evento.getIdCategoria());
+
+        editTextNome.setText(evento.getNome());
+        editTextDescricao.setText(evento.getDescricao());
+        if (evento.getPrivado() == 1){
+            checkBoxPrivado.setChecked(true);
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -134,7 +170,9 @@ public class InfoEventoFragment extends Fragment {
             }
         });
 
-
+        if (evento != null){
+            preecherCampos();
+        }
         // Inflate the layout for this fragment
         return view;
     }

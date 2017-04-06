@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutPrincipal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
     android:clickable="true"
+    android:gravity="bottom"
 
 
     tools:context=".Fragments.Main.InfoEventoMapFragment">
@@ -29,24 +30,26 @@
 
             <RelativeLayout
                 android:id="@+id/relativeLayout14"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_alignParentEnd="true">
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/background_linha"
+                android:padding="4dp">
 
                 <Button
-                    android:id="@+id/button2"
-                    android:layout_width="40dp"
+                    android:id="@+id/buttonEuVou"
+                    android:layout_width="35dp"
                     android:layout_height="40dp"
-                    android:textAllCaps="false"
-                    android:layout_above="@+id/textView24"
+                    android:layout_above="@+id/textViewEuVou"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/icon_participar" />
 
                 <TextView
-                    android:id="@+id/textView24"
+                    android:id="@+id/textViewEuVou"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentStart="true"
                     android:gravity="center"
                     android:text="Eu vou!"
@@ -54,16 +57,52 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/relativeLayoutEditar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="16dp"
+                android:layout_toStartOf="@+id/relativeLayout14"
+                android:background="@drawable/background_linha"
+                android:clickable="true"
+                android:padding="4dp">
+
+                <Button
+                    android:id="@+id/buttonEditar"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_create_black_24dp"
+                    android:textAllCaps="false" />
+
+                <TextView
+
+                    android:id="@+id/TextViewEditar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center"
+                    android:text="Editar"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/relativeLayout14">
+                android:layout_toStartOf="@+id/relativeLayoutEditar">
 
                 <TextView
                     android:id="@+id/textViewNome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:text="Large Text"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/colorPrimary" />

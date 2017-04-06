@@ -18,14 +18,14 @@ public class Categoria {
     }
 
     public static ArrayList<Categoria> getLista() {
-        Categoria c1 = new Categoria(1, "Festas");
-        Categoria c2 = new Categoria(2, "Profissional");
-        Categoria c3 = new Categoria(3, "Cultural");
-        Categoria c4 = new Categoria(4, "Esportes");
-        Categoria c5 = new Categoria(5, "Jogos");
-        Categoria c6 = new Categoria(6, "Outros");
-        Categoria c7 = new Categoria(7, "Feiras");
-        Categoria c8 = new Categoria(8, "Bares");
+        Categoria c1 = new Categoria(0, "Festas");
+        Categoria c2 = new Categoria(1, "Profissional");
+        Categoria c3 = new Categoria(2, "Cultural");
+        Categoria c4 = new Categoria(3, "Esportes");
+        Categoria c5 = new Categoria(4, "Jogos");
+        //Categoria c6 = new Categoria(5, "Outros");
+        Categoria c7 = new Categoria(5, "Feiras");
+        Categoria c8 = new Categoria(6, "Bares");
 
         list = new ArrayList<>();
         list.add(c1);

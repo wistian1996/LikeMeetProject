@@ -434,11 +434,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             trocarFragmento(meusEventosFragment);
 
-        } else if (id == R.id.nav_agenda) {
-            toolbar.setSubtitle("Minha agenda");
-            fab.setVisibility(View.VISIBLE);
-            trocarFragmento(calendarioEventoFragment);
-            searchView.setVisibility(View.INVISIBLE);
+        } else if (id == R.id.nav_config) {
+           Intent intent = new Intent(this , SettingsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_chat) {
             fab.setVisibility(View.INVISIBLE);

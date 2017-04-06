@@ -53,7 +53,7 @@ public class Evento {
 
     }
 
-    public Evento getEvento(int id) {
+    public static Evento getEvento(int id) {
         for (Evento list : Meet.getListaEventos()
                 ) {
             if (list.getId() == id) {

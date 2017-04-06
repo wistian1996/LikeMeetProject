@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
 
@@ -31,6 +32,15 @@ public class CalendarioEventoFragment extends Fragment {
     private CaldroidFragment caldroidFragment;
     private Date dataAnterior;
     private Date dataMarcada;
+    private Evento evento;
+
+    public CalendarioEventoFragment(){
+
+    };
+
+    public CalendarioEventoFragment(Evento evento){
+        this.evento = evento;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +83,9 @@ public class CalendarioEventoFragment extends Fragment {
         t.replace(R.id.calendar1, caldroidFragment);
         t.commit();
 
+        if (evento != null){
+            marcarCalendario(evento.getDataEvento());
+        }
         return view;
     }
 

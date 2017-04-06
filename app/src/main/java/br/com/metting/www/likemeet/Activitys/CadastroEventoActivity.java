@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import br.com.metting.www.likemeet.Class.Categoria;
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddAmigosEventoFragment;
@@ -38,6 +39,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
     private RelogioEventoFragment relogioEventoFragment;
     private CalendarioEventoFragment calendarioEventoFragment;
     private InfoEventoFragment infoEventoFragment;
+    private Evento evento;
 
     // view pager do swep
     private ViewPager mViewPager;
@@ -145,6 +147,22 @@ public class CadastroEventoActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(3);
             }
         });
+
+        //pegando a id do evento
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if (b != null) {
+            value = b.getInt("idEvento");
+        }
+        if (value != -1){
+            evento = Evento.getEvento(value);
+            infoEventoFragment = new InfoEventoFragment(evento);
+            calendarioEventoFragment = new CalendarioEventoFragment(evento);
+            relogioEventoFragment = new RelogioEventoFragment(evento);
+            addLocalEventoFragment = new AddLocalEventoFragment(evento);
+            addAmigosEventoFragment = new AddAmigosEventoFragment();
+
+        }
 
     }
 

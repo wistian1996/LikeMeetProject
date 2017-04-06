@@ -1,7 +1,6 @@
 package br.com.metting.www.likemeet.Fragments.CadastroEventos;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TimePicker;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
 
@@ -27,6 +29,15 @@ public class RelogioEventoFragment extends Fragment {
     private int minuto = 0;
     private int[] duracaoEvento = new int[2];
     private EditText duracao;
+    private Evento evento;
+
+    public RelogioEventoFragment() {
+
+    }
+
+    public RelogioEventoFragment(Evento evento) {
+        this.evento = evento;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,13 +68,30 @@ public class RelogioEventoFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-             verificarDuracao();
+                    verificarDuracao();
                 }
             }
         });
+
+        if (evento != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            String dataFormatada = sdf.format(evento.getDataEvento());
+            String[] horaMinuto;
+            horaMinuto = dataFormatada.split(":");
+            hora = Integer.parseInt(horaMinuto[0]);
+            minuto = Integer.parseInt(horaMinuto[1]);
+            preencherRelogio();
+
+            duracaoEvento = evento.getDuracaoEvento();
+            duracao.setText(String.valueOf(duracaoEvento[0] + ":" + duracaoEvento[1]));
+            Log.d(getClass().getName(), evento.getDuracaoEvento()[0] + ":" + evento.getDuracaoEvento()[1]);
+        }
+
+
         return view;
     }
-    private boolean verificarDuracao(){
+
+    private boolean verificarDuracao() {
         try {
             String duracaoEventoString[] = duracao.getText().toString().split(":");
             Log.d(getClass().getName(), "horaString:" + duracaoEventoString[0] + "minutoString: " + duracaoEventoString[1]);
@@ -71,14 +99,14 @@ public class RelogioEventoFragment extends Fragment {
             duracaoEvento[1] = Integer.parseInt(duracaoEventoString[1]);
             Log.d(getClass().getName(), "Hora" + duracaoEvento[0] + "Minuto" + duracaoEvento[1]);
 
-            if (duracaoEvento[0] == 0 && duracaoEvento[1] < 10){
+            if (duracaoEvento[0] == 0 && duracaoEvento[1] < 10) {
                 duracaoEvento[1] = 00;
                 duracaoEvento[0] = 00;
                 duracao.setError("A duração do evento é de no mínimo 10 minutos!");
                 return false;
             }
 
-            if (duracaoEvento[0] > 72 | duracaoEvento[1] > 60){
+            if (duracaoEvento[0] > 72 | duracaoEvento[1] > 60) {
                 duracaoEvento[0] = 00;
                 duracaoEvento[1] = 00;
                 duracao.setError("Campos incorretos,máximo 72:60");
@@ -89,7 +117,7 @@ public class RelogioEventoFragment extends Fragment {
             duracaoEvento[0] = 00;
             duracaoEvento[1] = 00;
             duracao.setError("Digite a duração no seguinte formato: '00:00'");
-            return  false;
+            return false;
         }
         return true;
     }
@@ -148,8 +176,8 @@ public class RelogioEventoFragment extends Fragment {
 
     public int[] getDuracaoEvento() {
 
-        if (verificarDuracao() == false){
-           int[] retorno = new int[2];
+        if (verificarDuracao() == false) {
+            int[] retorno = new int[2];
             retorno[0] = -1;
             retorno[1] = -1;
             return retorno;

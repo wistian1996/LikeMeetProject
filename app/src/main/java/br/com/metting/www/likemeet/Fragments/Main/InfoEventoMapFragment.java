@@ -1,23 +1,28 @@
 package br.com.metting.www.likemeet.Fragments.Main;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import br.com.metting.www.likemeet.Activitys.CadastroEventoActivity;
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
+import br.com.metting.www.likemeet.Class.Usuario;
 import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
 
@@ -31,6 +36,10 @@ public class InfoEventoMapFragment extends Fragment {
     private listaParticipantesEventoInfoFragment listaParticipantesEventoInfoFragment;
     private infoEventoMap2Fragment infoEventoMap2Fragment;
     private int fragmento; // se == 1 , esta abrindo pelo MeusEventosAdapter
+    private TextView textViewEuvou;
+    private Button buttonEuVou;
+    private RelativeLayout relativeLayoutEditar;
+    private Button buttonEditar;
 
     public InfoEventoMapFragment(Evento evento) {
         this.evento = evento;
@@ -38,12 +47,21 @@ public class InfoEventoMapFragment extends Fragment {
     }
 
 
-
-
     public InfoEventoMapFragment(Evento evento, int fragmento) {
         this.evento = evento;
         this.fragmento = fragmento;
     }
+
+
+    private void getElementosIntent() {
+        Intent intent = new Intent(getActivity(), CadastroEventoActivity.class);
+
+        Bundle b = new Bundle();
+        b.putInt("idEvento", evento.getId()); //Your id
+        intent.putExtras(b); //Put your id to your next Intent
+        startActivity(intent);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +76,24 @@ public class InfoEventoMapFragment extends Fragment {
         nome = (TextView) view.findViewById(R.id.textViewNome);
         nome.setText(evento.getNome());
         relativeLayoutInfo = (RelativeLayout) view.findViewById(R.id.relativeLayoutFundoVerde);
+        textViewEuvou = (TextView) view.findViewById(R.id.textViewEuVou);
+        buttonEuVou = (Button) view.findViewById(R.id.buttonEuVou);
+        relativeLayoutEditar = (RelativeLayout) view.findViewById(R.id.relativeLayoutEditar);
+        buttonEditar = (Button) view.findViewById(R.id.buttonEditar);
+        alterarBotoes();
+
+        relativeLayoutEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getElementosIntent();
+            }
+        });
+        buttonEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getElementosIntent();
+            }
+        });
 
 
         if (fragmento == 0) {
@@ -119,7 +155,7 @@ public class InfoEventoMapFragment extends Fragment {
 
             }
         });
-        if (fragmento == 0)ProcurarEventosMeetFragment.fecharSlider();
+        if (fragmento == 0) ProcurarEventosMeetFragment.fecharSlider();
         return view;
     }
 
@@ -148,4 +184,24 @@ public class InfoEventoMapFragment extends Fragment {
         }
     }
 
+    private void alterarBotoes() {
+        if (evento.getIdUsuarioCadastrou() == Usuario.getUsuario().getId()) {
+            buttonEuVou.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_delete_sweep_black_24dp));
+            textViewEuvou.setText("Apagar");
+            relativeLayoutEditar.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            relativeLayoutEditar.setVisibility(View.INVISIBLE);
+        }
+        for (Evento lEvento : Usuario.getMeusEventos(1)
+                ) {
+            if (evento.getId() == lEvento.getId()) {
+                buttonEuVou.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_cancel_black_24dp));
+                textViewEuvou.setText("Desistir!");
+                return;
+            }
+        }
+
+
+    }
 }

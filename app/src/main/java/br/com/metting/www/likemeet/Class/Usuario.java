@@ -38,7 +38,7 @@ public class Usuario {
 
     }
 
-    public Usuario getUsuario() {
+    public static Usuario getUsuario() {
         java.util.Date data = new java.util.Date();
         Date nive = new Date(data.getTime());
         Usuario u = new Usuario(1, "Franklin Wistian", nive, "75999843408", "", 1, 0, "", 1);
@@ -46,6 +46,22 @@ public class Usuario {
     }
 
     public static ArrayList<Evento> getEventosUsuario(int id) {
+
+        ArrayList<Evento> lista = new ArrayList<>();
+
+        // lista de eventos que o usuario cadastrou
+        for (Evento listaEvento : Meet.getListaEventos()
+                ) {
+            if (listaEvento.getIdUsuarioCadastrou() == id) {
+                lista.add(listaEvento);
+            }
+
+        }
+        return lista;
+    }
+
+
+    public static ArrayList<Evento> getMeusEventos(int id) {
         ArrayList<Evento> lista = new ArrayList<>();
         for (Evento listaEvento : Meet.getListaEventos()
                 ) {
@@ -53,6 +69,9 @@ public class Usuario {
                 lista.add(listaEvento);
             }
         }
+
+        lista.add(Evento.getEvento(8));
+        lista.add(Evento.getEvento(7));
         return lista;
     }
 

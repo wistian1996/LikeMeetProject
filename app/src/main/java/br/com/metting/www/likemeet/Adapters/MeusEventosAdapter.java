@@ -88,7 +88,7 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
                 fragmentTrasaction.replace(R.id.layoutPrincipal, fragment).addToBackStack(null).commit();
 */
                 Fragment fragment = new InfoEventoMapFragment(lEvento.get(position), 1);
-              fm.beginTransaction().addToBackStack(null).add(R.id.layoutPrincipal , fragment).commit();
+              fm.beginTransaction().addToBackStack(null).replace(R.id.layoutPrincipal , fragment).commit();
             }
         });
 

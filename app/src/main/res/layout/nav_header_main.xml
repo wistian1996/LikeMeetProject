@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
+    android:layout_height="160dp"
     android:background="@color/colorAccent"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -12,23 +13,41 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@id/imageViewFoto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/iconperfill"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView6"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Franklin Wistian"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_marginBottom="34dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="65dp"
+        android:text="Negan" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:srcCompat="@drawable/perfil"
+        android:layout_marginBottom="16dp"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/imageViewFoto"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="13dp" />
+        android:layout_alignParentStart="true"
+/>
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignStart="@+id/textView6"
+        android:text="wistian2009@hotmail.com" />
 
 </RelativeLayout>

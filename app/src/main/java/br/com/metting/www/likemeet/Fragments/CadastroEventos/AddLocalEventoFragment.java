@@ -16,6 +16,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
 
@@ -24,10 +25,19 @@ public class AddLocalEventoFragment extends Fragment {
     private EditText editTextEndereco;
     private Button buttonLocal;
     Place infoLocal;
+    private Evento evento;
 
     // map Picker
     int PLACE_PICKER_REQUEST = 1;
     View view;
+
+    public AddLocalEventoFragment() {
+
+    }
+
+    public AddLocalEventoFragment(Evento evento) {
+        this.evento = evento;
+    }
 
     public void chamarTelaMaps() {
 
@@ -60,7 +70,7 @@ public class AddLocalEventoFragment extends Fragment {
             }
         });
 
-
+        preencherInfo();
         return view;
     }
 
@@ -76,7 +86,8 @@ public class AddLocalEventoFragment extends Fragment {
             }
         }
     }
-    private void preencherInfo(){
+
+    private void preencherInfo() {
         if (infoLocal != null) {
             if (infoLocal.getAddress() != null) {
                 editTextEndereco.setText(String.format("%s", infoLocal.getAddress()));
@@ -90,22 +101,31 @@ public class AddLocalEventoFragment extends Fragment {
             } else {
                 editTextnome.setVisibility(View.INVISIBLE);
             }
+        } else {
+            if (evento != null) {
+                editTextEndereco.setText(evento.getEndereco());
+                editTextEndereco.setVisibility(View.VISIBLE);
+                editTextnome.setVisibility(View.INVISIBLE);
+            }
         }
     }
-    public String getNome(){
+
+    public String getNome() {
         return editTextnome.getText().toString();
     }
-    public String getEndereco(){
+
+    public String getEndereco() {
         return editTextEndereco.getText().toString();
     }
 
-    public String getLocal(){
-        String lat = String.valueOf( infoLocal.getLatLng().latitude);
+    public String getLocal() {
+        String lat = String.valueOf(infoLocal.getLatLng().latitude);
         String lng = String.valueOf(infoLocal.getLatLng().longitude);
 
-        return lat+","+lng;
+        return lat + "," + lng;
     }
-    public boolean verificarCampos(){
+
+    public boolean verificarCampos() {
         if (editTextnome == null) return false;
         if (infoLocal == null) return false;
         return true;

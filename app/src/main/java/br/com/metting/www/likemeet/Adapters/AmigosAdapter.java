@@ -20,9 +20,8 @@ import br.com.metting.www.likemeet.R;
  * Created by wisti on 03/12/2016.
  */
 public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHolder> {
-    ArrayList<Amigo> list;
-    ArrayList<Amigo> listAdd;
-    Amigo control = new Amigo();
+    ArrayList<Amigo> list; // lista de amigos
+    ArrayList<Amigo> listAdd; // lista de amigos inseridos no evento
     private LayoutInflater mLayoutInflater;
     AddAmigosEventoFragment fragment;
 

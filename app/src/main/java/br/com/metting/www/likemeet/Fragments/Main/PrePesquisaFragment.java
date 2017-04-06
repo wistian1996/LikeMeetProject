@@ -45,28 +45,28 @@ public class PrePesquisaFragment extends Fragment {
         esportes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 4;
+                categoria = 3;
                 abrirLista();
             }
         });
         bares.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 8;
+                categoria = 6;
                 abrirLista();
             }
         });
         profissional.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 2;
+                categoria = 1;
                 abrirLista();
             }
         });
         jogos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 5;
+                categoria = 4;
                 abrirLista();
             }
         });
@@ -74,21 +74,21 @@ public class PrePesquisaFragment extends Fragment {
         festas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 1;
+                categoria = 0;
                 abrirLista();
             }
         });
         cultural.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 3;
+                categoria = 2;
                 abrirLista();
             }
         });
         feiras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoria = 7;
+                categoria = 5;
                 abrirLista();
             }
         });

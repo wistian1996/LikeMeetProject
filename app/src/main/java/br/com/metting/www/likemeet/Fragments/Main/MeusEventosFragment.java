@@ -38,14 +38,14 @@ public class MeusEventosFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getEventosUsuario(1),fm);
+        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getMeusEventos(1),fm);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
     @Override
     public void onResume() {
-        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getEventosUsuario(1),fm);
+        MeusEventosAdapter adapter = new MeusEventosAdapter(getActivity(), Usuario.getMeusEventos(1),fm);
         recyclerView.setAdapter(adapter);
         recyclerView.refreshDrawableState();
 
