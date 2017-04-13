@@ -137,11 +137,8 @@ public class ProcurarEventosMeetFragment extends Fragment {
         // opçoes do sliding layout
         slider = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
 
-
         // para usar um fragmento dentro de um fragmento e necessario usar o getchildfragment manager
-
         getMinhaLocalizacao();
-
 
         slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -182,7 +179,6 @@ public class ProcurarEventosMeetFragment extends Fragment {
 
             }
         });
-
 
         return view;
     }

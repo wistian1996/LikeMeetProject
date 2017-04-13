@@ -185,4 +185,8 @@ public class RelogioEventoFragment extends Fragment {
         return duracaoEvento;
     }
 
+    public String getDuracaoStr() {
+        return String.valueOf(duracaoEvento[0] + ":" + duracaoEvento[1]);
+    }
+
 }

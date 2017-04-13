@@ -43,6 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
+import br.com.metting.www.likemeet.FirebaseUtils.FBEventoUtils;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.InfoEventoFragment;
 import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
@@ -64,19 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private CalendarioEventoFragment calendarioEventoFragment;
     private Dialog mNoGpsDialog;
     private static LatLng local;
-
-
-    public static SearchView getSearchView() {
-        return searchView;
-    }
-
-    public static LatLng getLocal() {
-        return local;
-    }
-
-    public static void setLocal(LatLng local) {
-        MainActivity.local = local;
-    }
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
         LocationManager locationManager = (LocationManager) this.getSystemService(getApplicationContext().LOCATION_SERVICE);
+
+        // verifica se o GPS do dispositivo está ativo
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Log.d(getClass().getSimpleName(), "GPS ativado");
             procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
@@ -103,18 +94,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         meusEventosFragment = new MeusEventosFragment(getSupportFragmentManager());
         calendarioEventoFragment = new CalendarioEventoFragment();
 
-        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.layoutPrincipal, fragmentoListaEventos);
-        tx.commit();
+//        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+//        tx.replace(R.id.layoutPrincipal, fragmentoListaEventos);
+//        tx.commit();
 
         fab.setVisibility(View.INVISIBLE);
 
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
                                        Intent intent = new Intent(MainActivity.this, CadastroEventoActivity.class);
                                        startActivity(intent);
 
@@ -123,6 +111,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         );
 
+        setupDrawerView();
+
+        //check se a permissao de local ja foi concedida
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+    }
+
+    private void setupDrawerView() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -137,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new int[]{-android.R.attr.state_checked},// unchecked state
                 new int[]{android.R.attr.state_checked}, // checked state
         };
-
         int[] colors = new int[]{
                 ContextCompat.getColor(this, R.color.colorPrimaryDark),
                 ContextCompat.getColor(this, R.color.colorAccent)
@@ -146,44 +143,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ColorStateList colorStateList = new ColorStateList(states, colors);
         navigationView.setItemTextColor(colorStateList);
         navigationView.setItemIconTintList(colorStateList);
-
-
-        //check se a permissao de local ja foi concedida
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-
     }
 
+    public static SearchView getSearchView() {
+        return searchView;
+    }
+
+    public static LatLng getLocal() {
+        return local;
+    }
+
+    public static void setLocal(LatLng local) {
+        MainActivity.local = local;
+    }
 
     // verifica a resposta da requisicao de acesso a localizacao
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                     this.finish();
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
-    DrawerLayout drawerLayout;
-
+    // chama o fragment de categorias (posicionado na parte inferior do FragmentEventos
     private void abrirFragmentoCategorias() {
         ProcurarEventosMeetFragment.fecharSlider();
 
@@ -199,8 +187,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setSubtitle("Encontrar novos eventos");
             }
         }, 100);
-
-
     }
 
     @Override
@@ -217,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.d(getClass().getName(), "pilha:" + getSupportFragmentManager().getBackStackEntryCount());
             return;
         }
-
 
         //caso search esteja aberto
         if (!searchView.isIconified()) {
@@ -239,9 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return;
         }
 
-
-        //   Se vier null ou length == 0
-
+        // Se vier null ou length == 0
         DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -261,10 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .create();
 
         mNoGpsDialog.show();
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -279,8 +259,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             // AÇAO AO APERTAR O BOTAO PESQUISAR
             public void onClick(View view) {
-
-
                 //"aguardando o teclado abrir primeiro"
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -290,7 +268,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }, 300);
 
-
                 Fragment fragment = new ListaEventoFragment(Evento.getEvento(""));
                 android.support.v4.app.FragmentTransaction fragmentTrasaction =
                         getSupportFragmentManager().beginTransaction();
@@ -299,8 +276,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MapsFragmentProcurarEventos.descarmarMarker();
                 toolbar.setSubtitle("Encontrar novos eventos");
                 searchView.requestFocus();
-
-
             }
         });
 
@@ -395,26 +370,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
-    //metodos para esconder o teclado
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-    // fim teclado
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -435,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             trocarFragmento(meusEventosFragment);
 
         } else if (id == R.id.nav_config) {
-           Intent intent = new Intent(this , SettingsActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_chat) {

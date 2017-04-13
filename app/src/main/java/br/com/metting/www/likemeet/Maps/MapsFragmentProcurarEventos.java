@@ -5,6 +5,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -13,12 +14,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
+
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
+import br.com.metting.www.likemeet.FirebaseUtils.FBEventoUtils;
 import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
 import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
 import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
@@ -26,28 +31,26 @@ import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.R;
 
 public class MapsFragmentProcurarEventos extends SupportMapFragment implements OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, GoogleMap.OnMapLoadedCallback {
+        GoogleMap.OnMapClickListener, GoogleMap.OnMapLoadedCallback, FBEventoUtils.onEventoChangeListener {
 
     private static GoogleMap mMap;
-    private LocationManager locationManager;
-    private static final String TAG = "MapsFragmentProcurarEventos";
-    private static final int MY_PERMISSION_LOCATION = 128;
     private LatLng local;
     private static ArrayList<Marker> listaMarker = new ArrayList<>();
+    private String TAG;
+    private FBEventoUtils fbEventoUtils;
 
     public MapsFragmentProcurarEventos(LatLng local) {
         this.local = local;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         MainActivity.toolbar.setSubtitle("Preparando mapa...");
+        TAG = getClass().getSimpleName();
+        fbEventoUtils = new FBEventoUtils();
         getMapAsync(this);
-
 
     }
 
@@ -60,7 +63,9 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.setMyLocationEnabled(true);
-            marcarPontos(Meet.getListaEventos());
+//            marcarPontos(Meet.getListaEventos());
+            fbEventoUtils.setOnEventoChangeListener(this);
+            fbEventoUtils.iniciarListener();
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 10f));
 
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -100,13 +105,13 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     }
 
     private void abrirFragmentoCategorias() {
-                Fragment fragment = new PrePesquisaFragment();
-                android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                        getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-                fragmentTrasaction.commit();
-                MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
-                MainActivity.toolbar.setSubtitle("Encontrar novos eventos");
+        Fragment fragment = new PrePesquisaFragment();
+        android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+        fragmentTrasaction.commit();
+        MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+        MainActivity.toolbar.setSubtitle("Encontrar novos eventos");
         ProcurarEventosMeetFragment.fecharSlider();
 
     }
@@ -169,8 +174,6 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                 m = mMap.addMarker(marker);
-
-
             } else {
                 Date data = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -274,5 +277,39 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     @Override
     public void onMapLoaded() {
 
+    }
+
+    @Override
+    public void onEventoChange(Map<String, br.com.metting.www.likemeet.FirebaseModel.Evento> eventos) {
+
+        mMap.clear();
+        for (Map.Entry<String, br.com.metting.www.likemeet.FirebaseModel.Evento> entry : eventos.entrySet()) {
+            br.com.metting.www.likemeet.FirebaseModel.Evento evento = entry.getValue();
+            addMarker(evento);
+        }
+
+    }
+
+    public void addMarker(br.com.metting.www.likemeet.FirebaseModel.Evento evento){
+        String localizacao[] = evento.getLocal().split(",");
+
+        double lat = Double.parseDouble(localizacao[0]);
+        double lon = Double.parseDouble(localizacao[1]);
+        LatLng latLng = new LatLng(lat, lon);
+
+        MarkerOptions marker = new MarkerOptions();
+        Marker m = null;
+
+        marker.position(latLng);
+        marker.title(evento.getNome());
+        marker.snippet(evento.getDescricao());
+        marker.alpha(0.8f);
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+        m = mMap.addMarker(marker);
+
+        if (m != null) {
+            listaMarker.add(m);
+        }
     }
 }

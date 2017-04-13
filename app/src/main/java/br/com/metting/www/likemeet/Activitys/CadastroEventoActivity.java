@@ -20,6 +20,7 @@ import java.util.Date;
 import br.com.metting.www.likemeet.Class.Categoria;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
+import br.com.metting.www.likemeet.FirebaseUtils.FBEventoUtils;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddAmigosEventoFragment;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddLocalEventoFragment;
@@ -154,16 +155,14 @@ public class CadastroEventoActivity extends AppCompatActivity {
         if (b != null) {
             value = b.getInt("idEvento");
         }
-        if (value != -1){
+        if (value != -1) {
             evento = Evento.getEvento(value);
             infoEventoFragment = new InfoEventoFragment(evento);
             calendarioEventoFragment = new CalendarioEventoFragment(evento);
             relogioEventoFragment = new RelogioEventoFragment(evento);
             addLocalEventoFragment = new AddLocalEventoFragment(evento);
             addAmigosEventoFragment = new AddAmigosEventoFragment();
-
         }
-
     }
 
 
@@ -233,7 +232,6 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
             case R.id.action_ok:
                 //acao do botao send
-
                 String nome = "";
                 String descricao = "";
                 String categoria = "";
@@ -291,7 +289,33 @@ public class CadastroEventoActivity extends AppCompatActivity {
                     break;
                 }
 
-                Meet.cadastrarEvento(1, nome, local, endereco, data, duracaoEvento, taxaEntrada, fluxoPessoas, descricao, privado, Categoria.getCateriaPorNome(categoria), restricaoIdade);
+                br.com.metting.www.likemeet.FirebaseModel.Evento evento = new br.com.metting.www.likemeet.FirebaseModel.Evento();
+                br.com.metting.www.likemeet.FirebaseModel.Categoria catFirebase =
+                        new br.com.metting.www.likemeet.FirebaseModel.Categoria();
+
+                catFirebase.setId(99);
+                catFirebase.setNome("Alex");
+                evento.setCategoria(catFirebase);
+
+                evento.setDataEvento(String.valueOf(data.getTime()));
+                evento.setDescricao(descricao);
+                evento.setDuracaoEvento(relogioEventoFragment.getDuracaoStr());
+                evento.setEndereco(endereco);
+                evento.setNome(nome);
+                evento.setLocal(local);
+                evento.setValorEntrada(taxaEntrada);
+                evento.setQtdMax(fluxoPessoas);
+                evento.setPrivado(Boolean.parseBoolean(privado + ""));
+                evento.setIdadeMin(restricaoIdade);
+
+                FBEventoUtils fbEventoUtils = new FBEventoUtils();
+                fbEventoUtils.inverirEvento(evento);
+
+                Toast.makeText(getApplicationContext(), "Evento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+
+
+                Meet.cadastrarEvento(1, nome, local, endereco, data, duracaoEvento, taxaEntrada,
+                        fluxoPessoas, descricao, privado, Categoria.getCateriaPorNome(categoria), restricaoIdade);
                 finish();
         }
         return true;

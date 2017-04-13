@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "547083179116",
+    "firebase_url": "https://likemeet-f74af.firebaseio.com",
+    "project_id": "likemeet-f74af",
+    "storage_bucket": "likemeet-f74af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547083179116:android:153096386f8b4d70",
+        "android_client_info": {
+          "package_name": "br.com.metting.www.likemeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547083179116-bqsuoh32h3i7pci2c15lm9rk9hbbgupq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeNG_2IZeQ1Dp6_nwDLFIOKO2Hqm0tKcQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
