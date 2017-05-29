@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,15 +8,18 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        >
+        android:layout_alignParentStart="true"
+
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:id="@+id/relativeLayout6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/relativeLayout12"
             android:background="@color/colorPrimary"
@@ -25,13 +29,12 @@
                 android:id="@+id/textViewMaxPessoas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imageView4"
-                android:layout_alignStart="@+id/textViewIdade"
-                android:layout_alignTop="@+id/imageView4"
                 android:gravity="center"
                 android:text="1000000"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/caldroid_black" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_alignTop="@+id/imageView4"
+                android:layout_alignStart="@+id/textViewIdade"
+                android:layout_alignBottom="@+id/imageView4" />
 
             <TextView
                 android:id="@+id/textViewInfoData"
@@ -39,12 +42,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/imageView2"
                 android:layout_alignTop="@+id/imageView2"
-                android:layout_marginStart="24dp"
+                android:layout_marginLeft="16dp"
                 android:layout_toEndOf="@+id/imageView2"
                 android:gravity="center"
                 android:text="20/05/2017"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/caldroid_black" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/textViewInfoHorario"
@@ -55,8 +57,7 @@
                 android:layout_alignTop="@+id/imageView3"
                 android:gravity="center"
                 android:text="20:50"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/caldroid_black" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/textViewInfoEntrada"
@@ -67,8 +68,7 @@
                 android:layout_alignTop="@+id/imageView5"
                 android:gravity="center"
                 android:text="500"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/caldroid_black" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/textViewIdade"
@@ -79,39 +79,33 @@
                 android:layout_alignTop="@+id/imageView6"
                 android:gravity="center"
                 android:text="19"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/caldroid_black" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/textViewEndereco"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/textViewMaxPessoas"
-                android:layout_alignTop="@+id/imageView8"
-
                 android:padding="2dp"
                 android:text="Avenida São João Batista, 651 - 1º andar - Ponto Novo, Aracaju - SE, 49097-000"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/caldroid_black" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_below="@+id/textViewMaxPessoas"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentStart="true" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignStart="@+id/imageView3"
-                android:layout_below="@+id/relativeLayout15"
                 android:src="@drawable/calendar_mini" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/relogio_mini"
                 android:layout_below="@+id/imageView2"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/relogio_mini" />
+                android:layout_alignParentStart="true" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -119,19 +113,17 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/imageView6"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/pessoas_mini" />
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ticket_mini"
                 android:layout_below="@+id/imageView3"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ticket_mini" />
+                android:layout_alignParentStart="true" />
 
             <ImageView
                 android:id="@+id/imageView6"
@@ -139,19 +131,27 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/imageView5"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/censura_mini" />
 
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="150dp"-->
+                <!--android:layout_below="@+id/textViewEndereco"-->
+                <!--android:background="@color/colorAccent">-->
+
+
+            <!--</LinearLayout>-->
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapViewLocalVizualizar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/imageView4"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/local_mini" />
+                android:layout_below="@+id/textViewEndereco"
+                android:visibility="visible"
+                map:liteMode="true" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayout15"
@@ -160,7 +160,8 @@
                 android:layout_alignParentStart="true"
                 android:paddingBottom="10dp"
                 android:paddingLeft="2dp"
-                android:paddingRight="2dp">
+                android:paddingRight="2dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewDescricao"

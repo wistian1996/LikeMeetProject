@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
 
 
 import com.google.android.gms.maps.model.LatLng;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Dialog mNoGpsDialog;
     private static LatLng local;
     private DrawerLayout drawerLayout;
+    private RelativeLayout layout_perfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                    public void onClick(View view) {
                                        Intent intent = new Intent(MainActivity.this, CadastroEventoActivity.class);
                                        startActivity(intent);
-
                                    }
                                }
-
         );
 
         setupDrawerView();
@@ -248,6 +248,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+//set layout perfil
+        layout_perfil = (RelativeLayout) findViewById(R.id.layout_perfil);
+        layout_perfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ActivityPerfil.class);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 

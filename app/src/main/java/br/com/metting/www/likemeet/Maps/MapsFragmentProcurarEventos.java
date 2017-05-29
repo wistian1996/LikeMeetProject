@@ -31,13 +31,13 @@ import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.R;
 
 public class MapsFragmentProcurarEventos extends SupportMapFragment implements OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, GoogleMap.OnMapLoadedCallback, FBEventoUtils.onEventoChangeListener {
+        GoogleMap.OnMapClickListener, GoogleMap.OnMapLoadedCallback {
 
     private static GoogleMap mMap;
     private LatLng local;
     private static ArrayList<Marker> listaMarker = new ArrayList<>();
     private String TAG;
-    private FBEventoUtils fbEventoUtils;
+
 
     public MapsFragmentProcurarEventos(LatLng local) {
         this.local = local;
@@ -49,7 +49,6 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
         super.onCreate(savedInstanceState);
         MainActivity.toolbar.setSubtitle("Preparando mapa...");
         TAG = getClass().getSimpleName();
-        fbEventoUtils = new FBEventoUtils();
         getMapAsync(this);
 
     }
@@ -63,9 +62,8 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.setMyLocationEnabled(true);
-//            marcarPontos(Meet.getListaEventos());
-            fbEventoUtils.setOnEventoChangeListener(this);
-            fbEventoUtils.iniciarListener();
+            marcarPontos(Meet.getListaEventos());
+
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 10f));
 
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -279,37 +277,4 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
     }
 
-    @Override
-    public void onEventoChange(Map<String, br.com.metting.www.likemeet.FirebaseModel.Evento> eventos) {
-
-        mMap.clear();
-        for (Map.Entry<String, br.com.metting.www.likemeet.FirebaseModel.Evento> entry : eventos.entrySet()) {
-            br.com.metting.www.likemeet.FirebaseModel.Evento evento = entry.getValue();
-            addMarker(evento);
-        }
-
-    }
-
-    public void addMarker(br.com.metting.www.likemeet.FirebaseModel.Evento evento){
-        String localizacao[] = evento.getLocal().split(",");
-
-        double lat = Double.parseDouble(localizacao[0]);
-        double lon = Double.parseDouble(localizacao[1]);
-        LatLng latLng = new LatLng(lat, lon);
-
-        MarkerOptions marker = new MarkerOptions();
-        Marker m = null;
-
-        marker.position(latLng);
-        marker.title(evento.getNome());
-        marker.snippet(evento.getDescricao());
-        marker.alpha(0.8f);
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-        m = mMap.addMarker(marker);
-
-        if (m != null) {
-            listaMarker.add(m);
-        }
-    }
 }

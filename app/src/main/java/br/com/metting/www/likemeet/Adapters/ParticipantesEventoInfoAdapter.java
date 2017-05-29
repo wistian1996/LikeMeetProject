@@ -76,7 +76,7 @@ public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<Partici
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
 
-            checkBox.setVisibility(View.INVISIBLE);
+            checkBox.setVisibility(View.GONE);
 
         }
 

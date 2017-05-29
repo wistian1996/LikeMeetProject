@@ -51,10 +51,11 @@
                     android:id="@+id/checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
                     android:checked="false"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:layout_alignBaseline="@+id/button4"
+                    android:layout_alignBottom="@+id/button4"
+                    android:layout_toStartOf="@+id/button4" />
 
                 <TextView
                     android:id="@+id/textViewNome"
@@ -66,21 +67,21 @@
                     android:layout_marginStart="52dp"
                     android:gravity="center_horizontal"
                     android:text="Medium Text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/caldroid_black" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button
                     android:id="@+id/button4"
+                    android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_alignBottom="@+id/checkBox"
-                    android:layout_alignTop="@+id/checkBox"
-                    android:layout_toStartOf="@+id/checkBox"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:background="@drawable/icon_shape_button"
                     android:gravity="center"
                     android:text="Seguir"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
 

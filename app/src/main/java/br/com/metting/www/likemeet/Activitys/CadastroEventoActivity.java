@@ -288,7 +288,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
                 } else {
                     break;
                 }
-
+/*
                 br.com.metting.www.likemeet.FirebaseModel.Evento evento = new br.com.metting.www.likemeet.FirebaseModel.Evento();
                 br.com.metting.www.likemeet.FirebaseModel.Categoria catFirebase =
                         new br.com.metting.www.likemeet.FirebaseModel.Categoria();
@@ -310,7 +310,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
                 FBEventoUtils fbEventoUtils = new FBEventoUtils();
                 fbEventoUtils.inverirEvento(evento);
-
+*/
                 Toast.makeText(getApplicationContext(), "Evento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
 
 

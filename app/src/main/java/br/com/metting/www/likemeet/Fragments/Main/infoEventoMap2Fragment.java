@@ -8,12 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
-public class infoEventoMap2Fragment extends Fragment {
+public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallback {
     private View view;
 
     private TextView data;
@@ -24,6 +34,9 @@ public class infoEventoMap2Fragment extends Fragment {
     private TextView maxPessoas;
     private Evento evento;
     private TextView descricao;
+
+    private MapView mMap;
+    private GoogleMap gMap;
 
     public infoEventoMap2Fragment(Evento evento) {
         this.evento = evento;
@@ -43,6 +56,11 @@ public class infoEventoMap2Fragment extends Fragment {
         maxPessoas = (TextView) view.findViewById(R.id.textViewMaxPessoas);
         descricao = (TextView) view.findViewById(R.id.textViewDescricao);
         descricao.setText(evento.getDescricao());
+
+        mMap = (MapView) view.findViewById(R.id.mapViewLocalVizualizar);
+        mMap.onCreate(null);
+        mMap.onResume();
+        mMap.getMapAsync(this);
 
 
         Calendar dataCalendar = Calendar.getInstance();
@@ -79,4 +97,23 @@ public class infoEventoMap2Fragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //initialize the Google Maps Android API if features need to be used before obtaining a map
+        MapsInitializer.initialize(getActivity());
+        gMap = googleMap;
+        gMap.getUiSettings().setZoomControlsEnabled(true);
+
+
+        MarkerOptions marker = new MarkerOptions();
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        String[] latlong = evento.getLocal().split(",");
+        double latitude = Double.parseDouble(latlong[0]);
+        double longitude = Double.parseDouble(latlong[1]);
+        LatLng local2 = new LatLng(latitude, longitude);
+        marker.position(local2);
+        gMap.clear();
+        gMap.addMarker(marker);
+        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local2, 15f));
+    }
 }

@@ -4,28 +4,44 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.R;
 
 
-public class AddLocalEventoFragment extends Fragment {
-    private EditText editTextnome;
-    private EditText editTextEndereco;
+public class AddLocalEventoFragment extends Fragment implements OnMapReadyCallback {
+    private TextView editTextnome;
+    private TextView editTextEndereco;
     private Button buttonLocal;
     Place infoLocal;
     private Evento evento;
+
+
+    MapView mMap;
+    GoogleMap gMap;
 
     // map Picker
     int PLACE_PICKER_REQUEST = 1;
@@ -58,9 +74,16 @@ public class AddLocalEventoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_local_evento, container, false);
-        editTextEndereco = (EditText) view.findViewById(R.id.editTextEndereco);
-        editTextnome = (EditText) view.findViewById(R.id.editTextNome);
+        editTextEndereco = (TextView) view.findViewById(R.id.editTextEndereco);
+        editTextnome = (TextView) view.findViewById(R.id.editTextNome);
         buttonLocal = (Button) view.findViewById(R.id.buttonLocal);
+
+        mMap = (MapView) view.findViewById(R.id.mapViewLocalAdd);
+        mMap.onCreate(null);
+        mMap.onResume();
+        mMap.getMapAsync(this);
+        mMap.setVisibility(View.INVISIBLE);
+
 
         buttonLocal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +112,8 @@ public class AddLocalEventoFragment extends Fragment {
 
     private void preencherInfo() {
         if (infoLocal != null) {
+            marcarMapa(infoLocal.getLatLng());
+            mMap.setVisibility(View.VISIBLE);
             if (infoLocal.getAddress() != null) {
                 editTextEndereco.setText(String.format("%s", infoLocal.getAddress()));
                 editTextEndereco.setVisibility(View.VISIBLE);
@@ -135,5 +160,34 @@ public class AddLocalEventoFragment extends Fragment {
     public void onResume() {
         super.onResume();
         preencherInfo();
+    }
+
+    private void marcarMapa(LatLng local2) {
+        MarkerOptions marker = new MarkerOptions();
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        marker.position(local2);
+        mMap.setVisibility(View.VISIBLE);
+        gMap.clear();
+        gMap.addMarker(marker);
+        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local2, 15f));
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //initialize the Google Maps Android API if features need to be used before obtaining a map
+        MapsInitializer.initialize(getActivity());
+        gMap = googleMap;
+        gMap.getUiSettings().setZoomControlsEnabled(true);
+        if (evento != null) {
+            String[] latlong = evento.getLocal().split(",");
+            double latitude = Double.parseDouble(latlong[0]);
+            double longitude = Double.parseDouble(latlong[1]);
+            LatLng local2 = new LatLng(latitude, longitude);
+            marcarMapa(local2);
+            return;
+        }
+        if (infoLocal != null) {
+            marcarMapa(infoLocal.getLatLng());
+        }
     }
 }
