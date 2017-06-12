@@ -3,14 +3,13 @@ package br.com.metting.www.likemeet.Activitys;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,12 +18,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -35,8 +32,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 import com.google.android.gms.maps.model.LatLng;
@@ -44,9 +42,11 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
-import br.com.metting.www.likemeet.FirebaseUtils.FBEventoUtils;
+import br.com.metting.www.likemeet.Class.Usuario;
+import br.com.metting.www.likemeet.Control.ImagemControl;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
-import br.com.metting.www.likemeet.Fragments.CadastroEventos.InfoEventoFragment;
+import br.com.metting.www.likemeet.Fragments.FragmentHistoricoGeral;
+import br.com.metting.www.likemeet.Fragments.Main.FragmentPerfilHistorico;
 import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
 import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
 import br.com.metting.www.likemeet.Fragments.Main.MeusEventosFragment;
@@ -62,12 +62,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProcurarEventosMeetFragment fragmentoListaEventos;
     private static SearchView searchView;
     private ProcurarEventosMeetFragment procurarEventosMeetFragment;
+    private FragmentHistoricoGeral fragmentHistoricoGeral;
     private MeusEventosFragment meusEventosFragment;
     private CalendarioEventoFragment calendarioEventoFragment;
     private Dialog mNoGpsDialog;
     private static LatLng local;
     private DrawerLayout drawerLayout;
     private RelativeLayout layout_perfil;
+
+    private TextView textViewEmail;
+    private TextView textViewNome;
+    private ImageView imageViewFotoPerfil;
+    //usuario que está logado
+
+    private Usuario usuario;
+
+
+    //  permissions
+    private static final int REQUEST = 1;
+    private static String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,29 +91,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Meet m = new Meet();
         createNoGpsDialog();
         fragmentoListaEventos = new ProcurarEventosMeetFragment();
+        fragmentHistoricoGeral = new FragmentHistoricoGeral(getSupportFragmentManager(), Meet.getHistoricoEventos());
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setSubtitle("Encontrar novos eventos");
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(getApplicationContext().LOCATION_SERVICE);
-
-        // verifica se o GPS do dispositivo está ativo
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.d(getClass().getSimpleName(), "GPS ativado");
-            procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
-            trocarFragmento(procurarEventosMeetFragment);
-        } else {
-            Log.d(getClass().getSimpleName(), "GPS Não ativado");
-        }
-
         meusEventosFragment = new MeusEventosFragment(getSupportFragmentManager());
         calendarioEventoFragment = new CalendarioEventoFragment();
 
-//        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-//        tx.replace(R.id.layoutPrincipal, fragmentoListaEventos);
-//        tx.commit();
 
         fab.setVisibility(View.INVISIBLE);
 
@@ -113,11 +115,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupDrawerView();
 
-        //check se a permissao de local ja foi concedida
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+        checarPermissaoGPS();
 
+    }
+
+    private void checarPermissaoGPS() {
+        //check se a permissao de local e armazenamento ja foi concedida
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(getClass().getName(), "Pedindo permissao");
+            ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST);
+
+        } else {
+            Log.d(getClass().getName(), "Acessos ja permitidos");
+            verificarGpsAtivo();
+        }
+    }
+
+    private void verificarGpsAtivo() {
+        // verifica se o GPS do dispositivo está ativo
+        LocationManager locationManager = (LocationManager) this.getSystemService(getApplicationContext().LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.d(getClass().getSimpleName(), "GPS ativado");
+            procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
+            trocarFragmento(procurarEventosMeetFragment);
+            Log.d(getClass().getSimpleName(), "Trocando de fragmento");
+
+        } else {
+            Log.d(getClass().getSimpleName(), "GPS Não ativado");
+        }
     }
 
     private void setupDrawerView() {
@@ -160,14 +187,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // verifica a resposta da requisicao de acesso a localizacao
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    this.finish();
+        Log.d(getClass().getSimpleName(), "Lenght Permissions" + permissions.length);
+        Log.d(getClass().getSimpleName(), "Lenght grantResults" + grantResults.length);
+        int cont = 0;
+        for (int i = 0; i < grantResults.length; i++) {
+            switch (requestCode) {
+                case 1: {
+                    if (grantResults.length > 0 && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        cont++;
+                        Log.d(getClass().getSimpleName(), " grantResults granted");
+                        Log.d(getClass().getSimpleName(), "cont" + cont);
+                    } else {
+                        Log.d(getClass().getSimpleName(), " grantResults denied");
+                    }
                 }
-                return;
             }
+        }
+        // caso todas permissoes forem concedidas eu inicio o mapa , caso contrario finalizo o programa
+        if (cont == grantResults.length) {
+            verificarGpsAtivo();
+        } else {
+            finish();
         }
     }
 
@@ -248,13 +288,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //informacoes do perfil
+        textViewEmail = (TextView) findViewById(R.id.textViewEmail);
+        textViewNome = (TextView) findViewById(R.id.textViewNome);
+        imageViewFotoPerfil = (ImageView) findViewById(R.id.imageViewFotoPerfilDrawer);
+
+
+        //obentdo o usuario logado . OBS MUDAR AO CRIAR O BANCO
+        usuario = Usuario.getUsuario();
+        textViewEmail.setText(usuario.getEmail());
+        textViewNome.setText(usuario.getNome());
+        ImagemControl.setImagem(usuario.getFoto(), imageViewFotoPerfil);
+
 //set layout perfil
         layout_perfil = (RelativeLayout) findViewById(R.id.layout_perfil);
         layout_perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ActivityPerfil.class);
-                startActivity(intent);
+                Bundle b = new Bundle();
+
+                //inserindo o ID do usuario que esta logado e passando id como parametro
+                b.putInt("idUsuario", Usuario.getUsuario().getId()); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                MainActivity.this.startActivity(intent);
+                ;
             }
         });
 
@@ -345,12 +403,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void createNoGpsDialog() {
         String provider = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
         if (provider.length() != 0) {
             return;
         }
-
-
         //   Se vier null ou length == 0
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -361,7 +416,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(callGPSSettingIntent, 100);
                         break;
-
                     case DialogInterface.BUTTON_NEGATIVE:
                         finish();
                 }
@@ -408,8 +462,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toolbar.setSubtitle("Chat");
             searchView.setVisibility(View.INVISIBLE);
 
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_linha_tempo) {
+            fab.setVisibility(View.INVISIBLE);
+            toolbar.setSubtitle("Linha do tempo");
+            searchView.setVisibility(View.INVISIBLE);
+            trocarFragmento(fragmentHistoricoGeral);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -427,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentTrasaction.replace(R.id.layoutPrincipal, fragment);
                 fragmentTrasaction.commit();
             }
-        }, 200);
+        }, 250);
 
     }
 
@@ -436,12 +493,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (requestCode == 100) {
+                Log.d(getClass().getName(), "Activity Result");
                 LocationManager locationManager = (LocationManager) this.getSystemService(getApplicationContext().LOCATION_SERVICE);
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    Log.d(getClass().getName(), "GPS ativou");
                     mNoGpsDialog.cancel();
-                    procurarEventosMeetFragment = new ProcurarEventosMeetFragment();
-                    trocarFragmento(procurarEventosMeetFragment);
+                    verificarGpsAtivo();
                 } else {
+                    Log.d(getClass().getName(), "GPS nao ativou");
                     mNoGpsDialog.show();
                 }
             }

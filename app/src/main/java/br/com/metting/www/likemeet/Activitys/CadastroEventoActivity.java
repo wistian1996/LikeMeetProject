@@ -100,13 +100,11 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         toolbar.setTitle("Novo evento");
         toolbar.setSubtitle("Adicionar informações");
-
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //botoes
         toggleButtonCalendario = (ToggleButton) findViewById(R.id.buttonCalendario);
         toggleButtonRelogio = (ToggleButton) findViewById(R.id.buttonRelogio);

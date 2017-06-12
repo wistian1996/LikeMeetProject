@@ -1,6 +1,8 @@
 package br.com.metting.www.likemeet.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,22 +14,21 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import br.com.metting.www.likemeet.Class.Amigo;
+import br.com.metting.www.likemeet.Activitys.ActivityPerfil;
+import br.com.metting.www.likemeet.Control.ImagemControl;
+import br.com.metting.www.likemeet.Class.Usuario;
 import br.com.metting.www.likemeet.R;
 
 /**
  * Created by wisti on 03/12/2016.
  */
 public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<ParticipantesEventoInfoAdapter.MyViewHolder> {
-    ArrayList<Amigo> list;
-    ArrayList<Amigo> listAdd;
-    Amigo control = new Amigo();
+    ArrayList<Usuario> list;
     private LayoutInflater mLayoutInflater;
 
 
-    public ParticipantesEventoInfoAdapter(Context c, ArrayList<Amigo> list) {
+    public ParticipantesEventoInfoAdapter(Context c, ArrayList<Usuario> list) {
         this.list = list;
-        listAdd = new ArrayList<>();
         mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -45,10 +46,19 @@ public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<Partici
         holder.textViewNome.setText(list.get(position).getNome());
         holder.setId(list.get(position).getId());
 
+        //setando imagem do perfil
+        ImagemControl.setImagem(list.get(position).getFoto(), holder.imageViewPerfil);
+
+        holder.textViewStatus.setText(list.get(position).getStatus());
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(holder.view.getContext(), ActivityPerfil.class);
+                Bundle b = new Bundle();
+                b.putInt("idUsuario", holder.getId()); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                holder.view.getContext().startActivity(intent);
             }
         });
 
@@ -66,6 +76,8 @@ public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<Partici
         private ImageView imageViewPerfil;
         private CardView cardView;
         private CheckBox checkBox;
+        private TextView textViewStatus;
+        private View view;
 
         public MyViewHolder(final View itemView) {
 
@@ -75,6 +87,9 @@ public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<Partici
             imageViewPerfil = (ImageView) itemView.findViewById(R.id.imageViewFoto);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
+            textViewStatus = (TextView) itemView.findViewById(R.id.textViewStatus);
+            this.view = itemView;
+
 
             checkBox.setVisibility(View.GONE);
 

@@ -1,6 +1,8 @@
 package br.com.metting.www.likemeet.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +14,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import br.com.metting.www.likemeet.Class.Amigo;
+import br.com.metting.www.likemeet.Activitys.ActivityPerfil;
+import br.com.metting.www.likemeet.Control.ImagemControl;
+import br.com.metting.www.likemeet.Class.Meet;
+import br.com.metting.www.likemeet.Class.Usuario;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.AddAmigosEventoFragment;
 import br.com.metting.www.likemeet.R;
 
@@ -20,20 +25,18 @@ import br.com.metting.www.likemeet.R;
  * Created by wisti on 03/12/2016.
  */
 public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHolder> {
-    ArrayList<Amigo> list; // lista de amigos
-    ArrayList<Amigo> listAdd; // lista de amigos inseridos no evento
+    ArrayList<Usuario> list; // lista de amigos
+    ArrayList<Usuario> listAdd; // lista de amigos inseridos no evento
     private LayoutInflater mLayoutInflater;
     AddAmigosEventoFragment fragment;
 
 
     public AmigosAdapter(Context c, AddAmigosEventoFragment fragment) {
         this.fragment = fragment;
-        Amigo control = new Amigo();
-        list = control.getLista();
+        //lista de usuarios
+        list = Meet.getListaUsuarios();
         listAdd = new ArrayList<>();
         mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
     }
 
     @Override
@@ -45,30 +48,35 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(final AmigosAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(final AmigosAdapter.MyViewHolder holder, final int position) {
         // acoes para os botoes
         holder.textViewNome.setText(list.get(position).getNome());
         holder.setId(list.get(position).getId());
-
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               fragment.getAmgHorizontalAdapter().atualizar(holder.getId());
-            }
-        });
+        holder.textViewStatus.setText(list.get(position).getStatus());
+        //setando imagem pega na memoria do celular , quando passar pro banco trocar o caminho pela url
+        ImagemControl.setImagem(list.get(position).getFoto(), holder.imageViewFoto);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                fragment.getAmgHorizontalAdapter().atualizar(holder.getId());
-                if (holder.checkBox.isChecked()){
+            public void onClick(View v) {
+                if (holder.checkBox.isChecked()) {
                     holder.checkBox.setChecked(false);
-                }else{
+                } else {
                     holder.checkBox.setChecked(true);
                 }
             }
         });
 
+        holder.imageViewFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.view.getContext(), ActivityPerfil.class);
+                Bundle b = new Bundle();
+                b.putInt("idUsuario", holder.getId()); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                holder.view.getContext().startActivity(intent);
+            }
+        });
     }
 
 
@@ -80,19 +88,20 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public int id;
         public TextView textViewNome;
-        private ImageView imageViewPerfil;
+        private ImageView imageViewFoto;
         private CardView cardView;
         private CheckBox checkBox;
+        private TextView textViewStatus;
+        private View view;
 
         public MyViewHolder(final View itemView) {
-
             super(itemView);
-
             textViewNome = (TextView) itemView.findViewById(R.id.textViewNome);
-            imageViewPerfil = (ImageView) itemView.findViewById(R.id.imageViewFoto);
+            imageViewFoto = (ImageView) itemView.findViewById(R.id.imageViewFoto);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
-
+            textViewStatus = (TextView) itemView.findViewById(R.id.textViewStatus);
+            this.view = itemView;
 
 
         }

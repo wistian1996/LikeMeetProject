@@ -1,5 +1,6 @@
 package br.com.metting.www.likemeet.Class;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -21,4 +22,29 @@ public class HistoricoEventos {
         this.tipo = tipo;
     }
 
+    public int getIdEvento() {
+        return idEvento;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public static HistoricoEventos getEvento(int id) {
+        for (HistoricoEventos lista2 : Meet.getHistoricoEventos()
+                ) {
+            if (lista2.getIdEvento() == id) {
+                return lista2;
+            }
+        }
+        return null;
+    }
 }

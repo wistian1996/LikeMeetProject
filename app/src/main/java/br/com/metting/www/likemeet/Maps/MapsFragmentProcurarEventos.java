@@ -1,6 +1,7 @@
 package br.com.metting.www.likemeet.Maps;
 
 
+import android.app.ProgressDialog;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,7 +39,6 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     private static ArrayList<Marker> listaMarker = new ArrayList<>();
     private String TAG;
 
-
     public MapsFragmentProcurarEventos(LatLng local) {
         this.local = local;
     }
@@ -50,14 +50,13 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
         MainActivity.toolbar.setSubtitle("Preparando mapa...");
         TAG = getClass().getSimpleName();
         getMapAsync(this);
-
     }
 
     //executar alguma acao ao clicar em alguma area do meu mapa
     //sera executado quando o mapa estiver pronto
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MainActivity.toolbar.setSubtitle("Procurar novos eventos");
+Log.d(getClass().getSimpleName(), "Mapa pronto");
         try {
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -98,7 +97,10 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             e.printStackTrace();
         }
 
+        MainActivity.toolbar.setSubtitle("Procurar novos eventos");
 
+
+        ProcurarEventosMeetFragment.dialog.cancel();
         // criarRaio();
     }
 
@@ -142,7 +144,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
             fragmentTrasaction.commit();
 
-            //Configurado o slider Up
+            // slider Up
             ProcurarEventosMeetFragment.abrirSlider();
         }
 
@@ -231,7 +233,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
     @Override
     public void onMapClick(LatLng latLng) {
-
+     abrirFragmentoCategorias();
     }
 
     public static void descarmarMarker() {
@@ -274,6 +276,7 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
     @Override
     public void onMapLoaded() {
+        Log.d(getClass().getSimpleName(), "Mapa carregado");
 
     }
 

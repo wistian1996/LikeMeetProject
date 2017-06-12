@@ -12,7 +12,10 @@ public class Usuario {
 
     int id;
     String nome;
+    String status;
     String tel;
+    String email;
+    String endereco;
     Date nasc;
     String foto;
     int ativo;
@@ -20,11 +23,14 @@ public class Usuario {
     String codigoAtivo;
     int vip;// (define se o usuario é um usuario vip ou nao)
 
-    public Usuario(int id, String nome, Date nasc, String tel, String foto, int ativo, int qtdEventosCadastrados, String codigoAtivo, int vip) {
+    public Usuario(int id, String nome, String status, Date nasc, String tel , String email, String endereco, String foto, int ativo, int qtdEventosCadastrados, String codigoAtivo, int vip) {
         this.id = id;
         this.nome = nome;
+        this.status = status;
+        this.endereco = endereco;
         this.nasc = nasc;
         this.tel = tel;
+        this.email = email;
         this.foto = foto;
         this.ativo = ativo;
         this.qtdEventosCadastrados = qtdEventosCadastrados;
@@ -38,11 +44,31 @@ public class Usuario {
 
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public static Usuario getUsuario() {
-        java.util.Date data = new java.util.Date();
-        Date nive = new Date(data.getTime());
-        Usuario u = new Usuario(1, "Franklin Wistian", nive, "75999843408", "", 1, 0, "", 1);
-        return u;
+        return Meet.getUsuario(1);
+    }
+
+    public static Usuario getUsuario(int id) {
+        for (Usuario lista : Meet.getListaUsuarios()
+                ) {
+            if (lista.getId() == id) {
+                return lista;
+            }
+        }
+        return null;
+    }
+
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public static ArrayList<Evento> getEventosUsuario(int id) {

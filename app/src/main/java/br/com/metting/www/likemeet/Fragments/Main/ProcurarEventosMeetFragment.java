@@ -1,6 +1,7 @@
 package br.com.metting.www.likemeet.Fragments.Main;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -38,6 +39,7 @@ public class ProcurarEventosMeetFragment extends Fragment {
     public MapsFragmentProcurarEventos mapsFragmentProcurarEventos;
     private LocationManager locationManager;
     FragmentTransaction fragmentTransaction;
+    public static ProgressDialog dialog;
 
 
     // The minimum distance to change updates in metters
@@ -50,9 +52,19 @@ public class ProcurarEventosMeetFragment extends Fragment {
     // minute
     private void getMinhaLocalizacao() {
         Log.d(getClass().getName(), "getMinhaLocalizacao");
-        if (!(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+
+        if (!(ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)) {
+            Log.d(getClass().getName(), "Permissao concedida");
+
+            dialog = ProgressDialog.show(getContext(), "",
+                    "Preparando o mapa, Aguarde um instante...", true);
+            dialog.show();
 
             if (MainActivity.getLocal() != null) {
+                Log.d(getClass().getName(), "location != null");
                 abrirFragmentos();
                 return;
             }
@@ -92,6 +104,8 @@ public class ProcurarEventosMeetFragment extends Fragment {
                 @Override
                 public void onProviderEnabled(String provider) {
                     // TODO Auto-generated method stub
+                    Log.d(getClass().getSimpleName(), "Provider ativado");
+
 
                 }
 
@@ -99,13 +113,13 @@ public class ProcurarEventosMeetFragment extends Fragment {
                 public void onStatusChanged(String provider, int status,
                                             Bundle extras) {
                     // TODO Auto-generated method stub
+                    Log.d(getClass().getSimpleName(), "Provider alterado");
+
 
                 }
-
-
             }, null);
-
-
+        }else{
+            Log.d(getClass().getName(), "Permissao nao concedida");
         }
     }
 

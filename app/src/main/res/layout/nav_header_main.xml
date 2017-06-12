@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:background="@color/colorAccent"
+    android:layout_height="180dp"
+    android:background="@color/colorAccentTransparent"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,39 +12,50 @@
 
 
     <RelativeLayout
-        android:paddingTop="16dp"
         android:id="@+id/layout_perfil"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="16dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textViewEmail"
             style="@style/Base.TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
+            android:padding="1.5dp"
+            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:text="wistian2009@hotmail.com" />
+            android:maxLines="1"
+            android:text="wistian2009@hotmail.com"
+            android:textColor="@color/colorPrimary" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textViewNome"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:padding="1.5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView6"
-            android:layout_alignParentStart="true"
-            android:text="Franklin Wistian" />
+            android:maxLines="1"
+            android:text="Franklin Wistian"
+            android:textColor="@color/colorPrimary"
+            android:layout_above="@+id/textViewEmail"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageViewFotoPerfilDrawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="43dp"
+            android:layout_marginLeft="1.5dp"
+            android:layout_alignEnd="@+id/textViewStatus"
+            android:layout_alignParentStart="true"
             android:scaleType="fitStart"
-            android:src="@drawable/perfil" />
+            android:src="@drawable/iconperfill"
+            android:layout_above="@+id/textViewNome" />
     </RelativeLayout>
 
 

@@ -111,7 +111,6 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
         public TextView textViewHorario;
         public CardView cardViewMeusEventos;
 
-        private SparseBooleanArray selectedItems;
 
         public MyViewHolder(final View itemView) {
             super(itemView);

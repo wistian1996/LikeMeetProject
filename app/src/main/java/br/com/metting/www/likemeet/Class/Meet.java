@@ -2,6 +2,7 @@ package br.com.metting.www.likemeet.Class;
 
 import android.util.Log;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,9 +14,13 @@ import java.util.Random;
 public class Meet {
 
     private static ArrayList<Evento> listaEventos;
+    private static ArrayList<HistoricoEventos> historicoEventos;
+    private static ArrayList<Usuario> listaUsuarios;
 
     public Meet() {
         listaEventos = new ArrayList<>();
+        historicoEventos = new ArrayList<>();
+        listaUsuarios = new ArrayList<>();
 
         int[] duracaoEvento = new int[2];
 
@@ -55,12 +60,93 @@ public class Meet {
         listaEventos.add(evento9);
         listaEventos.add(evento10);
 
+        Usuario u0 = new Usuario(1, "Franklin Wistian","A vingança é plena mata a alma e a envenena",  data, "7999845412","franklinwistian@jzone.com.br", "RioReal - SE", "/DCIM/100AVIARY/Franklin.jpg", 1, 0, "", 1);
+        Usuario u1 = new Usuario(2, "Alexandre andrade","Eu sou da NASA", data, "7999845412","", "Aracaju - SE", "/DCIM/100AVIARY/Alexandre.jpg", 1, 0, "", 1);
+        Usuario u2 = new Usuario(3, "Negan sales","Minha nossa, eu nunca estive tao errado em toda minha vida!", data, "7999845412","", "Itabaianinha - SE", "/DCIM/100AVIARY/Elder.jpg", 1, 0, "", 1);
+        Usuario u3 = new Usuario(4, "Carlos Henrique","Likeaboss", data, "7999845412","", "Itabaiana - SE", "/DCIM/100AVIARY/Likeaboss.jpg", 1, 0, "", 1);
+        Usuario u4 = new Usuario(5, "Luiz Felipe","Sou blessed", data, "7999845412","", "Aracaju - BA", "/DCIM/100AVIARY/Felipe.jpg", 1, 0, "", 1);
+        Usuario u5 = new Usuario(6, "Clevia","Clevia s2 Wistian", data, "79998305214","", "RioReal - BA", "/DCIM/100AVIARY/Clevia.jpg", 1, 0, "", 1);
+        listaUsuarios.add(u1);
+        listaUsuarios.add(u2);
+        listaUsuarios.add(u3);
+        listaUsuarios.add(u4);
+        listaUsuarios.add(u0);
+        listaUsuarios.add(u5);
+
+        HistoricoEventos h1 = new HistoricoEventos(2, 2, data, "foi");
+        HistoricoEventos h2 = new HistoricoEventos(4, 3, data, "vai");
+        HistoricoEventos h3 = new HistoricoEventos(5, 4, data, "cancelou");
+        HistoricoEventos h4 = new HistoricoEventos(6, 1, data, "criou");
+        HistoricoEventos h5 = new HistoricoEventos(7, 1, data, "cancelou");
+        HistoricoEventos h6 = new HistoricoEventos(8, 1, data, "criou");
+        HistoricoEventos h7 = new HistoricoEventos(9, 1, data, "vai");
+        HistoricoEventos h8 = new HistoricoEventos(10, 1, data, "foi");
+        HistoricoEventos h9 = new HistoricoEventos(10, 1, data, "foi");
+        HistoricoEventos h10 = new HistoricoEventos(10, 1, data, "cancelou");
+        HistoricoEventos h11 = new HistoricoEventos(10, 1, data, "criou");
+        HistoricoEventos h12 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h13 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h14 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h15 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h16 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h17 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h18 = new HistoricoEventos(2, 1, data, "foi");
+        historicoEventos.add(h1);
+        historicoEventos.add(h2);
+        historicoEventos.add(h3);
+        historicoEventos.add(h4);
+        historicoEventos.add(h5);
+        historicoEventos.add(h6);
+        historicoEventos.add(h7);
+        historicoEventos.add(h8);
+        historicoEventos.add(h9);
+        historicoEventos.add(h10);
+        historicoEventos.add(h11);
+        historicoEventos.add(h12);
+        historicoEventos.add(h13);
+        historicoEventos.add(h14);
+        historicoEventos.add(h15);
+        historicoEventos.add(h16);
+        historicoEventos.add(h17);
+        historicoEventos.add(h18);
+
+
     }
 
     public static ArrayList<Evento> getListaEventos() {
         return listaEventos;
     }
 
+    public static ArrayList<HistoricoEventos> getHistoricoEventos() {
+        return historicoEventos;
+    }
+
+
+    public static ArrayList<HistoricoEventos> getHistoricoEventos(int id) {
+        ArrayList<HistoricoEventos> listaH = new ArrayList<>();
+        for (HistoricoEventos l : historicoEventos
+                ) {
+            if (l.getIdUsuario() == id) {
+                listaH.add(l);
+            }
+        }
+        return listaH;
+    }
+
+
+    public static ArrayList<Usuario> getListaUsuarios() {
+        return listaUsuarios;
+    }
+
+    public static Usuario getUsuario(int id) {
+        for (Usuario lista : listaUsuarios
+                ) {
+            if (lista.getId() == id) {
+                return lista;
+            }
+        }
+        return null;
+    }
 
     public static void cadastrarEvento(int idUsuarioCadastrou, String nome, String local,
                                        String endereco, Date dataEvento, int[] duracaoEvento,
@@ -97,21 +183,4 @@ public class Meet {
         listaEventos.add(evento);
     }
 
-    public static ArrayList<HistoricoEventos> getHistoricos() {
-
-        ArrayList<HistoricoEventos> listaH = new ArrayList<>();
-        int variar = 0;
-        for (Evento lista : listaEventos
-                ) {
-            if (variar == 0) {
-                listaH.add(new HistoricoEventos(lista.getId(), 0, lista.getDataEvento(), "part"));
-                variar = 1;
-
-            } else {
-                listaH.add(new HistoricoEventos(lista.getId(), 0, lista.getDataEvento(), "marcou"));
-                variar = 0;
-            }
-        }
-        return listaH;
-    }
 }

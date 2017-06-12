@@ -35,7 +35,7 @@ public class InfoEventoMapFragment extends Fragment {
     private RelativeLayout relativeLayoutInfo;
     private listaParticipantesEventoInfoFragment listaParticipantesEventoInfoFragment;
     private infoEventoMap2Fragment infoEventoMap2Fragment;
-    private int fragmento; // se == 1 , esta abrindo pelo MeusEventosAdapter
+    private int fragmento; // se == 1 , esta abrindo pelo MeusEventosAdapter ou historico adapter
     private TextView textViewEuvou;
     private Button buttonEuVou;
     private RelativeLayout relativeLayoutEditar;
@@ -116,7 +116,10 @@ public class InfoEventoMapFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Informações"));
         tabLayout.addTab(tabLayout.newTab().setText("Participantes"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
         tabLayout.setTabTextColors(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+
+
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager_info_evento);
 
