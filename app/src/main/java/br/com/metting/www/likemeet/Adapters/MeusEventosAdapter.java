@@ -1,5 +1,6 @@
 package br.com.metting.www.likemeet.Adapters;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -39,13 +40,13 @@ import br.com.metting.www.likemeet.R;
  */
 
 //  extends RecyclerView.Adapter<MeusEventosAdapter.MyViewHolder>
-public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.MyViewHolder>{
+public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.MyViewHolder> {
     ArrayList<Evento> lEvento;
     private LayoutInflater mLayoutInflater;
     Context c;
     FragmentManager fm;
 
-    public MeusEventosAdapter(Context c, ArrayList<Evento> lEvento , FragmentManager fm ) {
+    public MeusEventosAdapter(Context c, ArrayList<Evento> lEvento, FragmentManager fm) {
 
         this.mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.c = c;
@@ -88,7 +89,9 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
                 fragmentTrasaction.replace(R.id.layoutPrincipal, fragment).addToBackStack(null).commit();
 */
                 Fragment fragment = new InfoEventoMapFragment(lEvento.get(position), 1);
-              fm.beginTransaction().addToBackStack(null).replace(R.id.layoutPrincipal , fragment).commit();
+                fm.beginTransaction().addToBackStack(null).replace(R.id.layoutPrincipal, fragment).commit();
+                ((Activity) holder.view.getContext()).overridePendingTransition(R.animator.zoom_in, R.anim.fade_out);
+
             }
         });
 
@@ -110,6 +113,7 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
         public TextView textViewData;
         public TextView textViewHorario;
         public CardView cardViewMeusEventos;
+        public View view;
 
 
         public MyViewHolder(final View itemView) {
@@ -119,6 +123,7 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
             textViewDescricao = (TextView) itemView.findViewById(R.id.textViewDescricao);
             textViewData = (TextView) itemView.findViewById(R.id.textViewData);
             textViewHorario = (TextView) itemView.findViewById(R.id.textViewData);
+            this.view = itemView;
 
         }
 

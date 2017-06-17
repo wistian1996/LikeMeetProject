@@ -1,5 +1,6 @@
 package br.com.metting.www.likemeet.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +48,7 @@ public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<Partici
         holder.setId(list.get(position).getId());
 
         //setando imagem do perfil
-        ImagemControl.setImagem(list.get(position).getFoto(), holder.imageViewPerfil);
+        ImagemControl.setImagemCircular(list.get(position).getFoto(), holder.imageViewPerfil , holder.view.getContext());
 
         holder.textViewStatus.setText(list.get(position).getStatus());
 
@@ -59,6 +60,8 @@ public class ParticipantesEventoInfoAdapter extends RecyclerView.Adapter<Partici
                 b.putInt("idUsuario", holder.getId()); //Your id
                 intent.putExtras(b); //Put your id to your next Intent
                 holder.view.getContext().startActivity(intent);
+                ((Activity) holder.view.getContext()).overridePendingTransition(R.animator.zoom_in, R.anim.fade_out);
+
             }
         });
 

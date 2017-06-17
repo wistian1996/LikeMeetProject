@@ -1,5 +1,6 @@
 package br.com.metting.www.likemeet.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
         holder.setId(list.get(position).getId());
         holder.textViewStatus.setText(list.get(position).getStatus());
         //setando imagem pega na memoria do celular , quando passar pro banco trocar o caminho pela url
-        ImagemControl.setImagem(list.get(position).getFoto(), holder.imageViewFoto);
+        ImagemControl.setImagemCircular(list.get(position).getFoto(), holder.imageViewFoto, holder.view.getContext());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +76,8 @@ public class AmigosAdapter extends RecyclerView.Adapter<AmigosAdapter.MyViewHold
                 b.putInt("idUsuario", holder.getId()); //Your id
                 intent.putExtras(b); //Put your id to your next Intent
                 holder.view.getContext().startActivity(intent);
+                ((Activity) holder.view.getContext()).overridePendingTransition(R.animator.zoom_in, R.anim.fade_out);
+
             }
         });
     }

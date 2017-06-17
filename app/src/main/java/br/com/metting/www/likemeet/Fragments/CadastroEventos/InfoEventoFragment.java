@@ -1,10 +1,7 @@
 package br.com.metting.www.likemeet.Fragments.CadastroEventos;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +77,7 @@ public class InfoEventoFragment extends Fragment {
         checkBoxFluxoPessoas = (CheckBox) view.findViewById(R.id.checkBoxFluxoPessoas);
         spinner = (Spinner) view.findViewById(R.id.spinnerCategoria);
         editTextNome = (EditText) view.findViewById(R.id.editTextNome);
-        editTextDescricao = (EditText) view.findViewById(R.id.editTextDescricao);
+        editTextDescricao = (EditText) view.findViewById(R.id.textViewDescricao);
 
         editTextTaxaEntrada = (EditText) view.findViewById(R.id.editTextTaxaEntrada);
         editTextRestricaoIdade = (EditText) view.findViewById(R.id.editTextRestricaoIdade);

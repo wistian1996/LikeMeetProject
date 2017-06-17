@@ -32,14 +32,15 @@ public class InfoEventoMapFragment extends Fragment {
     private ViewPager mViewPager;
     private TextView nome;
     private View view;
-    private RelativeLayout relativeLayoutInfo;
     private listaParticipantesEventoInfoFragment listaParticipantesEventoInfoFragment;
     private infoEventoMap2Fragment infoEventoMap2Fragment;
     private int fragmento; // se == 1 , esta abrindo pelo MeusEventosAdapter ou historico adapter
-    private TextView textViewEuvou;
-    private Button buttonEuVou;
     private RelativeLayout relativeLayoutEditar;
-    private Button buttonEditar;
+    private RelativeLayout relativeLayoutInfo;
+    private RelativeLayout relativeLayoutAddFoto;
+    private RelativeLayout relativeLayoutBotaoEuVou;
+    private RelativeLayout relativeLayoutCancelar;
+    private RelativeLayout relativeLayoutApagar;
 
     public InfoEventoMapFragment(Evento evento) {
         this.evento = evento;
@@ -76,10 +77,12 @@ public class InfoEventoMapFragment extends Fragment {
         nome = (TextView) view.findViewById(R.id.textViewNome);
         nome.setText(evento.getNome());
         relativeLayoutInfo = (RelativeLayout) view.findViewById(R.id.relativeLayoutFundoVerde);
-        textViewEuvou = (TextView) view.findViewById(R.id.textViewEuVou);
-        buttonEuVou = (Button) view.findViewById(R.id.buttonEuVou);
         relativeLayoutEditar = (RelativeLayout) view.findViewById(R.id.relativeLayoutEditar);
-        buttonEditar = (Button) view.findViewById(R.id.buttonEditar);
+        relativeLayoutAddFoto = (RelativeLayout) view.findViewById(R.id.RelativeLayoutAddFoto);
+        relativeLayoutApagar = (RelativeLayout) view.findViewById(R.id.relativeLayoutApagar);
+        relativeLayoutBotaoEuVou = (RelativeLayout) view.findViewById(R.id.relativeLayoutBotaoEuVou);
+        relativeLayoutCancelar = (RelativeLayout) view.findViewById(R.id.relativeLayoutCancelar);
+
         alterarBotoes();
 
         relativeLayoutEditar.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +91,7 @@ public class InfoEventoMapFragment extends Fragment {
                 getElementosIntent();
             }
         });
-        buttonEditar.setOnClickListener(new View.OnClickListener() {
+        relativeLayoutEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getElementosIntent();
@@ -112,20 +115,18 @@ public class InfoEventoMapFragment extends Fragment {
 
 
         // definindo uma tab para o page
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Informações"));
-        tabLayout.addTab(tabLayout.newTab().setText("Participantes"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+      //  TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
+      //  tabLayout.addTab(tabLayout.newTab().setText("Evento"));
+      //  tabLayout.addTab(tabLayout.newTab().setText("Participantes"));
+       // tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        tabLayout.setTabTextColors(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-
+       // tabLayout.setTabTextColors(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
 
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager_info_evento);
-
         PagerAdapter adapter = new PagerAdapter(getActivity().getSupportFragmentManager());
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+     //   mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+      /*  tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
@@ -140,7 +141,7 @@ public class InfoEventoMapFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -165,9 +166,7 @@ public class InfoEventoMapFragment extends Fragment {
     public class PagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter {
 
         public PagerAdapter(FragmentManager fm) {
-
             super(fm);
-
         }
 
         public Fragment getItem(int arg0) {
@@ -189,22 +188,11 @@ public class InfoEventoMapFragment extends Fragment {
 
     private void alterarBotoes() {
         if (evento.getIdUsuarioCadastrou() == Usuario.getUsuario().getId()) {
-            buttonEuVou.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_delete_sweep_black_24dp));
-            textViewEuvou.setText("Apagar");
-            relativeLayoutEditar.setVisibility(View.VISIBLE);
+            // quer diser que o evento e meu
+            relativeLayoutApagar.setVisibility(View.VISIBLE);
             return;
         } else {
-            relativeLayoutEditar.setVisibility(View.INVISIBLE);
+            relativeLayoutEditar.setVisibility(View.GONE);
         }
-        for (Evento lEvento : Usuario.getMeusEventos(1)
-                ) {
-            if (evento.getId() == lEvento.getId()) {
-                buttonEuVou.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_cancel_black_24dp));
-                textViewEuvou.setText("Desistir!");
-                return;
-            }
-        }
-
-
     }
 }

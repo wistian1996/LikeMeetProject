@@ -1,6 +1,9 @@
 package br.com.metting.www.likemeet.Activitys;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,6 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Interpolator;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +38,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +47,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import java.util.Set;
 
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
@@ -54,6 +64,7 @@ import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
 import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -69,10 +80,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static LatLng local;
     private DrawerLayout drawerLayout;
     private RelativeLayout layout_perfil;
-
     private TextView textViewEmail;
     private TextView textViewNome;
     private ImageView imageViewFotoPerfil;
+
     //usuario que está logado
 
     private Usuario usuario;
@@ -298,7 +309,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         usuario = Usuario.getUsuario();
         textViewEmail.setText(usuario.getEmail());
         textViewNome.setText(usuario.getNome());
-        ImagemControl.setImagem(usuario.getFoto(), imageViewFotoPerfil);
+        ImagemControl.setImagemCircular(usuario.getFoto(), imageViewFotoPerfil, this);
+
+
+
 
 //set layout perfil
         layout_perfil = (RelativeLayout) findViewById(R.id.layout_perfil);
@@ -311,8 +325,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //inserindo o ID do usuario que esta logado e passando id como parametro
                 b.putInt("idUsuario", Usuario.getUsuario().getId()); //Your id
                 intent.putExtras(b); //Put your id to your next Intent
-                MainActivity.this.startActivity(intent);
-                ;
+                startActivity(intent);
+                overridePendingTransition(R.animator.zoom_in, R.anim.fade_out);
             }
         });
 

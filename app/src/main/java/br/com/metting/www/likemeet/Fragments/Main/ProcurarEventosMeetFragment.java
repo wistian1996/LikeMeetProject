@@ -126,7 +126,7 @@ public class ProcurarEventosMeetFragment extends Fragment {
     private void abrirFragmentos() {
         if (getActivity() != null) {
             mapsFragmentProcurarEventos = new MapsFragmentProcurarEventos(MainActivity.getLocal());
-            fragmentManager = getChildFragmentManager();
+            fragmentManager = getActivity().getSupportFragmentManager(); // getChildFragmentManager
             fragmentTransaction = fragmentManager.beginTransaction();
             //  fragmentTransaction.add(R.id.layoutMaps, mapsFragmentProcurarEventos, "MapsFragmentProcurarEventos");
             fragmentTransaction.replace(R.id.layoutMaps, mapsFragmentProcurarEventos);

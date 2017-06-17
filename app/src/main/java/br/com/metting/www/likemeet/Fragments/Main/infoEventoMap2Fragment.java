@@ -3,6 +3,8 @@ package br.com.metting.www.likemeet.Fragments.Main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +22,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import br.com.metting.www.likemeet.Adapters.HistoricoImagensAdapter;
+import br.com.metting.www.likemeet.Adapters.ParticipantesEventoInfoAdapter;
 import br.com.metting.www.likemeet.Class.Evento;
+import br.com.metting.www.likemeet.Class.Meet;
 import br.com.metting.www.likemeet.R;
 
 public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallback {
     private View view;
-
     private TextView data;
     private TextView horario;
     private TextView entrada;
@@ -34,9 +38,9 @@ public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallba
     private TextView maxPessoas;
     private Evento evento;
     private TextView descricao;
-
     private MapView mMap;
     private GoogleMap gMap;
+    private RecyclerView recyclerView;
 
     public infoEventoMap2Fragment(Evento evento) {
         this.evento = evento;
@@ -94,6 +98,17 @@ public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallba
         } else {
             maxPessoas.setText("Sem limites de participantes");
         }
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_publicacoes_imagens);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setNestedScrollingEnabled(false);
+        HistoricoImagensAdapter adapter = new HistoricoImagensAdapter(getActivity(),Meet.getListaPublicacoes(), getFragmentManager());
+        recyclerView.setAdapter(adapter);
+
+
         return view;
     }
 
@@ -103,8 +118,6 @@ public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallba
         MapsInitializer.initialize(getActivity());
         gMap = googleMap;
         gMap.getUiSettings().setZoomControlsEnabled(true);
-
-
         MarkerOptions marker = new MarkerOptions();
         marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         String[] latlong = evento.getLocal().split(",");

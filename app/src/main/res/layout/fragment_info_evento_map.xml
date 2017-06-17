@@ -26,68 +26,115 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@color/colorAccent"
-            android:padding="16dp">
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="9dp"
+           >
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutBotaoEuVou"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/background_linha"
-                android:padding="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/relativeLayout11"
+                android:layout_marginTop="6dp"
+                android:layout_alignParentStart="true">
 
-                <Button
-                    android:id="@+id/buttonEuVou"
-                    android:layout_width="35dp"
-                    android:layout_height="40dp"
-                    android:layout_above="@+id/textViewEuVou"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/icon_participar" />
-
-                <TextView
-                    android:id="@+id/textViewEuVou"
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutBotaoEuVou"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center"
-                    android:text="Eu vou!"
-                    android:textColor="@color/colorPrimary" />
-            </RelativeLayout>
+                    android:layout_below="@+id/relativeLayout11"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/background_linha"
+                    android:padding="4dp">
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutEditar"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="16dp"
-                android:layout_toStartOf="@+id/relativeLayoutBotaoEuVou"
-                android:background="@drawable/background_linha"
-                android:clickable="true"
-                android:padding="4dp">
+                    <Button
+                        android:id="@+id/buttonEuVou"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/icon_participar" />
 
-                <Button
-                    android:id="@+id/buttonEditar"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/ic_create_black_24dp"
-                    android:textAllCaps="false" />
+                </RelativeLayout>
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/RelativeLayoutAddFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/background_linha"
+                    android:padding="4dp">
 
-                    android:id="@+id/TextViewEditar"
+                    <Button
+                        android:id="@+id/buttonAddFoto"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/ic_add_a_photo_black_24dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutEditar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center"
-                    android:text="Editar"
-                    android:textColor="@color/colorPrimary" />
-            </RelativeLayout>
+                    android:layout_below="@+id/relativeLayout11"
+                    android:layout_marginRight="6dp"
+                    android:layout_toStartOf="@+id/relativeLayoutBotaoEuVou"
+                    android:background="@drawable/background_linha"
+                    android:clickable="true"
+                    android:padding="4dp">
+
+                    <Button
+                        android:id="@+id/buttonEditar"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/ic_create_black_24dp"
+                        android:textAllCaps="false" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutCancelar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/relativeLayout11"
+                    android:layout_marginRight="6dp"
+                    android:layout_toStartOf="@+id/relativeLayoutBotaoEuVou"
+                    android:background="@drawable/background_linha"
+                    android:clickable="true"
+                    android:padding="4dp">
+
+                    <Button
+                        android:id="@+id/buttonCancelar"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/ic_cancel_black_24dp"
+                        android:textAllCaps="false" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutApagar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/relativeLayout11"
+                    android:layout_marginRight="6dp"
+                    android:layout_toStartOf="@+id/relativeLayoutBotaoEuVou"
+                    android:background="@drawable/background_linha"
+                    android:clickable="true"
+                    android:padding="4dp">
+
+                    <Button
+                        android:id="@+id/buttonApagar"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/ic_delete_sweep_black_24dp"
+                        android:textAllCaps="false" />
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayout11"
@@ -95,16 +142,18 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/relativeLayoutEditar">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewNome"
-                    android:layout_width="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Nome do evento"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimary" />
             </RelativeLayout>
 
@@ -113,13 +162,15 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_height="35dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/relativeLayoutFundoVerde"
             android:background="?attr/colorPrimary"
             android:elevation="2dp"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabTextColor="@color/colorAccent" />
 
         <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pager_info_evento"

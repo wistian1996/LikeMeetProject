@@ -4,6 +4,7 @@ package br.com.metting.www.likemeet.Maps;
 import android.app.ProgressDialog;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -62,6 +63,7 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.setMyLocationEnabled(true);
             marcarPontos(Meet.getListaEventos());
+            mMap.setOnMapLoadedCallback(this);
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 10f));
 
@@ -81,16 +83,22 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
                     ProcurarEventosMeetFragment.abrirSlider();
                 }
             });
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {// Inflate the layout for this fragment
-                    chamarFragmentListaEventos(Evento.getListaEventosLatLong(marker.getPosition()));
-                    // Se ela retorna falso, então o comportamento padrão irá ocorrer em adição ao seu comportamento personalizado
-                    return false;
-                }
-            });
 
-            mMap.setOnMapLoadedCallback(this);
+
+
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {// Inflate the layout for this fragment
+
+                            chamarFragmentListaEventos(Evento.getListaEventosLatLong(marker.getPosition()));
+                            // Se ela retorna falso, então o comportamento padrão irá ocorrer em adição ao seu comportamento personalizado
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10f));
+                            return false;
+                        }
+                    });
+
+
+
 
         } catch (SecurityException e) {
             Log.d(getClass().getName(), e.getMessage());

@@ -26,9 +26,9 @@
                 android:text="TextView" />
 
             <RelativeLayout
-                android:id="@+id/relativeLayout6"
+                android:id="@+id/relativeLayout_info_evento"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:background="@color/colorPrimary"
                 android:padding="8dp">
@@ -155,11 +155,25 @@
                     android:id="@+id/mapViewLocalVizualizar"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/textViewEndereco"
                     android:visibility="visible"
                     map:liteMode="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_publicacoes_imagens"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:animationCache="true"
+                    android:scrollbars="vertical" />
 
             </RelativeLayout>
         </LinearLayout>

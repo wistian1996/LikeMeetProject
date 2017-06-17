@@ -24,9 +24,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/ImageViewMap"
+                    android:layout_below="@+id/ImageViewPublicacao"
                     android:orientation="horizontal"
                     android:paddingBottom="6dp"
                     android:paddingTop="6dp"
@@ -57,63 +54,87 @@
                     android:id="@+id/linearLayout2">
 
                     <RelativeLayout
-                        android:id="@+id/relativeLayoutBotaoEuVou"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/ImageViewMap"
-                        android:layout_weight="0.02"
-                        android:background="@drawable/icon_shape_button"
-                        android:padding="4dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <Button
-                            android:id="@+id/buttonEuVou"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/icon_participar" />
-
-                        <TextView
-                            android:id="@+id/textView"
+                        <LinearLayout
+                            android:id="@+id/linearLayout6"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignBottom="@+id/buttonEuVou"
-                            android:layout_alignTop="@+id/buttonEuVou"
-                            android:layout_toEndOf="@+id/buttonEuVou"
-                            android:gravity="center"
-                            android:paddingRight="2dp"
-                            android:text="Eu vou!"
-                            android:textColor="@color/colorPrimary" />
-                    </RelativeLayout>
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/imageView"
+                            android:orientation="horizontal"
+                            android:paddingTop="6dp">
 
-                    <RelativeLayout
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="6dp"
-                        android:background="@drawable/icon_shape_button">
+                            <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_marginRight="3dp"
+                                android:layout_weight="1"
+                                android:scaleType="centerCrop"
+                                />
 
-                        <TextView
-                            android:id="@+id/textView5"
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_marginRight="3dp"
+                                android:layout_weight="1"
+                                android:scaleType="centerCrop"
+                                 />
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_weight="1"
+                                android:scaleType="centerCrop"
+                           />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:gravity="center_vertical"
-                            android:text="Curtir!"
-                            android:textColor="@color/caldroid_white" />
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitStart"
+                            app:srcCompat="@drawable/ic_image" />
 
+                        <TextView
+                            android:id="@+id/textViewPublicacoes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/imageView"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/imageView"
+                            android:gravity="center"
+                            android:text="Publicações"
+                            android:textColor="@color/caldroid_black" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:layout_height="30dp"
+                            android:layout_below="@+id/linearLayout6"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="Ver todas as publicações" />
                     </RelativeLayout>
 
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/ImageViewMap"
+                    android:id="@+id/ImageViewPublicacao"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="200dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
 
                 <ProgressBar
                     android:id="@+id/progressBarMapa"
@@ -138,7 +159,7 @@
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/perfil" />
+                   />
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
@@ -193,5 +214,6 @@
         </RelativeLayout>
     </RelativeLayout>
     </android.support.v7.widget.CardView>
+
 </RelativeLayout>
 
