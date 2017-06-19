@@ -20,17 +20,16 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.ImageOptions;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import br.com.metting.www.likemeet.Activitys.ActivityPerfil;
-import br.com.metting.www.likemeet.Activitys.ActivityVerFoto;
 import br.com.metting.www.likemeet.Activitys.VizualizarEventoActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.HistoricoEventos;
 import br.com.metting.www.likemeet.Class.Meet;
 import br.com.metting.www.likemeet.Class.PublicacaoImagem;
 import br.com.metting.www.likemeet.Class.Usuario;
+import br.com.metting.www.likemeet.Control.DataControl;
 import br.com.metting.www.likemeet.Control.ImagemControl;
 import br.com.metting.www.likemeet.Control.PublicacaoControl;
 import br.com.metting.www.likemeet.R;
@@ -103,17 +102,9 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.MyVi
         //set imagem
         ImagemControl.setImagemCircular(u.getFoto(), holder.imageViewFotoPerfil, holder.view.getContext());
 
-        //set data da publicacao
-        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm");
-        java.util.Date dataUtil = new java.util.Date(holder.dataHistorico.getTime());
-        String data = formatter1.format(dataUtil);
-        String hora = formatter2.format(dataUtil);
-        holder.TextViewDataHistorico.setText(data + " às " + hora);
-        Log.d(getClass().getSimpleName(), "Entrou BindView");
-
-
+        holder.TextViewDataHistorico.setText(DataControl.getDataPublicacaoString(lHistorico.get(position).getData()));
         holder.imageOptions = new ImageOptions();
+        holder.imageOptions.memCache = true;
         holder.imageOptions.memCache = true;
         holder.imageOptions.fileCache = true;
         //      holder.imageOptions.fallback = R.drawable.iconperfill;
@@ -145,7 +136,7 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.MyVi
                 Log.d(getClass().getName(), "ON click meuEVENTO");
                 Intent intent = new Intent(c, VizualizarEventoActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("idEvento", e.getId()); //Your id
+                b.putInt("idEvento", lHistorico.get(position).getIdEvento());
                 intent.putExtras(b); //Put your id to your next Intent
                 c.startActivity(intent);
                 ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

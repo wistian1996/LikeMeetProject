@@ -1,4 +1,4 @@
-package br.com.metting.www.likemeet.Fragments;
+package br.com.metting.www.likemeet.Fragments.Main;
 
 
 import android.os.Bundle;

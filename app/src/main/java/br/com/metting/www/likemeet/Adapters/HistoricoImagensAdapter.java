@@ -22,6 +22,7 @@ import br.com.metting.www.likemeet.Activitys.ActivityPerfil;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.PublicacaoImagem;
 import br.com.metting.www.likemeet.Class.Usuario;
+import br.com.metting.www.likemeet.Control.DataControl;
 import br.com.metting.www.likemeet.Control.ImagemControl;
 import br.com.metting.www.likemeet.Control.PublicacaoControl;
 import br.com.metting.www.likemeet.R;
@@ -62,7 +63,7 @@ public class HistoricoImagensAdapter extends RecyclerView.Adapter<HistoricoImage
         ImagemControl.carregarImagemComProgress(listaPublicacao.get(position).getURL(), c, holder.imageViewPublicacao, holder.progressBarImagem);
         holder.descricao.setText(listaPublicacao.get(position).getDescricao());
         holder.textViewQtdVizualizacao.setText(listaPublicacao.get(position).getQtdVizualizacoes() + " vizualizações");
-        holder.textViewDataPublicacao.setText(listaPublicacao.get(position).getDataPublicacaoString());
+        holder.textViewDataPublicacao.setText(DataControl.getDataPublicacaoString(listaPublicacao.get(position).getDataPublicacao()));
         holder.textViewNome.setText(u.getNome());
         holder.imageViewPublicacao.setOnClickListener(new View.OnClickListener() {
             @Override

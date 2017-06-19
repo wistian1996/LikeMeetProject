@@ -57,14 +57,6 @@
                         android:text="1500 Vizualizações"
                         android:textColor="@color/caldroid_black" />
 
-                    <TextView
-                        android:id="@+id/textViewDataPublicacao"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="6dp"
-                        android:text="15/06/2017 às 20:58"
-                        android:textColor="@color/caldroid_black" />
                 </LinearLayout>
 
                 <ImageView
@@ -138,17 +130,29 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textViewDataPublicacao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginRight="6dp"
+                        android:text="15/06/2017 às 20:58"
+                        android:layout_alignBaseline="@+id/textViewNome"
+                        android:layout_alignBottom="@+id/textViewNome"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
                         android:id="@+id/textViewNome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:gravity="center_vertical"
                         android:layout_marginTop="6dp"
                         android:text="Nome do usuario"
-                        android:textColor="@color/caldroid_black" />
+                        android:textColor="@color/caldroid_black"
+                        android:layout_toStartOf="@+id/textViewDataPublicacao" />
 
                 </RelativeLayout>
 

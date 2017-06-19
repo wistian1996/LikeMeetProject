@@ -35,7 +35,7 @@
         <item>-1</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
+    <!-- Example settings for DataControl & Sync -->
     <string name="pref_header_data_sync">Dados &amp; sync</string>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>

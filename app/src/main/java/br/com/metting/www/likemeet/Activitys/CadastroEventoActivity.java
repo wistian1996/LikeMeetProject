@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -42,6 +43,9 @@ public class CadastroEventoActivity extends AppCompatActivity {
     private InfoEventoFragment infoEventoFragment;
     private Evento evento;
 
+
+
+
     // view pager do swep
     private ViewPager mViewPager;
 
@@ -57,6 +61,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
         addAmigosEventoFragment = new AddAmigosEventoFragment();
 
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_evento);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
@@ -64,11 +69,14 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
         // metodo do swep
         mViewPager = (ViewPager) findViewById(R.id.pager);
+
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (position == 0){
 
+            }
             }
 
             @Override

@@ -23,6 +23,8 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
+
+
                 <RelativeLayout
                     android:id="@+id/layoutMaps"
                     android:layout_width="match_parent"
@@ -31,11 +33,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/SplitLine_hor1">
 
-
                 </RelativeLayout>
-
-
-
             <View
                 android:id="@+id/SplitLine_hor1"
                 android:layout_width="match_parent"
@@ -64,6 +62,8 @@
 
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
 
 
 </RelativeLayout>

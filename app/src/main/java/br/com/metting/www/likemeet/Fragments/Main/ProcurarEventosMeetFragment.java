@@ -118,28 +118,33 @@ public class ProcurarEventosMeetFragment extends Fragment {
 
                 }
             }, null);
-        }else{
+        } else {
             Log.d(getClass().getName(), "Permissao nao concedida");
         }
     }
 
     private void abrirFragmentos() {
-        if (getActivity() != null) {
-            mapsFragmentProcurarEventos = new MapsFragmentProcurarEventos(MainActivity.getLocal());
-            fragmentManager = getActivity().getSupportFragmentManager(); // getChildFragmentManager
-            fragmentTransaction = fragmentManager.beginTransaction();
-            //  fragmentTransaction.add(R.id.layoutMaps, mapsFragmentProcurarEventos, "MapsFragmentProcurarEventos");
-            fragmentTransaction.replace(R.id.layoutMaps, mapsFragmentProcurarEventos);
-            fragmentTransaction.commitAllowingStateLoss();
+        try {
+            if (getActivity() != null) {
+                mapsFragmentProcurarEventos = new MapsFragmentProcurarEventos(MainActivity.getLocal());
+                fragmentManager = getActivity().getSupportFragmentManager(); // getChildFragmentManager
+                fragmentTransaction = fragmentManager.beginTransaction();
+                //  fragmentTransaction.add(R.id.layoutMaps, mapsFragmentProcurarEventos, "MapsFragmentProcurarEventos");
+                fragmentTransaction.replace(R.id.layoutMaps, mapsFragmentProcurarEventos);
+                fragmentTransaction.commitAllowingStateLoss();
 
-            Fragment fr = new PrePesquisaFragment();
-            FragmentManager fm = getFragmentManager();
-            fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.LayoutBaixoMap, fr);
-            fragmentTransaction.commit();
-        } else {
-            Log.d(getClass().getName(), " activity null");
+                Fragment fr = new PrePesquisaFragment();
+                FragmentManager fm = getFragmentManager();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.LayoutBaixoMap, fr);
+                fragmentTransaction.commit();
+            } else {
+                Log.d(getClass().getName(), " activity null em abrir fragmentos");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
     }
 
@@ -199,15 +204,12 @@ public class ProcurarEventosMeetFragment extends Fragment {
 
 
     public static void abrirSlider() {
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
                 slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
         }, 100);
-
-
     }
 
     public static void fecharSlider() {

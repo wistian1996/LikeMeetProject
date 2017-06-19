@@ -3,9 +3,11 @@ package br.com.metting.www.likemeet.Adapters;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.metting.www.likemeet.Activitys.MainActivity;
+import br.com.metting.www.likemeet.Activitys.VizualizarEventoActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
 import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
@@ -80,18 +83,13 @@ public class MeusEventosAdapter extends RecyclerView.Adapter<MeusEventosAdapter.
         holder.cardViewMeusEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*
-                // abrindo a tela de informacoes
-                Fragment fragment = new InfoEventoMapFragment(lEvento.get(position), 1);
-
-                android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                        ((MainActivity) c).getSupportFragmentManager().beginTransaction();
-                fragmentTrasaction.replace(R.id.layoutPrincipal, fragment).addToBackStack(null).commit();
-*/
-                Fragment fragment = new InfoEventoMapFragment(lEvento.get(position), 1);
-                fm.beginTransaction().addToBackStack(null).replace(R.id.layoutPrincipal, fragment).commit();
-                ((Activity) holder.view.getContext()).overridePendingTransition(R.animator.zoom_in, R.anim.fade_out);
-
+                Log.d(getClass().getName(), "ON click meuEVENTO");
+                Intent intent = new Intent(c, VizualizarEventoActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("idEvento", lEvento.get(position).getId()); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                c.startActivity(intent);
+                ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 

@@ -2,6 +2,8 @@ package br.com.metting.www.likemeet.Fragments.Main;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,18 +30,9 @@ import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
 import br.com.metting.www.likemeet.R;
 
-public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallback {
+public class infoEventoMap2Fragment extends Fragment {
     private View view;
-    private TextView data;
-    private TextView horario;
-    private TextView entrada;
-    private TextView idade;
-    private TextView endereco;
-    private TextView maxPessoas;
     private Evento evento;
-    private TextView descricao;
-    private MapView mMap;
-    private GoogleMap gMap;
     private RecyclerView recyclerView;
 
     public infoEventoMap2Fragment(Evento evento) {
@@ -51,82 +44,16 @@ public class infoEventoMap2Fragment extends Fragment implements OnMapReadyCallba
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_info_evento_map2, container, false);
-
-        data = (TextView) view.findViewById(R.id.textViewInfoData);
-        horario = (TextView) view.findViewById(R.id.textViewInfoHorario);
-        entrada = (TextView) view.findViewById(R.id.textViewInfoEntrada);
-        idade = (TextView) view.findViewById(R.id.textViewIdade);
-        endereco = (TextView) view.findViewById(R.id.textViewEndereco);
-        maxPessoas = (TextView) view.findViewById(R.id.textViewMaxPessoas);
-        descricao = (TextView) view.findViewById(R.id.textViewDescricao);
-        descricao.setText(evento.getDescricao());
-
-        mMap = (MapView) view.findViewById(R.id.mapViewLocalVizualizar);
-        mMap.onCreate(null);
-        mMap.onResume();
-        mMap.getMapAsync(this);
-
-
-        Calendar dataCalendar = Calendar.getInstance();
-        dataCalendar.setTime(evento.getDataEvento());
-        dataCalendar.add(Calendar.HOUR, evento.getDuracaoEvento()[0]);
-        dataCalendar.add(Calendar.MINUTE, evento.getDuracaoEvento()[1]);
-
-        SimpleDateFormat d = new SimpleDateFormat("dd/MM");
-        SimpleDateFormat d2 = new SimpleDateFormat("HH:mm");
-        String dataString = d.format(dataCalendar.getTime());
-        String horaString = d2.format(dataCalendar.getTime());
-        data.setText(evento.getDataString() + " Até: " + dataString + " às " + horaString);
-        horario.setText(evento.getHoraString());
-
-
-        if (evento.getValorEntrada() == 0) {
-            entrada.setText("Entrada gratuita");
-        } else {
-            entrada.setText(String.valueOf(evento.getValorEntrada()));
-        }
-        if (evento.getIdadeMin() > 0) {
-            idade.setText("Mínimo " + String.valueOf(evento.getIdadeMin()) + " anos");
-        } else {
-            idade.setText("Todas as idades");
-        }
-
-        endereco.setText(evento.getEndereco());
-
-        if (evento.getQtdMax() > 0) {
-            maxPessoas.setText("Máximo " + String.valueOf(evento.getQtdMax()) + " Pessoas");
-        } else {
-            maxPessoas.setText("Sem limites de participantes");
-        }
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_publicacoes_imagens);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setNestedScrollingEnabled(false);
-        HistoricoImagensAdapter adapter = new HistoricoImagensAdapter(getActivity(),Meet.getListaPublicacoes(), getFragmentManager());
+        HistoricoImagensAdapter adapter = new HistoricoImagensAdapter(getActivity(), Meet.getListaPublicacoes(), getFragmentManager());
         recyclerView.setAdapter(adapter);
-
 
         return view;
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //initialize the Google Maps Android API if features need to be used before obtaining a map
-        MapsInitializer.initialize(getActivity());
-        gMap = googleMap;
-        gMap.getUiSettings().setZoomControlsEnabled(true);
-        MarkerOptions marker = new MarkerOptions();
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        String[] latlong = evento.getLocal().split(",");
-        double latitude = Double.parseDouble(latlong[0]);
-        double longitude = Double.parseDouble(latlong[1]);
-        LatLng local2 = new LatLng(latitude, longitude);
-        marker.position(local2);
-        gMap.clear();
-        gMap.addMarker(marker);
-        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local2, 15f));
-    }
 }

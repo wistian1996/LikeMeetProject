@@ -130,7 +130,7 @@ public class Evento {
                 "Nome: " + Nome + "\n" +
                 "Local: " + local + "\n" +
                 "Endereco: " + endereco + "\n" +
-                "Data: " + dataString + "\n" +
+                "DataControl: " + dataString + "\n" +
                 "valorEntrada: " + valorEntrada + "\n" +
                 "qtdMax pessoas: " + qtdMax + "\n" +
                 "Descricao: " + descricao + "\n" +

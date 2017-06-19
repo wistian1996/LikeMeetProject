@@ -1,31 +1,34 @@
 package br.com.metting.www.likemeet.Maps;
 
 
-import android.app.ProgressDialog;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
-import br.com.metting.www.likemeet.FirebaseUtils.FBEventoUtils;
 import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
 import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
 import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
@@ -56,8 +59,8 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     //executar alguma acao ao clicar em alguma area do meu mapa
     //sera executado quando o mapa estiver pronto
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-Log.d(getClass().getSimpleName(), "Mapa pronto");
+    public void onMapReady(final GoogleMap googleMap) {
+        Log.d(getClass().getSimpleName(), "Mapa pronto");
         try {
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -65,39 +68,14 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
             marcarPontos(Meet.getListaEventos());
             mMap.setOnMapLoadedCallback(this);
 
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 10f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(local, 10f), 1000, null);
 
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    ArrayList<Evento> list = Evento.getListaEventosLatLong(marker.getPosition());
-                    if (list.size() == 1) {
-                        Fragment fragment = new InfoEventoMapFragment(list.get(0));
-
-                        android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                                getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-                        fragmentTrasaction.commit();
-                    }
-
                     ProcurarEventosMeetFragment.abrirSlider();
                 }
             });
-
-
-
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {// Inflate the layout for this fragment
-
-                            chamarFragmentListaEventos(Evento.getListaEventosLatLong(marker.getPosition()));
-                            // Se ela retorna falso, então o comportamento padrão irá ocorrer em adição ao seu comportamento personalizado
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10f));
-                            return false;
-                        }
-                    });
-
-
 
 
         } catch (SecurityException e) {
@@ -105,27 +83,47 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
             e.printStackTrace();
         }
 
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final Marker marker) {// Inflate the layout for this fragment
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14f), 1500,null);
+                chamarFragmentListaEventos(Evento.getListaEventosLatLong(marker.getPosition()));
+                //Build camera position
+                marker.showInfoWindow();
+
+
+
+                // Se ela retorna falso, então o comportamento padrão irá ocorrer em adição ao seu comportamento personalizado
+                return true;
+            }
+        });
+
         MainActivity.toolbar.setSubtitle("Procurar novos eventos");
-
-
         ProcurarEventosMeetFragment.dialog.cancel();
         // criarRaio();
     }
 
     private void abrirFragmentoCategorias() {
-        Fragment fragment = new PrePesquisaFragment();
-        android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-        fragmentTrasaction.commit();
-        MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
-        MainActivity.toolbar.setSubtitle("Encontrar novos eventos");
-        ProcurarEventosMeetFragment.fecharSlider();
+        try {
+            Fragment fragment = new PrePesquisaFragment();
+            android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                    getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+            fragmentTrasaction.commit();
+            MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+            MainActivity.toolbar.setSubtitle("Encontrar novos eventos");
+            ProcurarEventosMeetFragment.fecharSlider();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(getClass().getSimpleName(), "Error abrir fragmento categorias");
+        }
+
 
     }
 
-    private void chamarFragmentListaEventos(ArrayList<Evento> lista) {
-
+    private void chamarFragmentListaEventos(final ArrayList<Evento> lista) {
         // se a lista nao for nula , retornara todos eventos
         if (lista == null) {
             // configurando o sliderUp
@@ -135,6 +133,7 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
         } else {
             // ser for size 1 quer diser que so ha 1 evento naquela localidade , entao abrimos a tela de ir para o evento diretamente
             if (lista.size() == 1) {
+
                 Evento control = new Evento();
                 Fragment fragment = new InfoEventoMapFragment(control.getEvento(lista.get(0).getId()));
                 android.support.v4.app.FragmentTransaction fragmentTrasaction =
@@ -145,16 +144,17 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
                 return;
 
             }
-
             Fragment fragment = new ListaEventoFragment(lista);
             android.support.v4.app.FragmentTransaction fragmentTrasaction =
                     getActivity().getSupportFragmentManager().beginTransaction();
             fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
             fragmentTrasaction.commit();
 
+
             // slider Up
             ProcurarEventosMeetFragment.abrirSlider();
         }
+
 
     }
 
@@ -221,27 +221,9 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
 
     }
 
-
-
-
-/*
-    private void criarRaio() {
-
-        int raio = 15000;
-        Circle circle = mMap.addCircle(new CircleOptions()
-                .center(getMinhaLocalizacao())
-                .radius(raio)
-                .strokeColor(Color.BLACK)
-                .fillColor(Color.TRANSPARENT));
-        // move a camera em um certo raio de distancia
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getMinhaLocalizacao(), 10));
-    }
-*/
-
     @Override
     public void onMapClick(LatLng latLng) {
-     abrirFragmentoCategorias();
+        abrirFragmentoCategorias();
     }
 
     public static void descarmarMarker() {
@@ -267,11 +249,6 @@ Log.d(getClass().getSimpleName(), "Mapa pronto");
             }
         }
     }
-
-    public static void Remarcar() {
-        mMap.clear();
-    }
-
 
     public static GoogleMap getmMap() {
         return mMap;

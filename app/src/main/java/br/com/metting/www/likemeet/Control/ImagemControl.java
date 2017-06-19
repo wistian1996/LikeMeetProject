@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import com.androidquery.AQuery;
 import com.androidquery.callback.ImageOptions;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -43,8 +44,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ImagemControl {
 
 
-
-
     private static ImagePopup imagePopup;
 
     public static void setImagem(String local, ImageView imageView, Context context) {
@@ -66,7 +65,8 @@ public class ImagemControl {
         Glide.with(context)
                 .load(Uri.fromFile(new File(mPath)))
                 .fitCenter()
-                .into(imageView);}
+                .into(imageView);
+    }
 
     public static void setImagemCircular(String local, ImageView imageView, Context context) {
         File extStore = Environment.getExternalStorageDirectory();
@@ -78,7 +78,7 @@ public class ImagemControl {
                 .into(imageView);
     }
 
-    public static void carregarImagemMap(AQuery aQuery, ImageView imagemMapa, ProgressBar progressBarMapa, ImageOptions imageOptions , Evento e) {
+    public static void carregarImagemMap(AQuery aQuery, ImageView imagemMapa, ProgressBar progressBarMapa, ImageOptions imageOptions, Evento e) {
         //utilizado para que eu possa fazer uma conexao externa com a internet
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8) {
@@ -94,7 +94,33 @@ public class ImagemControl {
         }
     }
 
-    public static void carregarImagemComProgress(String local, Context c , ImageView imageView , final ProgressBar progressBar){
+
+    public static void carregarImagemComProgressEzoom(String local, Context c, final ImageView imageView, final ProgressBar progressBar) {
+        File extStore = Environment.getExternalStorageDirectory();
+        String mPath = extStore.getAbsolutePath() + local;
+
+
+        Glide.with(c).load(Uri.fromFile(new File(mPath))).
+                listener(new RequestListener<Uri, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(imageView);
+                        photoViewAttacher.setZoomable(true);
+                        photoViewAttacher.update();
+                        return false;
+                    }
+                }).into(imageView);
+    }
+
+    public static void carregarImagemComProgress(String local, Context c, ImageView imageView, final ProgressBar progressBar) {
+
         File extStore = Environment.getExternalStorageDirectory();
         String mPath = extStore.getAbsolutePath() + local;
 
@@ -108,7 +134,7 @@ public class ImagemControl {
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                       progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                         return false;
                     }
                 }).into(imageView);

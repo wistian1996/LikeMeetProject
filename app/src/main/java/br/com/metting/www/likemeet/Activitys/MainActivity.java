@@ -1,21 +1,13 @@
 package br.com.metting.www.likemeet.Activitys;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Interpolator;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,8 +30,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,15 +38,12 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.Set;
-
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
 import br.com.metting.www.likemeet.Class.Usuario;
 import br.com.metting.www.likemeet.Control.ImagemControl;
 import br.com.metting.www.likemeet.Fragments.CadastroEventos.CalendarioEventoFragment;
-import br.com.metting.www.likemeet.Fragments.FragmentHistoricoGeral;
-import br.com.metting.www.likemeet.Fragments.Main.FragmentPerfilHistorico;
+import br.com.metting.www.likemeet.Fragments.Main.FragmentHistoricoGeral;
 import br.com.metting.www.likemeet.Fragments.Main.InfoEventoMapFragment;
 import br.com.metting.www.likemeet.Fragments.Main.ListaEventoFragment;
 import br.com.metting.www.likemeet.Fragments.Main.MeusEventosFragment;
@@ -64,7 +51,6 @@ import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.Fragments.Main.PrePesquisaFragment;
 import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -229,13 +215,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                Fragment fragment = new PrePesquisaFragment();
-                android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                        getSupportFragmentManager().beginTransaction();
-                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-                fragmentTrasaction.commit();
-                MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
-                toolbar.setSubtitle("Encontrar novos eventos");
+                try {
+                    Fragment fragment = new PrePesquisaFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+                    fragmentTrasaction.commit();
+                    MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
+                    toolbar.setSubtitle("Encontrar novos eventos");
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d(getClass().getSimpleName(),"Erro abrir fragmentos categorias");
+                }
+
             }
         }, 100);
     }
@@ -268,13 +260,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ProcurarEventosMeetFragment.fecharSlider();
             return;
         }
-        // verifica qual fragment esta aberto no layout de baixo
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
-        if (f instanceof ListaEventoFragment || f instanceof InfoEventoMapFragment) {
-            abrirFragmentoCategorias();
+
+        try {
+            // verifica qual fragment esta aberto no layout de baixo
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
+            if (f instanceof ListaEventoFragment || f instanceof InfoEventoMapFragment) {
+
+                abrirFragmentoCategorias();
+                return;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.d(getClass().getSimpleName(), "Erro safado");
             return;
         }
-
         // Se vier null ou length == 0
         DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
             @Override

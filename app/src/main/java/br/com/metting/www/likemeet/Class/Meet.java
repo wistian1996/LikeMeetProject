@@ -75,7 +75,7 @@ public class Meet {
         listaUsuarios.add(u0);
         listaUsuarios.add(u5);
 
-        HistoricoEventos h1 = new HistoricoEventos(2, 2, data, "foi");
+        HistoricoEventos h1 = new HistoricoEventos(1, 2, data, "foi");
         HistoricoEventos h2 = new HistoricoEventos(4, 3, data, "vai");
         HistoricoEventos h3 = new HistoricoEventos(5, 4, data, "cancelou");
         HistoricoEventos h4 = new HistoricoEventos(6, 1, data, "criou");
@@ -86,7 +86,7 @@ public class Meet {
         HistoricoEventos h9 = new HistoricoEventos(10, 1, data, "foi");
         HistoricoEventos h10 = new HistoricoEventos(10, 1, data, "cancelou");
         HistoricoEventos h11 = new HistoricoEventos(10, 1, data, "criou");
-        HistoricoEventos h12 = new HistoricoEventos(2, 1, data, "foi");
+        HistoricoEventos h12 = new HistoricoEventos(1, 1, data, "foi");
         HistoricoEventos h13 = new HistoricoEventos(2, 1, data, "foi");
         HistoricoEventos h14 = new HistoricoEventos(2, 1, data, "foi");
         HistoricoEventos h15 = new HistoricoEventos(2, 1, data, "foi");
@@ -142,6 +142,7 @@ public class Meet {
         listaPublicacoes.add(p13);
         listaPublicacoes.add(p14);
         listaPublicacoes.add(p15);
+
 
     }
 
