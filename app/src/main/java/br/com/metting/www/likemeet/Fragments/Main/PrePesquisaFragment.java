@@ -2,11 +2,14 @@ package br.com.metting.www.likemeet.Fragments.Main;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Categoria;
@@ -97,16 +100,24 @@ public class PrePesquisaFragment extends Fragment {
     }
 
     private void abrirLista() {
-        ProcurarEventosMeetFragment.fecharSlider();
-        Fragment fragment = new ListaEventoFragment(Evento.getEventoCategoria(categoria));
-        MapsFragmentProcurarEventos.marcarPontos(Evento.getEventoCategoria(categoria));
-        Categoria c = Categoria.getCategoria(categoria);
-        MainActivity.toolbar.setSubtitle("Categoria: " + c.getNome());
+        ProcurarEventosMeetFragment.getSlider().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
-        android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-        fragmentTrasaction.commit();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Fragment fragment = new ListaEventoFragment(Evento.getEventoCategoria(categoria));
+                MapsFragmentProcurarEventos.marcarPontos(Evento.getEventoCategoria(categoria));
+                Categoria c = Categoria.getCategoria(categoria);
+                MainActivity.toolbar.setSubtitle("Categoria: " + c.getNome());
+
+                android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                        getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+                fragmentTrasaction.commit();
+            }
+        }, 100);
+
 
 
     }

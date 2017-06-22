@@ -18,22 +18,22 @@ import java.util.GregorianCalendar;
  */
 public class Evento {
 
-    int id;
-    int idUsuarioCadastrou;
-    String Nome;
-    String local;
-    String endereco;
-    Date dataEvento;//(data em que o evento vai ocorrer)
-    int[] duracaoEvento; // duracao do evento
-    Double valorEntrada;//(caso haja valor de entrada a ser cobrado)
-    int qtdMax;//(quantidade maxima de pessoas)
-    String descricao;
-    int privado;//(se o evento for privado apenas o admin podera adicionar as pessoas ao evento)
-    int idCategoria;//(jogos,festa,bares,shows)
-    int idadeMin;// (idade minina restringida ao usuario)
+    private int id;
+    private int idUsuarioCadastrou;
+    private String Nome;
+    private String local;
+    private String endereco;
+    private Date dataEvento;//(data em que o evento vai ocorrer)
+    private int[] duracaoEvento; // duracao do evento
+    private Double valorEntrada;//(caso haja valor de entrada a ser cobrado)
+    private int qtdMax;//(quantidade maxima de pessoas)
+    private String descricao;
+    private int privado;//(se o evento for privado apenas o admin podera adicionar as pessoas ao evento)
+    private int idCategoria;//(jogos,festa,bares,shows)
+    private int idadeMin;// (idade minina restringida ao usuario)
+    private ArrayList<Usuario> listaPartipantes;
 
-
-    public Evento(int id, int idUsuarioCadastrou, String nome, String local, String endereco, Date dataEvento,   int[] duracaoEvento, Double valorEntrada, int qtdMax, String descricao, int privado, int idCategoria, int idadeMin) {
+    public Evento(int id, int idUsuarioCadastrou, String nome, String local, String endereco, Date dataEvento, int[] duracaoEvento, Double valorEntrada, int qtdMax, String descricao, int privado, int idCategoria, int idadeMin) {
         this.id = id;
         this.idUsuarioCadastrou = idUsuarioCadastrou;
         Nome = nome;
@@ -47,10 +47,19 @@ public class Evento {
         this.idCategoria = idCategoria;
         this.idadeMin = idadeMin;
         this.duracaoEvento = duracaoEvento;
+        this.listaPartipantes = Meet.getListaUsuarios();
+    }
+
+    public void setListaPartipantes(ArrayList<Usuario> listaPartipantes) {
+        this.listaPartipantes = listaPartipantes;
     }
 
     public Evento() {
 
+    }
+
+    public void adicionarUsuario(Usuario usuario){
+        listaPartipantes.add(usuario);
     }
 
     public static Evento getEvento(int id) {
@@ -64,26 +73,28 @@ public class Evento {
 
     }
 
-    public static ArrayList<Evento> getEventoCategoria(int idCategoria){
+    public static ArrayList<Evento> getEventoCategoria(int idCategoria) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
         for (Evento lista : Meet.getListaEventos()
-             ) {
-            if (lista.getIdCategoria() == idCategoria){
+                ) {
+            if (lista.getIdCategoria() == idCategoria) {
                 listaEventos.add(lista);
             }
         }
         return listaEventos;
     }
-    public static ArrayList<Evento> getEvento(String nome){
+
+    public static ArrayList<Evento> getEvento(String nome) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        for (Evento lista: Meet.getListaEventos()
-             ) {
-            if (lista.getNome().toLowerCase().contains(nome.toLowerCase()) || lista.getDescricao().toLowerCase().contains(nome.toLowerCase())){
+        for (Evento lista : Meet.getListaEventos()
+                ) {
+            if (lista.getNome().toLowerCase().contains(nome.toLowerCase()) || lista.getDescricao().toLowerCase().contains(nome.toLowerCase())) {
                 listaEventos.add(lista);
             }
         }
         return listaEventos;
     }
+
     public static ArrayList<Evento> getListaEventosLatLong(LatLng latLong) {
         ArrayList<Evento> list = new ArrayList<>();
 
@@ -141,6 +152,10 @@ public class Evento {
 
     public int getId() {
         return id;
+    }
+
+    public ArrayList<Usuario> getListaPartipantes() {
+        return listaPartipantes;
     }
 
     public int getIdUsuarioCadastrou() {

@@ -94,7 +94,6 @@ public class ImagemControl {
         }
     }
 
-
     public static void carregarImagemComProgressEzoom(String local, Context c, final ImageView imageView, final ProgressBar progressBar) {
         File extStore = Environment.getExternalStorageDirectory();
         String mPath = extStore.getAbsolutePath() + local;

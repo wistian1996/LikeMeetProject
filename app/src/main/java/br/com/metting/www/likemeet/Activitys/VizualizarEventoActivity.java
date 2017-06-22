@@ -24,18 +24,19 @@ public class VizualizarEventoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vizualizar_evento);
-        toolbar = (Toolbar) findViewById(R.id.toolbarEvento);
+
+        /*toolbar = (Toolbar) findViewById(R.id.toolbarEvento);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+*/
 
         Bundle b = getIntent().getExtras();
         int value; // or other values
         if (b != null) {
             value = b.getInt("idEvento");
             this.evento = Evento.getEvento(value);
-            toolbar.setTitle("Vizualizar evento");
-            toolbar.setSubtitle("Categoria: " + Categoria.getCategoria(evento.getIdCategoria()).getNome());
+          //  toolbar.setTitle("Vizualizar evento");
+           // toolbar.setSubtitle("Categoria: " + Categoria.getCategoria(evento.getIdCategoria()).getNome());
             Fragment fragment = new InfoEventoMapFragment(evento, 1);
             android.support.v4.app.FragmentTransaction fragmentTrasaction =
                     getSupportFragmentManager().beginTransaction();

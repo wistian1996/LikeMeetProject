@@ -12,13 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import br.com.metting.www.likemeet.Adapters.ParticipantesEventoInfoAdapter;
+import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Meet;
+import br.com.metting.www.likemeet.Class.Usuario;
 import br.com.metting.www.likemeet.R;
 
-public class listaParticipantesEventoInfoFragment extends Fragment {
+public class listaUsuariosFragment extends Fragment {
     private View view;
     private RecyclerView recyclerView;
+   private ArrayList<Usuario> listaUsuarios;
+
+    public listaUsuariosFragment(ArrayList<Usuario> listaUsuarios){
+       this.listaUsuarios = listaUsuarios;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +41,7 @@ public class listaParticipantesEventoInfoFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        ParticipantesEventoInfoAdapter adapter = new ParticipantesEventoInfoAdapter(getActivity(), Meet.getListaUsuarios());
+        ParticipantesEventoInfoAdapter adapter = new ParticipantesEventoInfoAdapter(getActivity(),listaUsuarios);
         recyclerView.setAdapter(adapter);
 
 

@@ -40,12 +40,11 @@
         <activity
             android:name=".Activitys.VizualizarEventoActivity"
             android:label="Evento"
-            android:theme="@style/AppTheme2"></activity>
+            android:theme="@style/AppTheme2" />
         <activity
             android:name=".Activitys.ActivityVerFoto"
-            android:theme="@style/AppTheme2"
-            >
-        </activity>
+            android:theme="@style/AppTheme2"></activity>
+        <activity android:name=".ActivityUsuarios"></activity>
     </application>
 
 </manifest>

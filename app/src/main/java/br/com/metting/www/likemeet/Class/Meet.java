@@ -24,6 +24,8 @@ public class Meet {
         listaUsuarios = new ArrayList<>();
         listaPublicacoes = new ArrayList<>();
 
+
+
         int[] duracaoEvento = new int[2];
 
         duracaoEvento[0] = 24;
@@ -36,6 +38,22 @@ public class Meet {
         c.setTime(data2);
         c.add(Calendar.DATE, +1);
         data2 = c.getTime();
+
+
+        Usuario u0 = new Usuario(1, "Franklin Wistian", "A vingança é plena mata a alma e a envenena", data, "7999845412", "franklinwistian@jzone.com.br", "RioReal - SE", "/DCIM/100AVIARY/Franklin.jpg", 1, 0, "", 1);
+        Usuario u1 = new Usuario(2, "Alexandre andrade", "Eu sou da NASA", data, "7999845412", "", "Aracaju - SE", "/DCIM/100AVIARY/Alexandre.jpg", 1, 0, "", 1);
+        Usuario u2 = new Usuario(3, "Negan sales", "Minha nossa, eu nunca estive tao errado em toda minha vida!", data, "7999845412", "", "Itabaianinha - SE", "/DCIM/100AVIARY/Elder.jpg", 1, 0, "", 1);
+        Usuario u3 = new Usuario(4, "Carlos Henrique", "Likeaboss", data, "7999845412", "", "Itabaiana - SE", "/DCIM/100AVIARY/Likeaboss.jpg", 1, 0, "", 1);
+        Usuario u4 = new Usuario(5, "Luiz Felipe", "Sou blessed", data, "7999845412", "", "Aracaju - BA", "/DCIM/100AVIARY/Felipe.jpg", 1, 0, "", 1);
+        Usuario u5 = new Usuario(6, "Clevia", "Clevia s2 Wistian", data, "79998305214", "", "RioReal - BA", "/DCIM/100AVIARY/Clevia.jpg", 1, 0, "", 1);
+        listaUsuarios.add(u0);
+        listaUsuarios.add(u1);
+        listaUsuarios.add(u2);
+        listaUsuarios.add(u3);
+        listaUsuarios.add(u4);
+        listaUsuarios.add(u5);
+
+
         Date data3 = new Date(data2.getTime());
         Evento evento = new Evento(1, 1, "Quadra do melhores", "-10.937351,-37.082956", "Avenida São João Batista, 651 - 1º andar - Ponto Novo, Aracaju - SE, 49097-000", data3, duracaoEvento, 0.0, 50, "Bora galera, bater um baba!!!!", 0, 4, 10);
         Evento evento3 = new Evento(3, 2, "Festeja fest", "-10.942671,-37.097429", "Avenida São João Batista, 651 - 1º andar - Ponto Novo, Aracaju - SE, 49097-000", data, duracaoEvento, 120.00, 50, "Festa particular!", 0, 1, 18);
@@ -62,18 +80,10 @@ public class Meet {
         listaEventos.add(evento9);
         listaEventos.add(evento10);
 
-        Usuario u0 = new Usuario(1, "Franklin Wistian", "A vingança é plena mata a alma e a envenena", data, "7999845412", "franklinwistian@jzone.com.br", "RioReal - SE", "/DCIM/100AVIARY/Franklin.jpg", 1, 0, "", 1);
-        Usuario u1 = new Usuario(2, "Alexandre andrade", "Eu sou da NASA", data, "7999845412", "", "Aracaju - SE", "/DCIM/100AVIARY/Alexandre.jpg", 1, 0, "", 1);
-        Usuario u2 = new Usuario(3, "Negan sales", "Minha nossa, eu nunca estive tao errado em toda minha vida!", data, "7999845412", "", "Itabaianinha - SE", "/DCIM/100AVIARY/Elder.jpg", 1, 0, "", 1);
-        Usuario u3 = new Usuario(4, "Carlos Henrique", "Likeaboss", data, "7999845412", "", "Itabaiana - SE", "/DCIM/100AVIARY/Likeaboss.jpg", 1, 0, "", 1);
-        Usuario u4 = new Usuario(5, "Luiz Felipe", "Sou blessed", data, "7999845412", "", "Aracaju - BA", "/DCIM/100AVIARY/Felipe.jpg", 1, 0, "", 1);
-        Usuario u5 = new Usuario(6, "Clevia", "Clevia s2 Wistian", data, "79998305214", "", "RioReal - BA", "/DCIM/100AVIARY/Clevia.jpg", 1, 0, "", 1);
-        listaUsuarios.add(u1);
-        listaUsuarios.add(u2);
-        listaUsuarios.add(u3);
-        listaUsuarios.add(u4);
-        listaUsuarios.add(u0);
-        listaUsuarios.add(u5);
+        ArrayList<Usuario> asd = new ArrayList<>();
+        asd.add(u5);
+        listaEventos.get(8).setListaPartipantes(asd);
+
 
         HistoricoEventos h1 = new HistoricoEventos(1, 2, data, "foi");
         HistoricoEventos h2 = new HistoricoEventos(4, 3, data, "vai");
@@ -112,21 +122,21 @@ public class Meet {
         historicoEventos.add(h17);
         historicoEventos.add(h18);
 
-        PublicacaoImagem p1 = new PublicacaoImagem(1, 1, 1, "Ops", "/DCIM/100AVIARY/paintball1.jpg" , data , 1015);
-        PublicacaoImagem p2 = new PublicacaoImagem(2, 1, 2, "Vou te acertar", "/DCIM/100AVIARY/paintball2.jpg" , data , 121);
-        PublicacaoImagem p3 = new PublicacaoImagem(3, 1, 3, "PaintBall na aruana quem vai", "/DCIM/100AVIARY/paintball3.jpg" , data, 156);
-        PublicacaoImagem p4 = new PublicacaoImagem(4, 2, 4, "Testando postagem de fotos", "/DCIM/100AVIARY/paintball1.jpg" , data,251);
-        PublicacaoImagem p5 = new PublicacaoImagem(5, 2, 5, "Testando outra postagem", "/DCIM/100AVIARY/paintball2.jpg" , data,15);
-        PublicacaoImagem p6 = new PublicacaoImagem(6, 3, 6, "Likeaboss", "/DCIM/100AVIARY/paintball3.jpg" , data,156);
-        PublicacaoImagem p7 = new PublicacaoImagem(7, 4, 1, "Vem pra caixa voce tambem", "/DCIM/100AVIARY/paintball1.jpg" , data,65);
-        PublicacaoImagem p8 = new PublicacaoImagem(8, 4, 2, "Nao faça isso", "/DCIM/100AVIARY/paintball2.jpg" , data,15);
-        PublicacaoImagem p9 = new PublicacaoImagem(9, 4, 3, "Alexandre falta muito ainda", "/DCIM/100AVIARY/paintball3.jpg" , data,24);
-        PublicacaoImagem p10 = new PublicacaoImagem(10, 5, 4, "Adiante ai pra gente ficar rico", "/DCIM/100AVIARY/paintball1.jpg" , data,1744);
-        PublicacaoImagem p11 = new PublicacaoImagem(11, 6, 5, "Na moral", "/DCIM/100AVIARY/paintball2.jpg" , data,4242);
-        PublicacaoImagem p12 = new PublicacaoImagem(12, 7, 6, "Ja ta pronto?", "/DCIM/100AVIARY/paintball3.jpg" , data,11);
-        PublicacaoImagem p13 = new PublicacaoImagem(13, 8, 1, "Teste", "/DCIM/100AVIARY/paintball1.jpg" , data,141);
-        PublicacaoImagem p14 = new PublicacaoImagem(14, 9, 2, "Teste", "/DCIM/100AVIARY/paintball2.jpg" , data,5253);
-        PublicacaoImagem p15 = new PublicacaoImagem(15, 10, 3, "TEstando nova publicacao de foto", "/DCIM/100AVIARY/paintball3.jpg" , data,4141);
+        PublicacaoImagem p1 = new PublicacaoImagem(1, 1, 1, "Ops", "/DCIM/100AVIARY/paintball1.jpg", data, 1015);
+        PublicacaoImagem p2 = new PublicacaoImagem(2, 1, 2, "Vou te acertar", "/DCIM/100AVIARY/paintball2.jpg", data, 121);
+        PublicacaoImagem p3 = new PublicacaoImagem(3, 1, 3, "PaintBall na aruana quem vai", "/DCIM/100AVIARY/paintball3.jpg", data, 156);
+        PublicacaoImagem p4 = new PublicacaoImagem(4, 2, 4, "Testando postagem de fotos", "/DCIM/100AVIARY/paintball1.jpg", data, 251);
+        PublicacaoImagem p5 = new PublicacaoImagem(5, 2, 5, "Testando outra postagem", "/DCIM/100AVIARY/paintball2.jpg", data, 15);
+        PublicacaoImagem p6 = new PublicacaoImagem(6, 3, 6, "Likeaboss", "/DCIM/100AVIARY/paintball3.jpg", data, 156);
+        PublicacaoImagem p7 = new PublicacaoImagem(7, 4, 1, "Vem pra caixa voce tambem", "/DCIM/100AVIARY/paintball1.jpg", data, 65);
+        PublicacaoImagem p8 = new PublicacaoImagem(8, 4, 2, "Nao faça isso", "/DCIM/100AVIARY/paintball2.jpg", data, 15);
+        PublicacaoImagem p9 = new PublicacaoImagem(9, 4, 3, "Alexandre falta muito ainda", "/DCIM/100AVIARY/paintball3.jpg", data, 24);
+        PublicacaoImagem p10 = new PublicacaoImagem(10, 5, 4, "Adiante ai pra gente ficar rico", "/DCIM/100AVIARY/paintball1.jpg", data, 1744);
+        PublicacaoImagem p11 = new PublicacaoImagem(11, 5, 5, "Na moral", "/DCIM/100AVIARY/paintball2.jpg", data, 4242);
+        PublicacaoImagem p12 = new PublicacaoImagem(12, 5, 6, "Ja ta pronto?", "/DCIM/100AVIARY/paintball3.jpg", data, 11);
+        PublicacaoImagem p13 = new PublicacaoImagem(13, 8, 1, "Teste", "/DCIM/100AVIARY/paintball1.jpg", data, 141);
+        PublicacaoImagem p14 = new PublicacaoImagem(14, 9, 2, "Teste", "/DCIM/100AVIARY/paintball2.jpg", data, 5253);
+        PublicacaoImagem p15 = new PublicacaoImagem(15, 10, 3, "TEstando nova publicacao de foto", "/DCIM/100AVIARY/paintball3.jpg", data, 4141);
         listaPublicacoes.add(p1);
         listaPublicacoes.add(p2);
         listaPublicacoes.add(p3);

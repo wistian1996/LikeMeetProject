@@ -89,30 +89,22 @@ public class EventosProcurarAdapter extends RecyclerView.Adapter<EventosProcurar
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        if (!ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                        // mostrando a janela de informacoes do marker
+                        String[] latlong = list.get(position).getLocal().split(",");
+                        double latitude = Double.parseDouble(latlong[0]);
+                        double longitude = Double.parseDouble(latlong[1]);
+                        LatLng local = new LatLng(latitude, longitude);
 
-                            // mostrando a janela de informacoes do marker
-                            String[] latlong = list.get(position).getLocal().split(",");
-                            double latitude = Double.parseDouble(latlong[0]);
-                            double longitude = Double.parseDouble(latlong[1]);
-                            LatLng local = new LatLng(latitude, longitude);
+                        MapsFragmentProcurarEventos.marcarMarker(local);
 
-                            MapsFragmentProcurarEventos.marcarMarker(local);
-
-
-                            // abrindo a tela de informacoes
-                            Fragment fragment = new InfoEventoMapFragment(list.get(position));
-
-                            android.support.v4.app.FragmentTransaction fragmentTrasaction =
-                                    ((MainActivity) c).getSupportFragmentManager().beginTransaction();
-                            fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
-                            fragmentTrasaction.commit();
-                            ProcurarEventosMeetFragment.fecharSlider();
+                        // abrindo a tela de informacoes
+                        Fragment fragment = new InfoEventoMapFragment(list.get(position));
+                        android.support.v4.app.FragmentTransaction fragmentTrasaction =
+                                ((MainActivity) c).getSupportFragmentManager().beginTransaction();
+                        fragmentTrasaction.replace(R.id.LayoutBaixoMap, fragment);
+                        fragmentTrasaction.commit();
 
 
-                        } else {
-                            ProcurarEventosMeetFragment.abrirSlider();
-                        }
                     }
                 }, 300);
                 //verifico se  o sliderrup esta expanded

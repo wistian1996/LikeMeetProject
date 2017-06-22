@@ -1,6 +1,7 @@
 package br.com.metting.www.likemeet.Fragments.Main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +23,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 
+import br.com.metting.www.likemeet.ActivityUsuarios;
+import br.com.metting.www.likemeet.Activitys.ActivityPerfil;
+import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Adapters.HistoricoAdapter;
 import br.com.metting.www.likemeet.Class.HistoricoEventos;
 import br.com.metting.www.likemeet.Class.Meet;
@@ -34,6 +40,9 @@ public class FragmentPerfilHistorico extends Fragment {
     private ArrayList<HistoricoEventos> listaHistoricos;
     private TextView textViewStatus;
     private TextView textViewIdadeCidade;
+    private RelativeLayout layoutSeguidores;
+    private RelativeLayout layoutSeguindo;
+    private Button buttonSeguir;
 
     public FragmentPerfilHistorico(FragmentManager fm, Usuario usuario) {
         this.fm = fm;
@@ -50,10 +59,40 @@ public class FragmentPerfilHistorico extends Fragment {
 
         textViewStatus = (TextView) view.findViewById(R.id.textViewStatus);
         textViewIdadeCidade = (TextView) view.findViewById(R.id.textViewIdadeCidade);
-
+        layoutSeguidores = (RelativeLayout) view.findViewById(R.id.relativeLayoutSeguidores);
+        layoutSeguindo = (RelativeLayout) view.findViewById(R.id.relativeLayoutSeguindo);
         textViewIdadeCidade.setText(usuario.getEndereco());
+        buttonSeguir = (Button) view.findViewById(R.id.buttonSeguir);
         textViewStatus.setText("'" + usuario.getStatus() + "'");
 
+
+        layoutSeguidores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext() , ActivityUsuarios.class);
+                Bundle b = new Bundle();
+                //inserindo o ID do usuario que esta logado e passando id como parametro
+                b.putInt("idUsuario", Usuario.getUsuario().getId()); //Your id
+                b.putInt("Tela", 1);
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+
+        layoutSeguindo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext() , ActivityUsuarios.class);
+                Bundle b = new Bundle();
+                //inserindo o ID do usuario que esta logado e passando id como parametro
+                b.putInt("idUsuario", Usuario.getUsuario().getId()); //Your id
+                b.putInt("Tela", 0);
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
 
 
         //iniciando a recycler view

@@ -10,7 +10,7 @@
         <item
             android:id="@+id/nav_linha_tempo"
             android:icon="@drawable/ic_public_black_24dp"
-            android:title="Historico" />
+            android:title="Linha do tempo" />
 
         <item
             android:id="@+id/nav_meus_eventos"
@@ -32,12 +32,6 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Compartilhar" />
-
-
-            <item
-                android:id="@+id/nav_config"
-                android:icon="@drawable/ic_build_black_24dp"
-                android:title="Configurações" />
 
         </menu>
     </item>

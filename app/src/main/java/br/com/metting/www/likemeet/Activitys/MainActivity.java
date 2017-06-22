@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         // como trocar a tintura do menu  no navigation drawer
         int[][] states = new int[][]{
                 new int[]{-android.R.attr.state_checked},// unchecked state
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ColorStateList colorStateList = new ColorStateList(states, colors);
         navigationView.setItemTextColor(colorStateList);
         navigationView.setItemIconTintList(colorStateList);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     public static SearchView getSearchView() {
@@ -223,29 +225,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     fragmentTrasaction.commit();
                     MapsFragmentProcurarEventos.marcarPontos(Meet.getListaEventos());
                     toolbar.setSubtitle("Encontrar novos eventos");
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d(getClass().getSimpleName(),"Erro abrir fragmentos categorias");
+                    Log.d(getClass().getSimpleName(), "Erro abrir fragmentos categorias");
                 }
 
             }
         }, 100);
     }
 
+    DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    finish();
+
+                case DialogInterface.BUTTON_NEGATIVE:
+
+            }
+        }
+    };
+
+    private void dialogSairAplicacao() {
+        // Se vier null ou length == 0
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        mNoGpsDialog = builder.setMessage("Deseja finalizar a aplicação?")
+                .setPositiveButton("Sim", dialogClickListener2).setNegativeButton("Não", dialogClickListener2)
+                .create();
+
+        mNoGpsDialog.show();
+    }
+
     @Override
     public void onBackPressed() {
+        if (meusEventosFragment.isVisible() || fragmentHistoricoGeral.isVisible()) {
+            dialogSairAplicacao();
+            return;
+        }
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
             return;
         }
 
-        // caso haja algum framento iniciado com addtobackstack antes do replace , ele é inserido na pilha
+// verifica se ha algum fragmento na pilha
+
+        /*
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
             Log.d(getClass().getName(), "pilha:" + getSupportFragmentManager().getBackStackEntryCount());
             return;
-        }
+        }*/
 
         //caso search esteja aberto
         if (!searchView.isIconified()) {
@@ -269,31 +302,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 abrirFragmentoCategorias();
                 return;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Log.d(getClass().getSimpleName(), "Erro safado");
             return;
         }
-        // Se vier null ou length == 0
-        DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        finish();
+        dialogSairAplicacao();
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        mNoGpsDialog = builder.setMessage("Deseja finalizar a aplicação?")
-                .setPositiveButton("Sim", dialogClickListener2).setNegativeButton("Não", dialogClickListener2)
-                .create();
-
-        mNoGpsDialog.show();
     }
 
     @Override
@@ -302,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textViewEmail = (TextView) findViewById(R.id.textViewEmail);
         textViewNome = (TextView) findViewById(R.id.textViewNome);
         imageViewFotoPerfil = (ImageView) findViewById(R.id.imageViewFotoPerfilDrawer);
-
+        ImageView layoutConfiguracoes = (ImageView) findViewById(R.id.imageviewConfig);
 
         //obentdo o usuario logado . OBS MUDAR AO CRIAR O BANCO
         usuario = Usuario.getUsuario();
@@ -311,7 +326,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImagemControl.setImagemCircular(usuario.getFoto(), imageViewFotoPerfil, this);
 
 
-
+        layoutConfiguracoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //set layout perfil
         layout_perfil = (RelativeLayout) findViewById(R.id.layout_perfil);
@@ -465,10 +486,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             searchView.setVisibility(View.INVISIBLE);
 
             trocarFragmento(meusEventosFragment);
-
-        } else if (id == R.id.nav_config) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
 
         } else if (id == R.id.nav_chat) {
             fab.setVisibility(View.INVISIBLE);

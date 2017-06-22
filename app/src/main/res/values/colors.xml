@@ -6,6 +6,7 @@
     <color name="colorTerceira">#00008e63</color>
     <color name="colorAccentTransparent">#da008e63</color>
     <color name="colorPretoTransparent">#96000000</color>
+    <color name="vermelho">#ef0000</color>
 
 
 </resources>

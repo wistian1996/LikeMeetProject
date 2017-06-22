@@ -3,6 +3,7 @@ package br.com.metting.www.likemeet.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -110,6 +112,12 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.MyVi
         //      holder.imageOptions.fallback = R.drawable.iconperfill;
 
 
+        holder.textViewPublicacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirFragmentoEvento(holder.view.getContext(), position);
+            }
+        });
         holder.imageViewFotoPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,32 +131,58 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.MyVi
         });
 
 
-        holder.textViewPublicacoes.setText("Publicações (" + listaFotos.size() + ").");
+        holder.textViewPublicacoes.setText("Publicações (" + listaFotos.size() + ")");
 
-        setarImagens(holder.imageView1, holder.view.getContext(), listaFotos, 0);
-        setarImagens(holder.imageView2, holder.view.getContext(), listaFotos, 1);
-        setarImagens(holder.imageView3, holder.view.getContext(), listaFotos, 2);
+
+        if (listaFotos.size() > 0) {
+            setarImagens(holder.imageView1, holder.view.getContext(), listaFotos, 0);
+            setarImagens(holder.imageView2, holder.view.getContext(), listaFotos, 1);
+            setarImagens(holder.imageView3, holder.view.getContext(), listaFotos, 2);
+        } else {
+            holder.imageView1.setVisibility(View.GONE);
+            holder.imageView2.setVisibility(View.GONE);
+            holder.imageView3.setVisibility(View.GONE);
+            holder.butonPublicacoes.setVisibility(View.GONE);
+        }
+
         ImagemControl.carregarImagemMap(holder.aQuery, holder.imagemMapa, holder.progressBarMapa, holder.imageOptions, e);
         // acoes para os botoes
+
+        holder.imagemMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Evento e = Evento.getEvento(lHistorico.get(position).getIdEvento());
+                String[] latLng = e.getLocal().split(",");
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + latLng[0] + ">,<" + latLng[1] + ">?q=<" + latLng[0] + ">,<" + latLng[1] + ">(" + e.getNome() + ")"));
+                c.startActivity(intent);
+            }
+        });
         holder.cardViewMeusEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(getClass().getName(), "ON click meuEVENTO");
-                Intent intent = new Intent(c, VizualizarEventoActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("idEvento", lHistorico.get(position).getIdEvento());
-                intent.putExtras(b); //Put your id to your next Intent
-                c.startActivity(intent);
-                ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
+                abrirFragmentoEvento(holder.view.getContext(), position);
+            }
+        });
+        holder.butonPublicacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirFragmentoEvento(holder.view.getContext(), position);
             }
         });
     }
 
-    private void setarImagens(final ImageView imageView, final Context c, final ArrayList<PublicacaoImagem> listaFotos, final int posicao) {
-        if (listaFotos.size() > posicao && listaFotos.get(posicao) != null) {
-            Log.d(getClass().getSimpleName(), "POSICAO: " + posicao);
+    private void abrirFragmentoEvento(Context c, int position) {
+        Intent intent = new Intent(c, VizualizarEventoActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("idEvento", lHistorico.get(position).getIdEvento());
+        intent.putExtras(b); //Put your id to your next Intent
+        c.startActivity(intent);
+        ((Activity) c).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
 
+    private void setarImagens(final ImageView imageView, final Context c, final ArrayList<PublicacaoImagem> listaFotos, final int posicao) {
+
+        if (listaFotos.size() > posicao && listaFotos.get(posicao) != null) {
             ImagemControl.setImagem(listaFotos.get(posicao).getURL(), imageView, c);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -193,6 +227,7 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.MyVi
         public ImageView imageView2;
         public ImageView imageView3;
         private TextView textViewPublicacoes;
+        private Button butonPublicacoes;
         public View view;
 
         public MyViewHolder(final View itemView) {
@@ -204,6 +239,7 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.MyVi
             imagemMapa = (ImageView) itemView.findViewById(R.id.ImageViewPublicacao);
             cardViewMeusEventos = (CardView) itemView.findViewById(R.id.card_view_meus_eventos);
             aQuery = new AQuery(itemView);
+            butonPublicacoes = (Button) itemView.findViewById(R.id.ButtonPublicacoes);
             progressBarMapa = (ProgressBar) itemView.findViewById(R.id.progressBarMapa);
             imageViewFotoPerfil = (ImageView) itemView.findViewById(R.id.imageViewFotoPerfil);
             imageView1 = (ImageView) itemView.findViewById(R.id.imageView1);

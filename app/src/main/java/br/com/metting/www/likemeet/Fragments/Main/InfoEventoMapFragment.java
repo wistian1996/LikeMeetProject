@@ -1,24 +1,22 @@
 package br.com.metting.www.likemeet.Fragments.Main;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,10 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import br.com.metting.www.likemeet.Activitys.CadastroEventoActivity;
-import br.com.metting.www.likemeet.Activitys.MainActivity;
 import br.com.metting.www.likemeet.Class.Evento;
 import br.com.metting.www.likemeet.Class.Usuario;
-import br.com.metting.www.likemeet.Maps.MapsFragmentProcurarEventos;
 import br.com.metting.www.likemeet.R;
 
 public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallback {
@@ -46,7 +42,7 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
     private ViewPager mViewPager;
     private TextView nome;
     private View view;
-    private listaParticipantesEventoInfoFragment listaParticipantesEventoInfoFragment;
+    private listaUsuariosFragment listaUsuariosFragment;
     private infoEventoMap2Fragment infoEventoMap2Fragment;
     private int fragmento; // se == 1 , esta abrindo pelo MeusEventosAdapter ou historico adapter
     private RelativeLayout relativeLayoutEditar;
@@ -69,42 +65,36 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
     private MapView mMap;
     private GoogleMap gMap;
     private Button buttonInfo;
-
+    private Dialog mNoGpsDialog;
+    Usuario u;
 
     public InfoEventoMapFragment(Evento evento) {
         this.evento = evento;
         fragmento = 0;
+        u = u.getUsuario();
     }
-
 
     public InfoEventoMapFragment(Evento evento, int fragmento) {
         this.evento = evento;
         this.fragmento = fragmento;
+        u = u.getUsuario();
     }
-
 
     private void getElementosIntent() {
         Intent intent = new Intent(getActivity(), CadastroEventoActivity.class);
-
         Bundle b = new Bundle();
         b.putInt("idEvento", evento.getId()); //Your id
         intent.putExtras(b); //Put your id to your next Intent
         startActivity(intent);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_info_evento_map, container, false);
-
         // Inflate the layout for this fragment
-
-                listaParticipantesEventoInfoFragment = new listaParticipantesEventoInfoFragment();
-                infoEventoMap2Fragment = new infoEventoMap2Fragment(evento);
-
-
-
+        listaUsuariosFragment = new listaUsuariosFragment(evento.getListaPartipantes());
+        infoEventoMap2Fragment = new infoEventoMap2Fragment(evento);
         nome = (TextView) view.findViewById(R.id.textViewNome);
         nome.setText(evento.getNome());
         relativeLayoutInfo = (RelativeLayout) view.findViewById(R.id.relativeLayoutFundoVerde);
@@ -117,15 +107,11 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
         setaDireita = (ImageView) view.findViewById(R.id.imageViewSetaDireita);
         setaEsquerda = (ImageView) view.findViewById(R.id.imageViewSetaEsquerda);
         setaEsquerda.setVisibility(View.INVISIBLE);
-        buttonInfo = (Button) view.findViewById(R.id.button_info);
-
         preencherInfoEvento();
         acoesbotoes();
         alterarBotoes();
-
         mViewPager = (ViewPager) view.findViewById(R.id.pager_info_evento);
         PagerAdapter adapter = new PagerAdapter(getActivity().getSupportFragmentManager());
-
         //comentario da tab com nome . nao vai ser mais necessario
         // definindo uma tab para o page
         //  TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
@@ -163,7 +149,7 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
                     setaDireita.setVisibility(View.VISIBLE);
                     setaEsquerda.setVisibility(View.INVISIBLE);
 
-                    Snackbar.make(view, "Publicações", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, "Publicações, arraste para baixo para ver mais", Snackbar.LENGTH_SHORT)
                             .show();
                 }
                 if (position == 1) {
@@ -192,29 +178,44 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
                 dialog.show();
             }
         });
-        buttonInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-            }
-        });
-
-
         setaEsquerda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewPager.setCurrentItem(0);
-                setaDireita.setVisibility(View.VISIBLE);
-                setaEsquerda.setVisibility(View.INVISIBLE);
+                if (ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                    ProcurarEventosMeetFragment.abrirSlider();
+                    android.os.Handler handler = new android.os.Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            mViewPager.setCurrentItem(0);
+                            setaDireita.setVisibility(View.VISIBLE);
+                            setaEsquerda.setVisibility(View.INVISIBLE);
+                        }
+                    }, 200);
+                } else {
+                    mViewPager.setCurrentItem(0);
+                    setaDireita.setVisibility(View.VISIBLE);
+                    setaEsquerda.setVisibility(View.INVISIBLE);
+                }
             }
         });
-
         setaDireita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewPager.setCurrentItem(1);
-                setaDireita.setVisibility(View.INVISIBLE);
-                setaEsquerda.setVisibility(View.VISIBLE);
+                if (ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                    ProcurarEventosMeetFragment.abrirSlider();
+                    android.os.Handler handler = new android.os.Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            mViewPager.setCurrentItem(1);
+                            setaDireita.setVisibility(View.INVISIBLE);
+                            setaEsquerda.setVisibility(View.VISIBLE);
+                        }
+                    }, 200);
+                } else {
+                    mViewPager.setCurrentItem(1);
+                    setaDireita.setVisibility(View.INVISIBLE);
+                    setaEsquerda.setVisibility(View.VISIBLE);
+                }
             }
         });
         relativeLayoutEditar.setOnClickListener(new View.OnClickListener() {
@@ -229,8 +230,6 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
                 getElementosIntent();
             }
         });
-
-
         if (fragmento == 0) {
             relativeLayoutInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -240,14 +239,56 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
                     } else {
                         ProcurarEventosMeetFragment.abrirSlider();
                     }
-
                 }
             });
         }
+        relativeLayoutBotaoEuVou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // verificar a capacidade maxima de pessoas
+                // verificar a data do evento se esta de acordo
+                // verificar a idade minima para entrada do evento
+                //nao fiz pra nao gastar tempo
+                dialogConfirmacao();
 
 
+            }
+        });
     }
 
+    private void entrarNoEvento() {
+        alterarBotoes();
+        if (ProcurarEventosMeetFragment.getSlider().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+            ProcurarEventosMeetFragment.abrirSlider();
+            evento.adicionarUsuario(Usuario.getUsuario());
+
+            InfoEventoMapFragment inf = new InfoEventoMapFragment(evento);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.LayoutBaixoMap , inf).commit();
+
+            Toast.makeText(getContext(),"Agora você é um participante" , Toast.LENGTH_LONG).show();
+        }
+    }
+
+    DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    entrarNoEvento();
+                    // lembrar de atualizar o historico de publicacoes
+                case DialogInterface.BUTTON_NEGATIVE:
+            }
+        }
+    };
+
+    private void dialogConfirmacao() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        mNoGpsDialog = builder.setMessage("Participar do evento " + evento.getNome() + " ?")
+                .setPositiveButton("Vou", dialogClickListener2).setNegativeButton("Não", dialogClickListener2)
+                .create();
+        mNoGpsDialog.show();
+    }
 
     private void preencherInfoEvento() {
 
@@ -334,7 +375,7 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
                 case 0:
                     return infoEventoMap2Fragment;
                 case 1:
-                    return listaParticipantesEventoInfoFragment;
+                    return listaUsuariosFragment;
 
                 default:
                     return null;
@@ -347,12 +388,24 @@ public class InfoEventoMapFragment extends Fragment implements OnMapReadyCallbac
     }
 
     private void alterarBotoes() {
-        if (evento.getIdUsuarioCadastrou() == Usuario.getUsuario().getId()) {
-            // quer diser que o evento e meu
-            relativeLayoutApagar.setVisibility(View.VISIBLE);
-            return;
+//VERIFICO SE O USUARIO ESTA NO EVENTO
+        if (u.cadastradoEvento(evento.getId())) {
+            relativeLayoutBotaoEuVou.setVisibility(View.GONE);
         } else {
+            relativeLayoutAddFoto.setVisibility(View.GONE);
+            relativeLayoutCancelar.setVisibility(View.GONE);
             relativeLayoutEditar.setVisibility(View.GONE);
+            relativeLayoutApagar.setVisibility(View.GONE);
+            return;
         }
+        //VERIFICO SE O EVENTO É DO USUARIO QUE ESTA LOGADO SE FOR OS BOTOES PERMANEGEM VISIVEIS
+        if (evento.getIdUsuarioCadastrou() != u.getId()) {
+            relativeLayoutApagar.setVisibility(View.GONE);
+            relativeLayoutEditar.setVisibility(View.GONE);
+
+            return;
+        }
+
+
     }
 }

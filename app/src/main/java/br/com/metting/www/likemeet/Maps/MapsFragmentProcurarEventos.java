@@ -36,7 +36,7 @@ import br.com.metting.www.likemeet.Fragments.Main.ProcurarEventosMeetFragment;
 import br.com.metting.www.likemeet.R;
 
 public class MapsFragmentProcurarEventos extends SupportMapFragment implements OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, GoogleMap.OnMapLoadedCallback {
+        GoogleMap.OnMapLoadedCallback {
 
     private static GoogleMap mMap;
     private LatLng local;
@@ -77,6 +77,13 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                 }
             });
 
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    chamarFragmentListaEventos(null);
+                }
+            });
+
 
         } catch (SecurityException e) {
             Log.d(getClass().getName(), e.getMessage());
@@ -88,13 +95,10 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
             @Override
             public boolean onMarkerClick(final Marker marker) {// Inflate the layout for this fragment
 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14f), 1500,null);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14f), 1500, null);
                 chamarFragmentListaEventos(Evento.getListaEventosLatLong(marker.getPosition()));
                 //Build camera position
                 marker.showInfoWindow();
-
-
-
                 // Se ela retorna falso, então o comportamento padrão irá ocorrer em adição ao seu comportamento personalizado
                 return true;
             }
@@ -124,12 +128,11 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
     }
 
     private void chamarFragmentListaEventos(final ArrayList<Evento> lista) {
-        // se a lista nao for nula , retornara todos eventos
+        // se a lista  for nula , retornara todos eventos
         if (lista == null) {
             // configurando o sliderUp
             abrirFragmentoCategorias();
             return;
-
         } else {
             // ser for size 1 quer diser que so ha 1 evento naquela localidade , entao abrimos a tela de ir para o evento diretamente
             if (lista.size() == 1) {
@@ -221,11 +224,6 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
 
     }
 
-    @Override
-    public void onMapClick(LatLng latLng) {
-        abrirFragmentoCategorias();
-    }
-
     public static void descarmarMarker() {
 
         for (Marker lista : listaMarker
@@ -244,7 +242,8 @@ public class MapsFragmentProcurarEventos extends SupportMapFragment implements O
                 Log.d("local", "local1: " + latLng.toString());
                 Log.d("local", "local2: " + lista.getPosition().toString());
                 lista.showInfoWindow();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                //   mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10), 1500, null);
                 return;
             }
         }

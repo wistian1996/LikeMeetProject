@@ -170,7 +170,6 @@ public class ProcurarEventosMeetFragment extends Fragment {
                 try {
                     if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
                         slider.setTouchEnabled(false);
-
                         // verifica qual fragment esta aberto no layout de baixo
                         Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
                         if (f instanceof ListaEventoFragment) {
@@ -182,7 +181,6 @@ public class ProcurarEventosMeetFragment extends Fragment {
                     }
                     if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                         slider.setTouchEnabled(true);
-
                         // verifica qual fragment esta aberto no layout de baixo
                         Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.LayoutBaixoMap);
                         if (f instanceof ListaEventoFragment) {
@@ -198,7 +196,6 @@ public class ProcurarEventosMeetFragment extends Fragment {
 
             }
         });
-
         return view;
     }
 
@@ -209,7 +206,7 @@ public class ProcurarEventosMeetFragment extends Fragment {
             public void run() {
                 slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
-        }, 100);
+        }, 150);
     }
 
     public static void fecharSlider() {
@@ -218,7 +215,7 @@ public class ProcurarEventosMeetFragment extends Fragment {
             public void run() {
                 slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
-        }, 100);
+        }, 150);
     }
 
     public static SlidingUpPanelLayout getSlider() {

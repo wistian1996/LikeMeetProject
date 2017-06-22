@@ -23,7 +23,7 @@ public class Usuario {
     String codigoAtivo;
     int vip;// (define se o usuario é um usuario vip ou nao)
 
-    public Usuario(int id, String nome, String status, Date nasc, String tel , String email, String endereco, String foto, int ativo, int qtdEventosCadastrados, String codigoAtivo, int vip) {
+    public Usuario(int id, String nome, String status, Date nasc, String tel, String email, String endereco, String foto, int ativo, int qtdEventosCadastrados, String codigoAtivo, int vip) {
         this.id = id;
         this.nome = nome;
         this.status = status;
@@ -62,7 +62,6 @@ public class Usuario {
         return null;
     }
 
-
     public String getEndereco() {
         return endereco;
     }
@@ -86,6 +85,17 @@ public class Usuario {
         return lista;
     }
 
+    public boolean cadastradoEvento(int idEvento) {
+        Evento e = Evento.getEvento(idEvento);
+
+        for (Usuario lista : e.getListaPartipantes()
+                ) {
+            if (lista.getId() == Usuario.getUsuario().getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static ArrayList<Evento> getMeusEventos(int id) {
         ArrayList<Evento> lista = new ArrayList<>();
